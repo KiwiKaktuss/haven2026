@@ -1,0 +1,10 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Local agent configuration and project documentation
+/.codex/
+/docs/
+
+# macOS Finder metadata
+.DS_Store
