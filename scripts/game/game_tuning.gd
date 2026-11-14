@@ -4,6 +4,13 @@ extends Resource
 @export var gravity: float = 260.0
 @export var ball_radius: float = 2.0
 @export var rest_speed: float = 5.0
+@export var rolling_stop_speed: float = 0.5
+@export var bounce_threshold: float = 24.0
+@export var collision_margin: float = 0.02
+@export var contact_probe: float = 0.2
+@export var reattach_inward_speed: float = 0.5
+@export_range(1, 32) var maximum_contacts_per_step: int = 8
+@export_range(0.0, 1.0) var minimum_support_dot: float = 0.1
 @export var safe_contact_seconds: float = 0.5
 @export var safe_position_clearance: float = 0.1
 @export_group("Aiming (screen pixels)")

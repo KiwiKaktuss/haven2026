@@ -1,0 +1,338 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://scripts/game/physics_lab.gd" id="1_6wn4s"]
+[ext_resource type="PackedScene" path="res://scenes/terrain/terrain_object.tscn" id="2_hw2lm"]
+[ext_resource type="Script" path="res://scripts/terrain/terrain_object.gd" id="3_yubr3"]
+[ext_resource type="Resource" path="res://resources/terrain/normal.tres" id="4_2u3xw"]
+[ext_resource type="TileSet" path="res://resources/terrain/terrain_tileset.tres" id="5_0t54t"]
+[ext_resource type="Resource" path="res://resources/terrain/ice.tres" id="6_1ww1l"]
+[ext_resource type="Resource" path="res://resources/terrain/sticky.tres" id="7_yy640"]
+[ext_resource type="Resource" path="res://resources/terrain/bouncy.tres" id="8_0c4vn"]
+[ext_resource type="PackedScene" path="res://scenes/terrain/moving_platform.tscn" id="9_lfu5d"]
+[ext_resource type="Script" path="res://scripts/terrain/moving_platform.gd" id="10_cwfss"]
+[ext_resource type="PackedScene" path="res://scenes/ball/ball.tscn" id="11_4rb7q"]
+[ext_resource type="Script" path="res://scripts/ball/ball.gd" id="12_f6wtt"]
+[ext_resource type="Resource" path="res://resources/game/default_tuning.tres" id="13_sgxbm"]
+
+[node name="PhysicsLab" type="Node2D" unique_id=1233193971 node_paths=PackedStringArray("balls")]
+script = ExtResource("1_6wn4s")
+balls = [NodePath("Balls/NormalBall"), NodePath("Balls/IceBall"), NodePath("Balls/StickyBall"), NodePath("Balls/BouncyBall"), NodePath("Balls/HorizontalBall"), NodePath("Balls/VerticalBall"), NodePath("Balls/SlopeBall"), NodePath("Balls/WallBall"), NodePath("Balls/CeilingBall")]
+
+[node name="Terrain" type="Node2D" parent="." unique_id=1182272550]
+
+[node name="Normal" parent="Terrain" unique_id=963234527 instance=ExtResource("2_hw2lm")]
+texture_filter = 1
+position = Vector2(24, 80)
+collision_mask = 0
+script = ExtResource("3_yubr3")
+object_id = &"normal"
+surface = ExtResource("4_2u3xw")
+
+[node name="Tiles" parent="Terrain/Normal" index="0" unique_id=1881868639]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAA=")
+tile_set = ExtResource("5_0t54t")
+collision_enabled = false
+
+[node name="SolidSilhouette" parent="Terrain/Normal" index="1" unique_id=923485518]
+polygon = PackedVector2Array(0, 0, 64, 0, 64, 8, 0, 8)
+
+[node name="Ice" parent="Terrain" unique_id=1896713373 instance=ExtResource("2_hw2lm")]
+texture_filter = 1
+position = Vector2(136, 80)
+collision_mask = 0
+script = ExtResource("3_yubr3")
+object_id = &"ice"
+surface = ExtResource("6_1ww1l")
+
+[node name="Tiles" parent="Terrain/Ice" index="0" unique_id=1881868639]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAoAAAABAAAAAAAEAAoAAAACAAAAAAAEAAoAAAADAAAAAAAEAAoAAAAEAAAAAAAEAAoAAAAFAAAAAAAEAAoAAAAGAAAAAAAEAAoAAAAHAAAAAAAEAAoAAAA=")
+tile_set = ExtResource("5_0t54t")
+collision_enabled = false
+
+[node name="SolidSilhouette" parent="Terrain/Ice" index="1" unique_id=923485518]
+polygon = PackedVector2Array(0, 0, 64, 0, 64, 8, 0, 8)
+
+[node name="Sticky" parent="Terrain" unique_id=2094403786 instance=ExtResource("2_hw2lm")]
+texture_filter = 1
+position = Vector2(248, 80)
+collision_mask = 0
+script = ExtResource("3_yubr3")
+object_id = &"sticky"
+surface = ExtResource("7_yy640")
+
+[node name="Tiles" parent="Terrain/Sticky" index="0" unique_id=1881868639]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAUAAAABAAAAAAAEAAUAAAACAAAAAAAEAAUAAAADAAAAAAAEAAUAAAAEAAAAAAAEAAUAAAAFAAAAAAAEAAUAAAAGAAAAAAAEAAUAAAAHAAAAAAAEAAUAAAA=")
+tile_set = ExtResource("5_0t54t")
+collision_enabled = false
+
+[node name="SolidSilhouette" parent="Terrain/Sticky" index="1" unique_id=923485518]
+polygon = PackedVector2Array(0, 0, 64, 0, 64, 8, 0, 8)
+
+[node name="Bouncy" parent="Terrain" unique_id=1597662127 instance=ExtResource("2_hw2lm")]
+texture_filter = 1
+position = Vector2(360, 80)
+collision_mask = 0
+script = ExtResource("3_yubr3")
+object_id = &"bouncy"
+surface = ExtResource("8_0c4vn")
+
+[node name="Tiles" parent="Terrain/Bouncy" index="0" unique_id=1881868639]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAA8AAAABAAAAAAAEAA8AAAACAAAAAAAEAA8AAAADAAAAAAAEAA8AAAAEAAAAAAAEAA8AAAAFAAAAAAAEAA8AAAAGAAAAAAAEAA8AAAAHAAAAAAAEAA8AAAA=")
+tile_set = ExtResource("5_0t54t")
+collision_enabled = false
+
+[node name="SolidSilhouette" parent="Terrain/Bouncy" index="1" unique_id=923485518]
+polygon = PackedVector2Array(0, 0, 64, 0, 64, 8, 0, 8)
+
+[node name="Slope" parent="Terrain" unique_id=1389125929 instance=ExtResource("2_hw2lm")]
+texture_filter = 1
+position = Vector2(248, 260)
+rotation = -0.2617994
+collision_mask = 0
+script = ExtResource("3_yubr3")
+object_id = &"slope"
+surface = ExtResource("4_2u3xw")
+
+[node name="Tiles" parent="Terrain/Slope" index="0" unique_id=1881868639]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAA=")
+tile_set = ExtResource("5_0t54t")
+collision_enabled = false
+
+[node name="SolidSilhouette" parent="Terrain/Slope" index="1" unique_id=923485518]
+polygon = PackedVector2Array(0, 0, 64, 0, 64, 8, 0, 8)
+
+[node name="Wall" parent="Terrain" unique_id=499981902 instance=ExtResource("2_hw2lm")]
+texture_filter = 1
+position = Vector2(432, 144)
+rotation = 1.5707964
+collision_mask = 0
+script = ExtResource("3_yubr3")
+object_id = &"wall"
+surface = ExtResource("8_0c4vn")
+
+[node name="Tiles" parent="Terrain/Wall" index="0" unique_id=1881868639]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAA8AAAABAAAAAAAEAA8AAAACAAAAAAAEAA8AAAADAAAAAAAEAA8AAAAEAAAAAAAEAA8AAAAFAAAAAAAEAA8AAAAGAAAAAAAEAA8AAAAHAAAAAAAEAA8AAAA=")
+tile_set = ExtResource("5_0t54t")
+collision_enabled = false
+
+[node name="SolidSilhouette" parent="Terrain/Wall" index="1" unique_id=923485518]
+polygon = PackedVector2Array(0, 0, 64, 0, 64, 8, 0, 8)
+
+[node name="Ceiling" parent="Terrain" unique_id=2045506654 instance=ExtResource("2_hw2lm")]
+texture_filter = 1
+position = Vector2(336, 144)
+collision_mask = 0
+script = ExtResource("3_yubr3")
+object_id = &"ceiling"
+surface = ExtResource("7_yy640")
+
+[node name="Tiles" parent="Terrain/Ceiling" index="0" unique_id=1881868639]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAUAAAABAAAAAAAEAAUAAAACAAAAAAAEAAUAAAADAAAAAAAEAAUAAAAEAAAAAAAEAAUAAAAFAAAAAAAEAAUAAAAGAAAAAAAEAAUAAAAHAAAAAAAEAAUAAAA=")
+tile_set = ExtResource("5_0t54t")
+collision_enabled = false
+
+[node name="SolidSilhouette" parent="Terrain/Ceiling" index="1" unique_id=923485518]
+polygon = PackedVector2Array(0, 0, 64, 0, 64, 8, 0, 8)
+
+[node name="Thin" parent="Terrain" unique_id=717453301 instance=ExtResource("2_hw2lm")]
+texture_filter = 1
+position = Vector2(448, 240)
+scale = Vector2(0.015625, 4)
+collision_mask = 0
+script = ExtResource("3_yubr3")
+object_id = &"thin"
+surface = ExtResource("4_2u3xw")
+
+[node name="Tiles" parent="Terrain/Thin" index="0" unique_id=1881868639]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAA=")
+tile_set = ExtResource("5_0t54t")
+collision_enabled = false
+
+[node name="SolidSilhouette" parent="Terrain/Thin" index="1" unique_id=923485518]
+polygon = PackedVector2Array(0, 0, 64, 0, 64, 8, 0, 8)
+
+[node name="MultiShape" type="StaticBody2D" parent="Terrain" unique_id=309839075 instance=ExtResource("2_hw2lm")]
+texture_filter = 1
+position = Vector2(336, 240)
+collision_mask = 0
+script = ExtResource("3_yubr3")
+object_id = &"multi_shape"
+surface = ExtResource("4_2u3xw")
+
+[node name="SideTiles" type="TileMapLayer" parent="Terrain/MultiShape" unique_id=1837743239]
+tile_map_data = PackedByteArray("AAAAAAEAAAAEAAAAAAAAAAIAAAAEAAAAAAAAAAMAAAAEAAAAAAAAAAQAAAAEAAAAAAA=")
+tile_set = ExtResource("5_0t54t")
+collision_enabled = false
+
+[node name="SideSilhouette" type="CollisionPolygon2D" parent="Terrain/MultiShape" unique_id=731156711]
+polygon = PackedVector2Array(0, 8, 8, 8, 8, 40, 0, 40)
+
+[node name="MovingPlatforms" type="Node2D" parent="." unique_id=2109913838]
+
+[node name="Horizontal" parent="MovingPlatforms" unique_id=1698920056 instance=ExtResource("9_lfu5d")]
+process_physics_priority = -100
+texture_filter = 1
+position = Vector2(24, 204)
+collision_mask = 0
+script = ExtResource("10_cwfss")
+endpoint_b = Vector2(40, 0)
+object_id = &"horizontal"
+surface = ExtResource("4_2u3xw")
+
+[node name="Tiles" parent="MovingPlatforms/Horizontal" index="0" unique_id=1318298488]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAA=")
+tile_set = ExtResource("5_0t54t")
+collision_enabled = false
+
+[node name="SolidSilhouette" parent="MovingPlatforms/Horizontal" index="1" unique_id=1577856083]
+polygon = PackedVector2Array(0, 0, 64, 0, 64, 8, 0, 8)
+
+[node name="Vertical" parent="MovingPlatforms" unique_id=1587415935 instance=ExtResource("9_lfu5d")]
+process_physics_priority = -100
+texture_filter = 1
+position = Vector2(136, 204)
+collision_mask = 0
+script = ExtResource("10_cwfss")
+endpoint_b = Vector2(0, -40)
+object_id = &"vertical"
+surface = ExtResource("7_yy640")
+
+[node name="Tiles" parent="MovingPlatforms/Vertical" index="0" unique_id=1318298488]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAUAAAABAAAAAAAEAAUAAAACAAAAAAAEAAUAAAADAAAAAAAEAAUAAAAEAAAAAAAEAAUAAAAFAAAAAAAEAAUAAAAGAAAAAAAEAAUAAAAHAAAAAAAEAAUAAAA=")
+tile_set = ExtResource("5_0t54t")
+collision_enabled = false
+
+[node name="SolidSilhouette" parent="MovingPlatforms/Vertical" index="1" unique_id=1577856083]
+polygon = PackedVector2Array(0, 0, 64, 0, 64, 8, 0, 8)
+
+[node name="Balls" type="Node2D" parent="." unique_id=1033315781]
+
+[node name="NormalBall" type="CharacterBody2D" parent="Balls" unique_id=1083699715 node_paths=PackedStringArray("sprite", "collision_shape", "effect_animation") instance=ExtResource("11_4rb7q")]
+texture_filter = 1
+position = Vector2(40, 40)
+collision_layer = 2
+velocity = Vector2(25, 0)
+script = ExtResource("12_f6wtt")
+tuning = ExtResource("13_sgxbm")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+effect_animation = NodePath("EffectAnimation")
+
+[node name="IceBall" type="CharacterBody2D" parent="Balls" unique_id=121758146 node_paths=PackedStringArray("sprite", "collision_shape", "effect_animation") instance=ExtResource("11_4rb7q")]
+texture_filter = 1
+position = Vector2(152, 40)
+collision_layer = 2
+velocity = Vector2(25, 0)
+script = ExtResource("12_f6wtt")
+tuning = ExtResource("13_sgxbm")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+effect_animation = NodePath("EffectAnimation")
+
+[node name="StickyBall" type="CharacterBody2D" parent="Balls" unique_id=2135228713 node_paths=PackedStringArray("sprite", "collision_shape", "effect_animation") instance=ExtResource("11_4rb7q")]
+texture_filter = 1
+position = Vector2(280, 40)
+collision_layer = 2
+script = ExtResource("12_f6wtt")
+tuning = ExtResource("13_sgxbm")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+effect_animation = NodePath("EffectAnimation")
+
+[node name="BouncyBall" type="CharacterBody2D" parent="Balls" unique_id=322814723 node_paths=PackedStringArray("sprite", "collision_shape", "effect_animation") instance=ExtResource("11_4rb7q")]
+texture_filter = 1
+position = Vector2(392, 40)
+collision_layer = 2
+script = ExtResource("12_f6wtt")
+tuning = ExtResource("13_sgxbm")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+effect_animation = NodePath("EffectAnimation")
+
+[node name="HorizontalBall" type="CharacterBody2D" parent="Balls" unique_id=808187360 node_paths=PackedStringArray("sprite", "collision_shape", "effect_animation") instance=ExtResource("11_4rb7q")]
+texture_filter = 1
+position = Vector2(48, 200)
+collision_layer = 2
+script = ExtResource("12_f6wtt")
+tuning = ExtResource("13_sgxbm")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+effect_animation = NodePath("EffectAnimation")
+
+[node name="VerticalBall" type="CharacterBody2D" parent="Balls" unique_id=314867524 node_paths=PackedStringArray("sprite", "collision_shape", "effect_animation") instance=ExtResource("11_4rb7q")]
+texture_filter = 1
+position = Vector2(160, 200)
+collision_layer = 2
+script = ExtResource("12_f6wtt")
+tuning = ExtResource("13_sgxbm")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+effect_animation = NodePath("EffectAnimation")
+
+[node name="SlopeBall" type="CharacterBody2D" parent="Balls" unique_id=1179219314 node_paths=PackedStringArray("sprite", "collision_shape", "effect_animation") instance=ExtResource("11_4rb7q")]
+texture_filter = 1
+position = Vector2(272, 230)
+collision_layer = 2
+script = ExtResource("12_f6wtt")
+tuning = ExtResource("13_sgxbm")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+effect_animation = NodePath("EffectAnimation")
+
+[node name="WallBall" type="CharacterBody2D" parent="Balls" unique_id=1815742889 node_paths=PackedStringArray("sprite", "collision_shape", "effect_animation") instance=ExtResource("11_4rb7q")]
+texture_filter = 1
+position = Vector2(412, 174)
+collision_layer = 2
+velocity = Vector2(100, 0)
+script = ExtResource("12_f6wtt")
+tuning = ExtResource("13_sgxbm")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+effect_animation = NodePath("EffectAnimation")
+
+[node name="CeilingBall" type="CharacterBody2D" parent="Balls" unique_id=968254921 node_paths=PackedStringArray("sprite", "collision_shape", "effect_animation") instance=ExtResource("11_4rb7q")]
+texture_filter = 1
+position = Vector2(368, 170)
+collision_layer = 2
+velocity = Vector2(0, -90)
+script = ExtResource("12_f6wtt")
+tuning = ExtResource("13_sgxbm")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+effect_animation = NodePath("EffectAnimation")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1690908418]
+position = Vector2(240, 148)
+zoom = Vector2(2, 2)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1541067377]
+
+[node name="Instructions" type="Label" parent="CanvasLayer" unique_id=1387887457]
+offset_left = 24.0
+offset_top = 12.0
+offset_right = 24.0
+offset_bottom = 12.0
+theme_override_font_sizes/font_size = 18
+text = "PHYSICS LAB · R reset · Space launch all (debug only)
+Normal / Ice / Sticky / Bouncy     |     lower: horizontal / vertical / slope / wall / ceiling / thin"
+
+[node name="MainMenuButton" type="Button" parent="CanvasLayer" unique_id=147204952]
+custom_minimum_size = Vector2(140, 36)
+offset_left = 24.0
+offset_top = 590.0
+offset_right = 24.0
+offset_bottom = 590.0
+text = "Main Menu"
+
+[connection signal="pressed" from="CanvasLayer/MainMenuButton" to="." method="_on_exit_pressed"]
+
+[editable path="Terrain/Normal"]
+[editable path="Terrain/Ice"]
+[editable path="Terrain/Sticky"]
+[editable path="Terrain/Bouncy"]
+[editable path="Terrain/Slope"]
+[editable path="Terrain/Wall"]
+[editable path="Terrain/Ceiling"]
+[editable path="Terrain/Thin"]
+[editable path="MovingPlatforms/Horizontal"]
+[editable path="MovingPlatforms/Vertical"]

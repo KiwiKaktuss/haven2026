@@ -1,0 +1,20 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://scripts/terrain/terrain_object.gd" id="1_25act"]
+[ext_resource type="Resource" path="res://resources/terrain/normal.tres" id="2_eq3ff"]
+[ext_resource type="TileSet" path="res://resources/terrain/terrain_tileset.tres" id="3_ucv7b"]
+
+[node name="TerrainObject" type="StaticBody2D" unique_id=963234527]
+texture_filter = 1
+collision_mask = 0
+script = ExtResource("1_25act")
+object_id = &"island"
+surface = ExtResource("2_eq3ff")
+
+[node name="Tiles" type="TileMapLayer" parent="." unique_id=1881868639]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAA=")
+tile_set = ExtResource("3_ucv7b")
+collision_enabled = false
+
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="." unique_id=923485518]
+polygon = PackedVector2Array(0, 0, 64, 0, 64, 8, 0, 8)

@@ -72,6 +72,17 @@ func run() -> void:
     check(main.get_node("ScreenHost").get_child_count() == 0, "Inspection removes menu")
     check(main.get_node("GameHost").get_child_count() == 1, "Inspection instantiates saved session")
     main.free()
+    main = load("res://main.tscn").instantiate()
+    root.add_child(main)
+    menu = main.get_node("ScreenHost").get_child(0)
+    menu.get_node("CenterContainer/VBoxContainer/PhysicsLabButton").pressed.emit()
+    await process_frame
+    var lab: Node = main.get_node("GameHost").get_child(0)
+    check(lab.has_node("Terrain/Thin"), "Launcher opens authored physics lab")
+    lab.get_node("CanvasLayer/MainMenuButton").pressed.emit()
+    await process_frame
+    check(main.get_node("GameHost").get_child_count() == 0 and main.get_node("ScreenHost").get_child_count() == 1, "Lab returns to main menu")
+    main.free()
     for file: String in ["foundation_roundtrip.tscn", "foundation_tuning.tres"]:
         DirAccess.remove_absolute("user://" + file)
     print("Foundation checks: %s failure(s)" % failures)

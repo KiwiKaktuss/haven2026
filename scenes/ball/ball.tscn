@@ -7,6 +7,8 @@ radius = 2.0
 [sub_resource type="AnimationLibrary" id="Effects"]
 [node name="Ball" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collision_shape", "effect_animation")]
 texture_filter = 1
+collision_layer = 2
+collision_mask = 1
 script = ExtResource("1")
 tuning = ExtResource("3")
 sprite = NodePath("Sprite2D")

@@ -1,0 +1,21 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://scripts/terrain/moving_platform.gd" id="1_armen"]
+[ext_resource type="Resource" path="res://resources/terrain/normal.tres" id="2_qnsa7"]
+[ext_resource type="TileSet" path="res://resources/terrain/terrain_tileset.tres" id="3_ix84g"]
+
+[node name="MovingPlatform" type="AnimatableBody2D" unique_id=1698920056]
+process_physics_priority = -100
+texture_filter = 1
+collision_mask = 0
+script = ExtResource("1_armen")
+object_id = &"platform"
+surface = ExtResource("2_qnsa7")
+
+[node name="Tiles" type="TileMapLayer" parent="." unique_id=1318298488]
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAA=")
+tile_set = ExtResource("3_ix84g")
+collision_enabled = false
+
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="." unique_id=1577856083]
+polygon = PackedVector2Array(0, 0, 64, 0, 64, 8, 0, 8)

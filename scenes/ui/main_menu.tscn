@@ -31,11 +31,18 @@ custom_minimum_size = Vector2(600, 80)
 layout_mode = 2
 [node name="StatusLabel" type="Label" parent="CenterContainer/VBoxContainer/StatusSlot"]
 layout_mode = 2
-text = "Project foundation · Step 1
-Physics and playable courses are next."
+text = "Project foundation · Physics lab ready
+Cards and playable courses are next."
 horizontal_alignment = 1
 [node name="InspectButton" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 text = "Inspect supplied art & session"
+
+[node name="PhysicsLabButton" type="Button" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+text = "Open physics lab"
+[connection signal="pressed" from="CenterContainer/VBoxContainer/PhysicsLabButton" to="." method="_on_lab_pressed"]
+
 [connection signal="pressed" from="CenterContainer/VBoxContainer/InspectButton" to="." method="_on_inspect_pressed"]
