@@ -6,20 +6,7 @@
 [ext_resource type="Theme" uid="uid://vd5i5ly3o81k" path="res://resources/ui/default_theme.tres" id="theme"]
 [ext_resource type="Texture2D" path="res://art/DeckGolf.png" id="logo"]
 
-[sub_resource type="StyleBoxFlat" id="menu_panel"]
-bg_color = Color(0.97, 0.97, 1, 0.97)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.78, 0.8, 0.94, 0.8)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-shadow_color = Color(0.12, 0.16, 0.3, 0.16)
-shadow_size = 12
-shadow_offset = Vector2(0, 6)
+[ext_resource type="StyleBox" path="res://resources/ui/pixel/menu_panel.tres" id="menu_panel"]
 
 [node name="MainMenu" type="Control" unique_id=732525874]
 texture_filter = 2
@@ -58,7 +45,7 @@ mouse_filter = 2
 custom_minimum_size = Vector2(408, 390)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("menu_panel")
+theme_override_styles/panel = ExtResource("menu_panel")
 
 [node name="Content" type="VBoxContainer" parent="Center" unique_id=1652621312]
 custom_minimum_size = Vector2(336, 0)

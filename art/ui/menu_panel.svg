@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" shape-rendering="crispEdges">
+  <!-- Three-pixel steps match the menu buttons. The last row is a hard shadow. -->
+  <path fill="#293f3e" d="M9 3H39V6H42V9H45V12H48V39H45V42H42V45H39V48H9V45H6V42H3V39H0V12H3V9H6V6H9Z"/>
+  <path fill="#354b49" d="M9 0H39V3H42V6H45V9H48V36H45V39H42V42H39V45H9V42H6V39H3V36H0V9H3V6H6V3H9Z"/>
+  <path fill="#d4dfd5" d="M9 3H39V6H42V9H45V36H42V39H39V42H9V39H6V36H3V9H6V6H9Z"/>
+  <path fill="#fffef5" d="M9 3H39V6H9ZM6 6H9V9H6ZM3 9H6V36H3Z"/>
+  <path fill="#a5bdb1" d="M39 6H42V9H39ZM42 9H45V36H42ZM39 36H42V39H39Z"/>
+  <path fill="#7d9a8e" d="M6 36H9V39H6ZM9 39H39V42H9Z"/>
+  <path fill="#b9cfc0" d="M12 6H36V9H39V12H42V33H39V36H36V39H12V36H9V33H6V12H9V9H12Z"/>
+  <path fill="#f7f7ed" d="M12 9H36V12H39V33H36V36H12V33H9V12H12Z"/>
+</svg>
