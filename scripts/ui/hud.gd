@@ -7,6 +7,9 @@ var session: GameSession
 var _pending: Dictionary = {}
 var _generation: int = -1
 
+func _ready() -> void:
+	$PauseButton.pressed.connect(func() -> void: pause_requested.emit())
+
 static func format_time(seconds: float) -> String:
 	var centiseconds: int = floori(seconds * 100)
 	return "%d:%02d.%02d" % [centiseconds / 6000, (centiseconds / 100) % 60, centiseconds % 100]

@@ -40,6 +40,16 @@ func pointer(at: Vector2, down: bool) -> void:
     event.pressed = down
     root.push_input(event, true)
 
+func escape(echo: bool = false) -> void:
+    var event := InputEventKey.new()
+    event.physical_keycode = KEY_ESCAPE
+    event.pressed = true
+    event.echo = echo
+    root.push_input(event, true)
+    event = InputEventKey.new()
+    event.physical_keycode = KEY_ESCAPE
+    root.push_input(event, true)
+
 func run() -> void:
     DirAccess.remove_absolute(test_path)
     var store := SaveStore.new()
@@ -95,14 +105,29 @@ func run() -> void:
     var session: GameSession = main.session
     check(main.screen_host.get_child_count() == 0 and session.deck.equipped == main.save.equipped, "Course launch uses equipped deck")
     check(session.state == GameSession.State.READY and session.elapsed_seconds == 0 and session.elixir == 10, "Initial attempt is ready, full and untimed")
+    escape()
+    check(session.state == GameSession.State.PAUSED and main.screen_host.get_child_count() == 1, "Esc opens the pause menu without immediately closing it")
+    escape(true)
+    check(session.state == GameSession.State.PAUSED, "Holding Esc does not toggle the pause menu")
+    escape()
+    check(session.state == GameSession.State.READY and main.screen_host.get_child_count() == 0, "Esc resumes the paused attempt")
     var button: Button = session.hud.get_node("Bottom/Stack/Hand/Card1")
     pointer(button.get_global_rect().get_center(), true)
     pointer(button.get_global_rect().get_center(), false)
     await ticks()
     check(session.deck.selected_slot == 1 and not session.aim.aiming and session.shots == 0, "Real hand click selects without aiming/firing")
+    var pause_button: Button = session.hud.get_node("PauseButton")
+    var hover := InputEventMouseMotion.new()
+    hover.position = pause_button.get_global_rect().get_center()
+    root.push_input(hover, true)
+    await ticks()
+    pointer(pause_button.get_global_rect().get_center(), true)
+    pointer(pause_button.get_global_rect().get_center(), false)
+    check(session.state == GameSession.State.PAUSED and session.shots == 0, "Top-left pause button opens the menu without firing a shot")
+    click("Center/Content/Resume")
     session.aim.begin(Vector2(400, 240))
     session.aim.move_pointer(Vector2(370, 290))
-    main._pause()
+    escape()
     check(session.state == GameSession.State.PAUSED and not session.aim.aiming and not session.hud.visible, "Pause cancels gesture and hides HUD")
     var at: Vector2 = session.ball.global_position
     var amount: float = session.elixir

@@ -93,6 +93,18 @@ theme = ExtResource("theme")
 script = ExtResource("script")
 flight_scene = ExtResource("flight")
 
+[node name="PauseButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 72.0
+offset_bottom = 68.0
+custom_minimum_size = Vector2(48, 48)
+tooltip_text = "Pause (Esc)"
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 24
+text = "II"
+
 [node name="Top" type="MarginContainer" parent="." unique_id=1413082864]
 layout_mode = 0
 anchor_left = 1.0

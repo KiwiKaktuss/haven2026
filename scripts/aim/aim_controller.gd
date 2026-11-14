@@ -61,6 +61,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"cancel_aim"):
 		cancel()
 	if event.is_action_pressed(&"pause"):
+		get_viewport().set_input_as_handled()
 		cancel()
 		session.pause_requested.emit()
 	for slot: int in range(3):
