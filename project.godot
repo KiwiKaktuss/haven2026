@@ -23,7 +23,6 @@ window/size/window_width_override=960
 window/size/window_height_override=640
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-window/stretch/scale_mode="fractional"
 window/size/min_width=800
 window/size/min_height=640
 

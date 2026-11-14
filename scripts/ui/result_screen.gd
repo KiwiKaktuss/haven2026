@@ -27,7 +27,7 @@ func configure(won: bool, elapsed: float, shots: int, best: float, new_record: b
     $Center/Content/Next.text = "Choose a course" if last_course else "Next course"
     var stars: int = stars_for_time(elapsed) if won else 0
     $Center/Content/StarSpace.visible = stars > 0
-    $Center/MenuPanel.custom_minimum_size.y = 430.0 if stars > 0 else 380.0
+    $Center/MenuPanel.custom_minimum_size.y = 478.0 if stars > 0 else 380.0
     if _star_tween:
         _star_tween.kill()
     if stars > 0:

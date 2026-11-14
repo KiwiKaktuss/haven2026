@@ -176,7 +176,7 @@ func run() -> void:
     session.set_physics_process(false)
     session.ball.simulation_enabled = false
     var cup: GoalCup = session.course.goal_cup
-    session.ball.reset_motion(cup.global_position + Vector2(32, 5.9))
+    session.ball.reset_motion(cup.global_position + Vector2(32, 4.9))
     await ticks(3)
     check(cup.capture_area.overlaps_body(session.ball), "Authored capture area detects ball")
     session.ball.velocity = Vector2(200, 0)
@@ -186,7 +186,7 @@ func run() -> void:
     session.ball.reset_motion(Vector2(200, -30))
     await ticks(2)
     check(not cup.advance_capture(session.ball, session.tuning, 0.4) and cup.dwell == 0, "Exit resets dwell")
-    session.ball.reset_motion(cup.global_position + Vector2(32, 5.9))
+    session.ball.reset_motion(cup.global_position + Vector2(32, 4.9))
     session.ball.set_card_effect(catalog.find_card(&"ghost"))
     await ticks(2)
     check(not cup.advance_capture(session.ball, session.tuning, 1), "Armed Ghost not forcibly captured before floor passage")

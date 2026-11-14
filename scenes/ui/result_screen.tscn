@@ -1,22 +1,45 @@
-[gd_scene format=3]
-[ext_resource type="Theme" path="res://resources/ui/default_theme.tres" id="theme"]
-[ext_resource type="Script" path="res://scripts/ui/result_screen.gd" id="script"]
-[ext_resource type="StyleBox" path="res://resources/ui/pixel/menu_panel.tres" id="menu_panel"]
+[gd_scene format=3 uid="uid://otm6gg0ck1tw"]
+
+[ext_resource type="StyleBox" uid="uid://dis7nqri1ul8t" path="res://resources/ui/pixel/menu_panel.tres" id="menu_panel"]
+[ext_resource type="Script" uid="uid://duejt2jd3j0e1" path="res://scripts/ui/result_screen.gd" id="script"]
+[ext_resource type="Theme" uid="uid://vd5i5ly3o81k" path="res://resources/ui/default_theme.tres" id="theme"]
 
 [sub_resource type="Animation" id="intro"]
 resource_name = "intro"
 length = 0.38
 tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
 tracks/0/path = NodePath("Center:modulate")
-tracks/0/keys = {"times": PackedFloat32Array(0, 0.38), "transitions": PackedFloat32Array(0.5, 1), "update": 0, "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]}
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.38),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
 tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
 tracks/1/path = NodePath("Background:modulate")
-tracks/1/keys = {"times": PackedFloat32Array(0, 0.2), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]}
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="library"]
-_data = {&"intro": SubResource("intro")}
-[node name="ResultScreen" type="Control"]
+_data = {
+&"intro": SubResource("intro")
+}
+
+[node name="ResultScreen" type="Control" unique_id=1648157019]
 texture_filter = 2
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -25,17 +48,17 @@ grow_vertical = 2
 theme = ExtResource("theme")
 script = ExtResource("script")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1312922623]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0)
 mouse_filter = 2
+color = Color(0, 0, 0, 0)
 
-[node name="Center" type="CenterContainer" parent="."]
+[node name="Center" type="CenterContainer" parent="." unique_id=1584705912]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,61 +66,65 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MenuPanel" type="Panel" parent="Center"]
+[node name="MenuPanel" type="Panel" parent="Center" unique_id=1393661227]
 custom_minimum_size = Vector2(412, 380)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("menu_panel")
 
-[node name="Content" type="VBoxContainer" parent="Center"]
+[node name="Content" type="VBoxContainer" parent="Center" unique_id=317394142]
 custom_minimum_size = Vector2(340, 0)
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="StarSpace" type="Control" parent="Center/Content"]
-custom_minimum_size = Vector2(0, 104)
+[node name="StarSpace" type="Control" parent="Center/Content" unique_id=69274762]
+custom_minimum_size = Vector2(0, 152)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Stars" type="TextureRect" parent="Center/Content/StarSpace"]
+[node name="Stars" type="TextureRect" parent="Center/Content/StarSpace" unique_id=520100446]
 texture_filter = 1
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -47.0
+offset_left = -70.5
 offset_top = 4.0
-offset_right = 47.0
-offset_bottom = 100.0
-pivot_offset = Vector2(47, 48)
+offset_right = 70.5
+offset_bottom = 148.0
+grow_horizontal = 2
+pivot_offset = Vector2(70.5, 72)
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Title" type="Label" parent="Center/Content"]
-text = "Course complete"
+[node name="Title" type="Label" parent="Center/Content" unique_id=444009428]
+layout_mode = 2
 theme_override_font_sizes/font_size = 36
-mouse_filter = 2
+text = "Course complete"
 horizontal_alignment = 1
 
-[node name="Stats" type="Label" parent="Center/Content"]
-text = "0:00.00  ·  0 shots  ·  Best 0:00.00"
+[node name="Stats" type="Label" parent="Center/Content" unique_id=509055607]
+layout_mode = 2
 theme_override_font_sizes/font_size = 16
-mouse_filter = 2
+text = "0:00.00  ·  0 shots  ·  Best 0:00.00"
 horizontal_alignment = 1
 
-[node name="Next" type="Button" parent="Center/Content"]
+[node name="Next" type="Button" parent="Center/Content" unique_id=19234346]
 custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
 text = "Next course"
 
-
-[node name="Restart" type="Button" parent="Center/Content"]
+[node name="Restart" type="Button" parent="Center/Content" unique_id=10170281]
 custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
 text = "Restart"
 
-
-[node name="Menu" type="Button" parent="Center/Content"]
+[node name="Menu" type="Button" parent="Center/Content" unique_id=1579315558]
 custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
 text = "Main menu"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "intro"
-libraries = {&"": SubResource("library")}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=241321537]
+libraries/ = SubResource("library")
+autoplay = &"intro"

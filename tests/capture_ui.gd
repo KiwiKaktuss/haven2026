@@ -50,7 +50,7 @@ func _process(_delta: float) -> bool:
     if frame == 320:
         main.session.shots = 4
         main.session.elapsed_seconds = 22.38
-        main.session.ball.reset_motion(main.session.course.goal_cup.global_position + Vector2(32, 5.9))
+        main.session.ball.reset_motion(main.session.course.goal_cup.global_position + Vector2(32, 4.9))
     if frame == 370:
         capture("result")
     if frame == 390:

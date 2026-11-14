@@ -144,6 +144,7 @@ func _initialize() -> void:
     platform("EastWall", Vector2(384,-144), 3, 49)
     platform("Ceiling", Vector2(-184,-160), 74, 2)
     platform("Seabed", Vector2(-184,240), 74, 2)
+    preload("res://tools/join_fairway_terrain.gd").join_edges(scene)
     scene.start_marker = Marker2D.new()
     scene.start_marker.name = "StartMarker"
     scene.start_marker.position = Vector2(-32,125.9)

@@ -48,7 +48,8 @@ func run() -> void:
             decks.clear()
             enumerate_decks(0, [], decks, true)
             # No precision/braking; high power with wide spread and forced effects.
-            decks.append([&'classic', &'heavy', &'bounce', &'dash', &'fire', &'ghost'])
+            var high_power: Array = [&'classic', &'heavy', &'bounce', &'dash', &'fire', &'ghost']
+            decks.append(high_power.slice(0, CardCatalog.DECK_SIZE))
             report_name = 'adverse_safe'
         elif arg == '--all-decks':
             decks.clear()

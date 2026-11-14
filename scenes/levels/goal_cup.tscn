@@ -2,22 +2,15 @@
 [ext_resource type="Script" path="res://scripts/levels/goal_cup.gd" id="script"]
 [ext_resource type="PackedScene" path="res://scenes/terrain/cup_terrain.tscn" id="terrain"]
 [sub_resource type="RectangleShape2D" id="capture"]
-size = Vector2(28, 8)
+size = Vector2(2, 3)
 [node name="GoalCup" type="Node2D" node_paths=PackedStringArray("capture_area", "capture_shape")]
 script = ExtResource("script")
 capture_area = NodePath("CaptureArea")
 capture_shape = NodePath("CaptureArea/Shape")
 [node name="Terrain" parent="." instance=ExtResource("terrain")]
 [node name="CaptureArea" type="Area2D" parent="."]
-position = Vector2(32, 3)
+position = Vector2(32, 3.5)
 collision_layer = 0
 collision_mask = 2
 [node name="Shape" type="CollisionShape2D" parent="CaptureArea"]
 shape = SubResource("capture")
-[node name="FlagPole" type="Line2D" parent="."]
-points = PackedVector2Array(46, 0, 46, -26)
-width = 1.0
-default_color = Color(0.08, 0.12, 0.08, 1)
-[node name="Flag" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(46, -26, 60, -22, 46, -17)
-color = Color(0.73, 0.88, 0.71, 1)

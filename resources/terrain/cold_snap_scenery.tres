@@ -1,0 +1,20 @@
+[gd_resource type="TileSet" format=3 uid="uid://b2xpejw34u6tq"]
+
+[ext_resource type="Texture2D" uid="uid://5bclbwgk887j" path="res://art/cold_snap_scenery.svg" id="1_bx7h0"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k4uhl"]
+texture = ExtResource("1_bx7h0")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_k4uhl")
