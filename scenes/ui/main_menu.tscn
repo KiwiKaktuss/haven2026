@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" path="res://art/background2.png" id="sky"]
 [ext_resource type="Script" uid="uid://d3dmeuomfi6ku" path="res://scripts/ui/main_menu.gd" id="script"]
 [ext_resource type="Theme" uid="uid://vd5i5ly3o81k" path="res://resources/ui/default_theme.tres" id="theme"]
+[ext_resource type="Texture2D" path="res://art/DeckGolf.png" id="logo"]
 
 [sub_resource type="StyleBoxFlat" id="menu_panel"]
 bg_color = Color(0.97, 0.97, 1, 0.97)
@@ -54,7 +55,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="MenuPanel" type="Panel" parent="Center" unique_id=1766136300]
-custom_minimum_size = Vector2(408, 332)
+custom_minimum_size = Vector2(408, 390)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("menu_panel")
@@ -64,18 +65,30 @@ custom_minimum_size = Vector2(336, 0)
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="Eyebrow" type="Label" parent="Center/Content" unique_id=1593862207]
+[node name="LogoSlot" type="Control" parent="Center/Content"]
+custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.38, 0.42, 0.57, 1)
-theme_override_font_sizes/font_size = 12
-text = "A LITTLE GOLF. A FEW GOOD CARDS."
-horizontal_alignment = 1
+mouse_filter = 2
 
-[node name="Title" type="Label" parent="Center/Content" unique_id=2084158847]
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "Deck Golf"
-horizontal_alignment = 1
+[node name="Logo" type="TextureRect" parent="Center/Content/LogoSlot"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -90.0
+offset_right = 120.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(120, 90)
+mouse_filter = 2
+texture = ExtResource("logo")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Space" type="Control" parent="Center/Content" unique_id=791200815]
 custom_minimum_size = Vector2(0, 24)
