@@ -8,7 +8,7 @@
 [ext_resource type="Resource" path="res://resources/levels/catalog.tres" id="6"]
 [ext_resource type="Script" uid="uid://cqxdgqpisq218" path="res://scripts/cards/deck_model.gd" id="7"]
 [ext_resource type="Resource" uid="uid://cb2nsbhlnhbj0" path="res://resources/cards/catalog.tres" id="8"]
-[ext_resource type="Texture2D" uid="uid://f6t57kv2v8rd" path="res://art/all_tiles.png" id="9"]
+[ext_resource type="Texture2D" path="res://art/all_tiles2.png" id="9"]
 [ext_resource type="Script" uid="uid://d3rkyxdkcr33j" path="res://scripts/aim/aim_controller.gd" id="aim"]
 [ext_resource type="PackedScene" path="res://scenes/feedback/course_backdrop.tscn" id="backdrop"]
 [ext_resource type="Script" uid="uid://bqckng8b055yt" path="res://scripts/camera/course_camera.gd" id="camera"]

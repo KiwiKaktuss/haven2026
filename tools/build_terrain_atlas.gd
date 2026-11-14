@@ -2,7 +2,7 @@ extends SceneTree
 ## Offline tool only. Rebuild explicitly; never runs at game startup.
 ## Alpha-derived silhouettes are saved as editable TileSet polygons.
 func _initialize() -> void:
-    var texture: Texture2D = load("res://art/all_tiles.png")
+    var texture: Texture2D = load("res://art/all_tiles2.png")
     var image: Image = texture.get_image()
     var atlas := TileSetAtlasSource.new()
     atlas.texture = texture

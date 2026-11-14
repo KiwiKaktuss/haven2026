@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/terrain/terrain_object.gd" id="1_kyt6h"]
 [ext_resource type="Resource" path="res://resources/terrain/normal.tres" id="2_vxq7n"]
-[ext_resource type="Texture2D" path="res://art/all_tiles.png" id="3_k34o3"]
+[ext_resource type="Texture2D" path="res://art/all_tiles2.png" id="3_k34o3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cx3mu"]
 texture = ExtResource("3_k34o3")
