@@ -6,6 +6,9 @@ signal pause_requested
 var session: GameSession
 var _pending: Dictionary = {}
 var _generation: int = -1
+var _elixir_tween: Tween
+@onready var _elixir_amount: Label = $Bottom/Stack/Elixir/Amount
+@onready var _elixir_spent: Label = $Bottom/Stack/Elixir/Spent
 
 func _ready() -> void:
 	$PauseButton.pressed.connect(func() -> void: pause_requested.emit())
@@ -44,7 +47,29 @@ func _play_card(card: CardDefinition, slot: int, at: Vector2) -> void:
 	_pending[slot] = {"dealing": false}
 	view.set_deal_pending(true)
 	$Bottom/Stack/Elixir/AnimationPlayer.play(&"spend")
+	_animate_elixir_spend(card.cost)
 	refresh()
+
+func _reset_elixir_feedback() -> void:
+	if _elixir_tween != null:
+		_elixir_tween.kill()
+	_elixir_amount.scale = Vector2.ONE
+	_elixir_amount.self_modulate = Color.WHITE
+	_elixir_spent.position.y = -16.0
+	_elixir_spent.modulate.a = 0.0
+
+func _animate_elixir_spend(cost: int) -> void:
+	# Restart from a known pose so consecutive shots never compound the scale.
+	_reset_elixir_feedback()
+	_elixir_spent.text = "−%d" % cost
+	_elixir_spent.modulate.a = 1.0
+	_elixir_tween = create_tween().set_parallel(true)
+	_elixir_tween.tween_property(_elixir_amount, "scale", Vector2(1.22, 1.22), 0.09).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_elixir_tween.tween_property(_elixir_amount, "scale", Vector2.ONE, 0.32).set_delay(0.09).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_elixir_tween.tween_property(_elixir_amount, "self_modulate", Color(1.35, 1.2, 1.4), 0.07)
+	_elixir_tween.tween_property(_elixir_amount, "self_modulate", Color.WHITE, 0.34).set_delay(0.07)
+	_elixir_tween.tween_property(_elixir_spent, "position:y", -34.0, 0.6).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_elixir_tween.tween_property(_elixir_spent, "modulate:a", 0.0, 0.4).set_delay(0.2)
 
 func _process(_delta: float) -> void:
 	if session != null:
@@ -53,12 +78,14 @@ func _process(_delta: float) -> void:
 func refresh() -> void:
 	if _generation != session.deck.generation:
 		_generation = session.deck.generation
+		_reset_elixir_feedback()
 		_pending.clear()
 		for child: Node in $Flights.get_children():
 			child.queue_free()
 	$Top/TimerSlot/TimerLabel.text = "%d:%02d" % [floori(session.elapsed_seconds) / 60, floori(session.elapsed_seconds) % 60]
 	$Bottom/Stack/Elixir/ElixirBar.max_value = session.tuning.maximum_elixir
 	$Bottom/Stack/Elixir/ElixirBar.value = session.elixir
+	_elixir_amount.text = str(floori(session.elixir))
 	for slot: int in range(session.deck.hand.size()):
 		var card: CardDefinition = session.deck.hand[slot]
 		var view: CardView = get_node("Bottom/Stack/Hand/Card%s" % slot)

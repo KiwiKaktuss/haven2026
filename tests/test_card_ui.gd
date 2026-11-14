@@ -116,7 +116,15 @@ func run() -> void:
     for node: Node in session.hud.find_children("*", "Label", true, false):
         if node.is_visible_in_tree():
             visible_labels.append(node)
-    check(visible_labels.size() == 1 and visible_labels[0].name == &"TimerLabel", "Timer is the only visible gameplay text")
+    check(visible_labels.size() == 3, "Gameplay text is limited to the timer and elixir feedback labels")
+    var amount: Label = session.hud.get_node("Bottom/Stack/Elixir/Amount")
+    check(amount.text == "10", "Elixir count shows the full starting resource")
+    session.elixir = 3.9
+    session.hud.refresh()
+    check(amount.text == "3", "Elixir count only includes whole spendable units")
+    check(amount.get_global_rect().end.x < session.hud.get_node("Bottom/Stack/Elixir/Frame").get_global_rect().position.x, "Elixir number sits to the left of the meter")
+    session.elixir = 10
+    session.hud.refresh()
     check(not session.course.get_node("Hints").visible, "World instruction text is hidden")
     var frame_style: StyleBoxTexture = load("res://resources/ui/frame.tres")
     var frame_texture: CanvasTexture = frame_style.texture as CanvasTexture
@@ -134,6 +142,20 @@ func run() -> void:
         await process_frame
     check(artwork.scale.is_equal_approx(Vector2.ONE) and is_zero_approx(artwork.position.y), "Previous card returns to normal size at the same height")
     check(not hand.get_node("ReadyMark").visible and not hand.get_node("SelectionShadow").visible, "Previous card clears its selection decoration")
+    var cost: int = session.deck.selected_card().cost
+    check(session.try_shot(Vector2(90, -60), Vector2(400, 300)), "A real shot starts elixir feedback")
+    check(amount.text == str(10 - cost), "Spending updates the count immediately")
+    var spent: Label = session.hud.get_node("Bottom/Stack/Elixir/Spent")
+    check(spent.text == "−%d" % cost and spent.modulate.a == 1.0, "Spending displays the exact deducted cost")
+    await create_timer(0.1).timeout
+    check(amount.scale.x > 1.0 and spent.position.y < -16.0, "Spending pops the count and floats the cost upward")
+    await create_timer(0.65).timeout
+    check(amount.scale.is_equal_approx(Vector2.ONE) and is_zero_approx(spent.modulate.a), "Elixir feedback settles cleanly")
+    session.deck.select_slot(2)
+    check(session.try_shot(Vector2(90, -60), Vector2(400, 300)), "A second shot can replay the feedback")
+    session.start_attempt()
+    session.hud.refresh()
+    check(amount.text == "10" and amount.scale == Vector2.ONE and is_zero_approx(spent.modulate.a), "Restart clears spending feedback and restores the count")
     session.free()
     print("Card UI: %s checks, %s failure(s)" % [checks, failures])
     quit(0 if failures == 0 else 1)
