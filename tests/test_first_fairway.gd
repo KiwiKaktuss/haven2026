@@ -27,7 +27,7 @@ func run() -> void:
         check(node is TileMapLayer and not node.collision_enabled, "Scenery is editable without invisible obstacles")
     var sea: TileMapLayer = course.get_node("Decorations/Sea")
     check(sea.tile_set.get_source(0).get_tile_animation_frames_count(Vector2i.ZERO) == 4, "Sea foam is animated")
-    check(course.void_boundary.position.y > 176 and course.void_boundary.position.y < 240, "Rescue space above defeat and floor below defeat")
+    check(course.void_boundary.position.y == 211 and course.void_detects_ball_edge, "Lower sea kills on first ball-edge contact")
     for title: String in ["WestWall","EastWall","Ceiling","Seabed"]:
         check(course.has_node("Terrain/"+title), "Course has enclosing walls")
     # Paint outside the original used rectangle, rebuild and reload a PackedScene.

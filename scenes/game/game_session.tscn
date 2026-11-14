@@ -45,8 +45,6 @@ camera = NodePath("Camera2D")
 ball = NodePath("../Ball")
 session = NodePath("..")
 follow_offset = Vector2(100, 70)
-viewport_inset_top_left = Vector2(24, 56)
-viewport_inset_bottom_right = Vector2(24, 208)
 
 [node name="Camera2D" type="Camera2D" parent="CameraRig" unique_id=479079140]
 zoom = Vector2(3, 3)

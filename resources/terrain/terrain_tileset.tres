@@ -1,6 +1,7 @@
 [gd_resource type="TileSet" format=3 uid="uid://dwxkqwc1cnw23"]
 
 [ext_resource type="Texture2D" uid="uid://cuj6rvpay46hr" path="res://art/all_tiles2.png" id="1_mgfdf"]
+[ext_resource type="Texture2D" uid="uid://b01nh7i55h0a2" path="res://art/full.png" id="2_3smkv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3smkv"]
 texture = ExtResource("1_mgfdf")
@@ -590,6 +591,22 @@ texture_region_size = Vector2i(8, 8)
 11:19/0 = 0
 11:19/0/custom_data_0 = "bouncy"
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tcbf8"]
+texture = ExtResource("2_3smkv")
+texture_region_size = Vector2i(8, 8)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+0:0/0/custom_data_0 = "normal"
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+1:0/0/custom_data_0 = "sticky"
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+0:1/0/custom_data_0 = "ice"
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
+1:1/0/custom_data_0 = "bouncy"
+
 [resource]
 tile_size = Vector2i(8, 8)
 physics_layer_0/collision_layer = 1
@@ -597,3 +614,4 @@ physics_layer_0/collision_mask = 0
 custom_data_layer_0/name = "surface"
 custom_data_layer_0/type = 4
 sources/0 = SubResource("TileSetAtlasSource_3smkv")
+sources/1 = SubResource("TileSetAtlasSource_tcbf8")

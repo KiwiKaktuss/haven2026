@@ -21,13 +21,13 @@ func run() -> void:
             check(body.scale == Vector2.ONE,'No stretched platform sprites')
             var layer: TileMapLayer = body.get_node('Tiles')
             check(not layer.collision_enabled,'One body owns the whole island')
-            var atlas: TileSetAtlasSource = layer.tile_set.get_source(0)
-            var image := atlas.texture.get_image()
             var size := layer.tile_set.tile_size
             var polygons: Array[PackedVector2Array] = []
             for child: Node in body.get_children():
                 if child is CollisionPolygon2D: polygons.append(child.polygon)
             for cell: Vector2i in layer.get_used_cells():
+                var atlas: TileSetAtlasSource = layer.tile_set.get_source(layer.get_cell_source_id(cell))
+                var image := atlas.texture.get_image()
                 var uv := layer.get_cell_atlas_coords(cell)
                 for y in size.y:
                     for x in size.x:
@@ -64,10 +64,9 @@ func run() -> void:
         var camera := session.camera_controller
         camera.set_zoom(camera.overview_zoom())
         camera.recenter(true)
-        var usable := camera.get_viewport_rect().size-camera.viewport_inset_top_left-camera.viewport_inset_bottom_right
-        var offset := (camera.viewport_inset_top_left-camera.viewport_inset_bottom_right)*0.5/camera.camera.zoom
-        var visible := Rect2(camera.camera.position+offset-usable*0.5/camera.camera.zoom,usable/camera.camera.zoom)
-        check(visible.grow(0.01).encloses(session.course.camera_bounds),'Overview fits above the HUD at '+str(viewport_size))
+        var extent := camera.get_viewport_rect().size/camera.camera.zoom
+        var visible := Rect2(camera.camera.position-extent*0.5,extent)
+        check(session.course.camera_bounds.grow(0.01).encloses(visible),'Camera viewport stays within the course at '+str(viewport_size))
     session.free()
     print('Course art: ',checks,' checks, ',failures,' failure(s)')
     quit(0 if failures == 0 else 1)

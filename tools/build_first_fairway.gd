@@ -41,7 +41,8 @@ func platform(title: String, at: Vector2, w: int, h: int) -> PhysicsBody2D:
     map.set_script(EditableTiles)
     for y: int in h:
         for x: int in w:
-            map.set_cell(Vector2i(x, y), 0, tile_for(x, y, w, h))
+            var uv := tile_for(x, y, w, h)
+            map.set_cell(Vector2i(x, y), 1 if uv == Vector2i(4,1) else 0, Vector2i.ZERO if uv == Vector2i(4,1) else uv)
     map.rebuild_solid()
     return body
 
@@ -72,48 +73,31 @@ func build_coast_tiles() -> void:
 func decorations() -> void:
     var group := scene.get_node("Decorations")
     var sea := layer(group, "Sea", coast_tiles, -2)
-    # Water cells are fully editable; animated crest tiles carry four foam frames.
+    sea.position.y = 32
+    # The first foam pixels begin at y=211; VoidBoundary matches that surface.
     for y: int in range(11, 32):
         for x: int in range(-40, 48):
             var band: int = 0 if y == 11 else mini(5, 2 + (y - 12) / 2)
             sea.set_cell(Vector2i(x, y), 0, Vector2i(0, posmod(x / 3, 2)) if y == 11 else Vector2i(posmod(x * 7 + y * 3, 8), band))
     var grass := layer(group, "GrassFlowersAndSigns", coast_tiles, 2)
-    # Half-cell offset aligns the 16px scenery grid to the terrain's 8px grid.
-    grass.position = Vector2(0, 0)
-    var tufts: Array[Vector2i] = [Vector2i(-6,7),Vector2i(-3,7),Vector2i(5,6),Vector2i(9,6),Vector2i(16,3),Vector2i(20,3),Vector2i(10,-1),Vector2i(14,-1),Vector2i(2,-4),Vector2i(6,-4),Vector2i(-8,3),Vector2i(-4,3),Vector2i(-6,-1),Vector2i(5,8),Vector2i(10,8),Vector2i(16,7),Vector2i(21,7)]
-    for i: int in tufts.size():
-        grass.set_cell(tufts[i], 0, Vector2i(9 if i % 4 == 1 else 8, 0))
+    for cell: Vector2i in [Vector2i(-6,7),Vector2i(9,6),Vector2i(20,3),Vector2i(2,-4),Vector2i(-8,3)]:
+        grass.set_cell(cell,0,Vector2i(8,0))
+    grass.set_cell(Vector2i(6,-4),0,Vector2i(9,0))
+    grass.set_cell(Vector2i(-5,7),0,Vector2i(14,0))
+    grass.set_cell(Vector2i(17,3),0,Vector2i(15,0))
     var half_grass := layer(group, "GrassOnHalfTileLedges", coast_tiles, 2)
     half_grass.position.y = 8
-    for cell: Vector2i in [Vector2i(10,-1),Vector2i(14,-1),Vector2i(5,8),Vector2i(10,8)]:
-        grass.erase_cell(cell)
-        half_grass.set_cell(cell,0,Vector2i(8,0))
-    for cell: Vector2i in [Vector2i(-2,7),Vector2i(11,6),Vector2i(18,3),Vector2i(12,-1),Vector2i(3,-4),Vector2i(-7,-1)]:
-        grass.set_cell(cell, 0, Vector2i(10, 0))
-    grass.set_cell(Vector2i(-5, 7), 0, Vector2i(14, 0))
-    grass.set_cell(Vector2i(17, 3), 0, Vector2i(15, 0))
-    grass.set_cell(Vector2i(4, -4), 0, Vector2i(14, 0))
-    grass.erase_cell(Vector2i(12,-1))
-    half_grass.set_cell(Vector2i(12,-1),0,Vector2i(10,0))
+    half_grass.set_cell(Vector2i(14,-1),0,Vector2i(8,0))
     var vines := layer(group, "HangingVines", coast_tiles, 1)
-    for cell: Vector2i in [Vector2i(-4,10),Vector2i(10,2),Vector2i(13,2),Vector2i(-7,6)]:
-        vines.set_cell(cell, 0, Vector2i(12, 0))
+    vines.set_cell(Vector2i(10,2),0,Vector2i(12,0))
     var half_vines := layer(group, "VinesOnHalfTileLedges", coast_tiles, 1)
     half_vines.position.y = 8
-    for cell: Vector2i in [Vector2i(7,8),Vector2i(12,8),Vector2i(18,6),Vector2i(3,-2)]:
-        half_vines.set_cell(cell,0,Vector2i(12,0))
+    half_vines.set_cell(Vector2i(18,6),0,Vector2i(12,0))
     var shore := layer(group, "ShoreReedsAndShells", coast_tiles, 1)
-    for x: int in [-9,-7,22]: shore.set_cell(Vector2i(x,10),0,Vector2i(11,0))
-    for x: int in [-8,22]: shore.set_cell(Vector2i(x,10),0,Vector2i(13,0))
-    half_grass.set_cell(Vector2i(8,8),0,Vector2i(13,0))
-    grass.set_cell(Vector2i(19,7),0,Vector2i(13,0))
-    for x: int in [-9,-4,3,11,18,23]: shore.set_cell(Vector2i(x,14),0,Vector2i(12,2))
+    shore.set_cell(Vector2i(-9,10),0,Vector2i(11,0))
+    shore.set_cell(Vector2i(22,10),0,Vector2i(13,0))
     var distant := layer(group, "DistantSeaStacks", coast_tiles, -4)
-    for stack: Array in [[-9,6,3,8],[0,8,3,9],[7,5,2,8],[14,7,4,9],[21,4,3,8]]:
-        for y: int in range(stack[1],11):
-            for x: int in range(stack[0],stack[0]+stack[2]):
-                distant.set_cell(Vector2i(x,y),0,Vector2i(stack[3],2 if y == stack[1] else 3))
-    for cell: Vector2i in [Vector2i(-7,-6),Vector2i(-6,-6),Vector2i(0,-7),Vector2i(1,-7),Vector2i(19,-5),Vector2i(20,-5)]:
+    for cell: Vector2i in [Vector2i(-7,-6),Vector2i(19,-5)]:
         distant.set_cell(cell,0,Vector2i(11,2))
 
 func route(title: String, stops: Array[String]) -> void:
@@ -129,10 +113,12 @@ func route(title: String, stops: Array[String]) -> void:
         own(path, marker)
 
 func _initialize() -> void:
+    preload("res://tools/build_terrain_atlas.gd").add_full_tiles(terrain_tiles)
+    assert(ResourceSaver.save(terrain_tiles, "res://resources/terrain/terrain_tileset.tres") == OK)
     build_coast_tiles()
     scene = GolfCourse.new()
     scene.name = "Course"
-    scene.camera_bounds = Rect2(-192, -168, 608, 416)
+    scene.camera_bounds = Rect2(-184, -160, 592, 416)
     for title: String in ["Terrain", "MovingPlatforms", "Decorations", "Hints", "Routes"]:
         var group := Node2D.new()
         group.name = title
@@ -168,7 +154,8 @@ func _initialize() -> void:
     own(scene, scene.goal_cup)
     scene.void_boundary = Marker2D.new()
     scene.void_boundary.name = "VoidBoundary"
-    scene.void_boundary.position.y = 208
+    scene.void_boundary.position.y = 211
+    scene.void_detects_ball_edge = true
     own(scene, scene.void_boundary)
     scene.get_node("Hints").hide()
     route("Safe", ["StartIsland","EastBank","EastTurn","ReturnShelf","UpperBridge","GoalCup"])

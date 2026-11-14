@@ -11,9 +11,6 @@ extends Node2D
 @export var wheel_factor: float = 1.15
 ## Screen pixels: a fixed offset remains usable at close and overview zoom.
 @export var follow_offset: Vector2 = Vector2.ZERO
-## Screen-space room reserved for the HUD; also used when fitting an overview.
-@export var viewport_inset_top_left: Vector2 = Vector2.ZERO
-@export var viewport_inset_bottom_right: Vector2 = Vector2.ZERO
 @export var enabled: bool = true
 var following: bool = true
 @export_group("Feedback")
@@ -38,9 +35,9 @@ func configure(course: GolfCourse) -> void:
 	recenter(true)
 
 func overview_zoom() -> float:
-	var viewport_size: Vector2 = (get_viewport_rect().size - viewport_inset_top_left - viewport_inset_bottom_right).max(Vector2.ONE)
-	var fit: float = minf(viewport_size.x / maxf(bounds.size.x, 1), viewport_size.y / maxf(bounds.size.y, 1))
-	return minf(minimum_zoom, fit)
+	var viewport_size: Vector2 = get_viewport_rect().size.max(Vector2.ONE)
+	var cover: float = maxf(viewport_size.x / maxf(bounds.size.x, 1), viewport_size.y / maxf(bounds.size.y, 1))
+	return maxf(minimum_zoom, cover)
 
 func _viewport_changed() -> void:
 	if not is_inside_tree():
@@ -48,27 +45,26 @@ func _viewport_changed() -> void:
 	set_zoom(camera.zoom.x)
 
 func set_zoom(amount: float) -> void:
-	camera.zoom = Vector2.ONE * clampf(amount, overview_zoom(), maximum_zoom)
-	camera.global_position = clamped(camera.global_position)
+	var closest_overview := overview_zoom()
+	camera.zoom = Vector2.ONE * clampf(amount, closest_overview, maxf(maximum_zoom, closest_overview))
+	camera.offset = _kick / camera.zoom
+	camera.global_position = clamped(camera.global_position + camera.offset) - camera.offset
 
 func clamped(at: Vector2) -> Vector2:
-	var usable: Vector2 = (get_viewport_rect().size - viewport_inset_top_left - viewport_inset_bottom_right).max(Vector2.ONE)
-	var offset: Vector2 = (viewport_inset_top_left - viewport_inset_bottom_right) * 0.5 / camera.zoom
-	var half: Vector2 = usable * 0.5 / camera.zoom
-	var visible_center: Vector2 = at + offset
+	var half: Vector2 = get_viewport_rect().size * 0.5 / camera.zoom
 	var center: Vector2 = bounds.get_center()
-	return Vector2(center.x if half.x * 2 >= bounds.size.x else clampf(visible_center.x, bounds.position.x + half.x, bounds.end.x - half.x), center.y if half.y * 2 >= bounds.size.y else clampf(visible_center.y, bounds.position.y + half.y, bounds.end.y - half.y)) - offset
+	return Vector2(center.x if half.x * 2 >= bounds.size.x else clampf(at.x, bounds.position.x + half.x, bounds.end.x - half.x), center.y if half.y * 2 >= bounds.size.y else clampf(at.y, bounds.position.y + half.y, bounds.end.y - half.y))
 
 func recenter(snap: bool = false) -> void:
 	following = true
 	if snap:
-		camera.global_position = clamped(ball.global_position + follow_offset / camera.zoom)
+		camera.global_position = clamped(ball.global_position + follow_offset / camera.zoom + camera.offset) - camera.offset
 
 func pan(direction: Vector2, delta: float) -> void:
 	if direction.is_zero_approx():
 		return
 	following = false
-	camera.global_position = clamped(camera.global_position + direction.limit_length() * pan_speed * delta / camera.zoom.x)
+	camera.global_position = clamped(camera.global_position + direction.limit_length() * pan_speed * delta / camera.zoom.x + camera.offset) - camera.offset
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not enabled or session.state not in [GameSession.State.READY, GameSession.State.PLAYING]:
@@ -91,6 +87,8 @@ func _process(delta: float) -> void:
 		camera.global_position = camera.global_position.lerp(clamped(ball.global_position + follow_offset / camera.zoom), 1.0 - exp(-smoothing * delta))
 	_kick = _kick.lerp(Vector2.ZERO, 1.0 - exp(-kick_decay * delta))
 	camera.offset = _kick / camera.zoom
+	# Clamp after easing and shake too, including a resize or a changed zoom.
+	camera.global_position = clamped(camera.global_position + camera.offset) - camera.offset
 
 func _shot_kick(_card: CardDefinition) -> void:
 	_kick = -ball.world_velocity().normalized() * maximum_kick_pixels

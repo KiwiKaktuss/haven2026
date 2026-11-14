@@ -8,3 +8,5 @@ extends Node2D
 @export var start_marker: Marker2D
 @export var goal_cup: GoalCup
 @export var void_boundary: Marker2D
+## Sea courses lose on the first contact with the ball's lower edge.
+@export var void_detects_ball_edge: bool = false

@@ -85,7 +85,8 @@ func finish_attempt(won: bool) -> void:
 func check_course_end(delta: float) -> void:
     if course == null or inspection_mode or state not in [State.READY, State.PLAYING]:
         return
-    if course.void_boundary != null and ball.global_position.y >= course.void_boundary.global_position.y:
+    var lowest_point: float = ball.global_position.y + (tuning.ball_radius if course.void_detects_ball_edge else 0.0)
+    if course.void_boundary != null and lowest_point >= course.void_boundary.global_position.y:
         finish_attempt(false)
     elif course.goal_cup != null and course.goal_cup.advance_capture(ball, tuning, delta):
         finish_attempt(true)

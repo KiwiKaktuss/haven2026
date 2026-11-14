@@ -130,41 +130,41 @@ layout_mode = 0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -208.0
+offset_top = -159.0
 offset_bottom = -12.0
 mouse_filter = 2
 
 [node name="Stack" type="Control" parent="Bottom" unique_id=1551201114]
-custom_minimum_size = Vector2(552, 196)
+custom_minimum_size = Vector2(414, 147)
 layout_mode = 2
 mouse_filter = 2
 
 [node name="Dock" type="TextureRect" parent="Bottom/Stack" unique_id=471018748]
 texture_filter = 1
 layout_mode = 0
-offset_top = 32.0
-offset_right = 552.0
-offset_bottom = 196.0
+offset_top = 24.0
+offset_right = 414.0
+offset_bottom = 147.0
 mouse_filter = 2
 texture = ExtResource("dock")
 expand_mode = 1
 
 [node name="Elixir" type="Control" parent="Bottom/Stack" unique_id=122500055]
 anchors_preset = 0
-offset_left = 64.0
-offset_top = 2.0
-offset_right = 488.0
-offset_bottom = 18.0
+offset_left = 48.0
+offset_top = 1.5
+offset_right = 366.0
+offset_bottom = 13.5
 mouse_filter = 2
 
 [node name="ElixirBar" type="ProgressBar" parent="Bottom/Stack/Elixir" unique_id=118748553]
 texture_filter = 1
 layout_mode = 0
 anchor_right = 1.0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = -4.0
-offset_bottom = 12.0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = 9.0
 mouse_filter = 2
 theme_override_styles/background = SubResource("elixir_empty")
 theme_override_styles/fill = SubResource("elixir_fill")
@@ -175,7 +175,7 @@ show_percentage = false
 texture_filter = 1
 layout_mode = 0
 anchor_right = 1.0
-offset_bottom = 16.0
+offset_bottom = 12.0
 mouse_filter = 2
 texture = ExtResource("line")
 expand_mode = 1
@@ -185,12 +185,12 @@ libraries/ = SubResource("elixir_fx")
 
 [node name="Hand" type="HBoxContainer" parent="Bottom/Stack" unique_id=1964474154]
 layout_mode = 0
-offset_left = 196.0
-offset_top = 52.0
-offset_right = 500.0
-offset_bottom = 176.0
+offset_left = 147.0
+offset_top = 39.0
+offset_right = 375.0
+offset_bottom = 132.0
 mouse_filter = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 15
 alignment = 1
 
 [node name="Card0" parent="Bottom/Stack/Hand" unique_id=181118433 instance=ExtResource("card")]
@@ -204,20 +204,20 @@ layout_mode = 2
 
 [node name="DeckPile" type="Control" parent="Bottom/Stack" unique_id=1174526992]
 anchors_preset = 0
-offset_left = 64.0
-offset_top = 76.0
-offset_right = 128.0
-offset_bottom = 164.0
-pivot_offset = Vector2(32, 44)
+offset_left = 48.0
+offset_top = 57.0
+offset_right = 96.0
+offset_bottom = 123.0
+pivot_offset = Vector2(24, 33)
 mouse_filter = 2
 
 [node name="Back0" type="TextureRect" parent="Bottom/Stack/DeckPile" unique_id=565734381]
 texture_filter = 1
 layout_mode = 0
-offset_left = -12.0
-offset_top = -12.0
-offset_right = 52.0
-offset_bottom = 76.0
+offset_left = -9.0
+offset_top = -9.0
+offset_right = 39.0
+offset_bottom = 57.0
 mouse_filter = 2
 texture = ExtResource("back")
 expand_mode = 1
@@ -225,10 +225,10 @@ expand_mode = 1
 [node name="Back1" type="TextureRect" parent="Bottom/Stack/DeckPile" unique_id=780218118]
 texture_filter = 1
 layout_mode = 0
-offset_left = -8.0
-offset_top = -8.0
-offset_right = 56.0
-offset_bottom = 80.0
+offset_left = -6.0
+offset_top = -6.0
+offset_right = 42.0
+offset_bottom = 60.0
 mouse_filter = 2
 texture = ExtResource("back")
 expand_mode = 1
@@ -236,10 +236,10 @@ expand_mode = 1
 [node name="Back2" type="TextureRect" parent="Bottom/Stack/DeckPile" unique_id=1482171391]
 texture_filter = 1
 layout_mode = 0
-offset_left = -4.0
-offset_top = -4.0
-offset_right = 60.0
-offset_bottom = 84.0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 45.0
+offset_bottom = 63.0
 mouse_filter = 2
 texture = ExtResource("back")
 expand_mode = 1
@@ -247,8 +247,8 @@ expand_mode = 1
 [node name="Back3" type="TextureRect" parent="Bottom/Stack/DeckPile" unique_id=1231805489]
 texture_filter = 1
 layout_mode = 0
-offset_right = 64.0
-offset_bottom = 88.0
+offset_right = 48.0
+offset_bottom = 66.0
 mouse_filter = 2
 texture = ExtResource("back")
 expand_mode = 1

@@ -168,15 +168,15 @@ func run() -> void:
     await ticks()
     event_button(ui_point, false)
     check(session.shots == shots and not aim.aiming, "World drag released over UI cancels")
-    # Minimum zoom must include the whole bounds even for a tall course.
+    # Zoom-out must cover the viewport without revealing outside a tall course.
     var cam: CourseCamera = lab.camera_controller
     var old_bounds: Rect2 = cam.bounds
     cam.bounds = Rect2(0, 0, 800, 1600)
     cam.minimum_zoom = 1
     cam.set_zoom(0.01)
     var world_view: Vector2 = cam.get_viewport_rect().size / cam.camera.zoom
-    check(world_view.x + 0.01 >= cam.bounds.size.x and world_view.y + 0.01 >= cam.bounds.size.y, "Overview fits entire course")
-    check(cam.camera.global_position.distance_to(cam.bounds.get_center()) < 0.01, "Oversized viewport centers on bounds")
+    check(world_view.x <= cam.bounds.size.x + 0.01 and world_view.y <= cam.bounds.size.y + 0.01, "Zoom-out cannot reveal outside course")
+    check(cam.bounds.grow(0.01).encloses(Rect2(cam.camera.global_position+cam.camera.offset-world_view*0.5,world_view)), "Viewport stays inside bounds")
     cam.bounds = old_bounds
     cam.set_zoom(1.6)
     # Holding a gesture never pauses the live simulation or attempt clock.

@@ -33,9 +33,26 @@ func _initialize() -> void:
                 for point: int in range(polygon.size()):
                     polygon[point] -= Vector2(4, 4)
                 data.set_collision_polygon_points(0, index, polygon)
+    add_full_tiles(tiles)
     var result: Error = ResourceSaver.save(tiles, "res://resources/terrain/terrain_tileset.tres")
     if result != OK:
         push_error("Atlas save failed: %s" % result)
     else:
         print("Saved 240 editable tiles with material metadata and alpha silhouettes.")
     quit(result)
+
+static func add_full_tiles(tiles: TileSet) -> void:
+    if tiles.has_source(1):
+        return
+    var atlas := TileSetAtlasSource.new()
+    atlas.texture = load("res://art/full.png")
+    atlas.texture_region_size = Vector2i(8, 8)
+    tiles.add_source(atlas, 1)
+    var surfaces: Array[String] = ["normal", "sticky", "ice", "bouncy"]
+    for index: int in 4:
+        var cell := Vector2i(index % 2, index / 2)
+        atlas.create_tile(cell)
+        var data := atlas.get_tile_data(cell, 0)
+        data.set_custom_data("surface", surfaces[index])
+        data.set_collision_polygons_count(0, 1)
+        data.set_collision_polygon_points(0, 0, PackedVector2Array([Vector2(-4,-4),Vector2(4,-4),Vector2(4,4),Vector2(-4,4)]))
