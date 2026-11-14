@@ -29,6 +29,7 @@ enum GhostState { INACTIVE, ARMED, PASSING, SPENT }
 var ghost_state: GhostState = GhostState.INACTIVE
 var ghost_body: TerrainObject
 var ignored_object_id: StringName
+var ghost_expires_on_exit: bool = false
 
 func _clear_ghost() -> void:
     if is_instance_valid(ghost_body):
@@ -36,15 +37,23 @@ func _clear_ghost() -> void:
     ghost_body = null
     ignored_object_id = &""
     ghost_state = GhostState.INACTIVE
+    ghost_expires_on_exit = false
 
 func set_card_effect(card: CardDefinition, notify: bool = true) -> void:
-    _clear_ghost()
+    # A played replacement takes effect immediately, but restoring collision
+    # inside the object Ghost is traversing can trap the ball in its solid.
+    # Finish that passage independently of the newly selected physics effect.
+    var keep_passage: bool = ghost_state == GhostState.PASSING and is_instance_valid(ghost_body) and TerrainQuery.overlaps(collision_shape.shape, collision_shape.global_transform, ghost_body)
+    if keep_passage:
+        ghost_expires_on_exit = false
+    else:
+        _clear_ghost()
     active_effect = CardDefinition.Effect.CLASSIC if card == null else card.effect
     gravity_multiplier = 1.0 if card == null else card.gravity_multiplier
     bounce_retention = card.bounce_retention if card != null and active_effect in [CardDefinition.Effect.HEAVY, CardDefinition.Effect.BOUNCE] else -1.0
     knockback_multiplier = 1.0 if card == null else card.knockback_multiplier
     glue_enabled = active_effect == CardDefinition.Effect.GLUE
-    if active_effect == CardDefinition.Effect.GHOST:
+    if active_effect == CardDefinition.Effect.GHOST and not keep_passage:
         ghost_state = GhostState.ARMED
     if fire_trail != null:
         fire_trail.emitting = active_effect == CardDefinition.Effect.FIRE
@@ -77,6 +86,7 @@ func _ghost_before_move(motion: Vector2) -> void:
     ghost_body = body
     ignored_object_id = body.object_id
     ghost_state = GhostState.PASSING
+    ghost_expires_on_exit = true
     add_collision_exception_with(body)
 
 func _ghost_after_move() -> void:
@@ -85,10 +95,16 @@ func _ghost_after_move() -> void:
     if TerrainQuery.overlaps(collision_shape.shape, collision_shape.global_transform, ghost_body):
         return
     var passed_id: StringName = ignored_object_id
-    set_card_effect(null, false)
-    ghost_state = GhostState.SPENT
-    ignored_object_id = passed_id
-    effect_changed.emit(active_effect)
+    var expire: bool = ghost_expires_on_exit
+    _clear_ghost()
+    if expire:
+        set_card_effect(null, false)
+    # Another Ghost played during passage gets its own charge after the old
+    # object is clear. Other replacements retain their gravity/glue/etc.
+    ghost_state = GhostState.ARMED if active_effect == CardDefinition.Effect.GHOST else GhostState.SPENT
+    ignored_object_id = &'' if ghost_state == GhostState.ARMED else passed_id
+    if expire:
+        effect_changed.emit(active_effect)
 
 func _ready() -> void:
     safe_position = global_position
@@ -112,6 +128,7 @@ func launch(impulse: Vector2, clear_momentum: bool = false) -> void:
     velocity = momentum + impulse
 
 func reset_motion(at_position: Vector2) -> void:
+    _clear_ghost()
     set_card_effect(null)
     global_position = at_position
     velocity = Vector2.ZERO

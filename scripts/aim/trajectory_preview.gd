@@ -23,6 +23,7 @@ func predict(ball: GolfBall, card: CardDefinition, drag: Vector2, angular_offset
     var gravity_multiplier: float = card.gravity_multiplier
     var armed: bool = card.effect == CardDefinition.Effect.GHOST
     var passing: TerrainObject
+    var passage_expires_effect: bool = false
     var ignored_id: StringName
     var collided: TerrainObject
     var hit_step: int = -1
@@ -33,16 +34,24 @@ func predict(ball: GolfBall, card: CardDefinition, drag: Vector2, angular_offset
     probe.collision_mask = ball.collision_mask
     for body: PhysicsBody2D in probe.get_collision_exceptions():
         probe.remove_collision_exception_with(body)
+    probe.global_position = at
+    if ball.ghost_state == GolfBall.GhostState.PASSING and is_instance_valid(ball.ghost_body) and TerrainQuery.overlaps(probe_shape.shape, probe_shape.global_transform, ball.ghost_body):
+        passing = ball.ghost_body
+        ignored_id = passing.object_id
+        ghost_entry_step = 0
+        ghost_points.append(at)
+        probe.add_collision_exception_with(passing)
     var dt: float = 1.0 / Engine.physics_ticks_per_second
     for tick: int in range(ceili(horizon_seconds / dt)):
         speed = BallMotion.accelerate(speed, ball.tuning.gravity * gravity_multiplier, dt)
         var motion: Vector2 = speed * dt
         probe.global_position = at
         var hit: KinematicCollision2D = probe.move_and_collide(motion, true, ball.tuning.collision_margin)
-        if armed and hit != null and TerrainQuery.enters(motion, hit.get_normal()):
+        if armed and passing == null and hit != null and TerrainQuery.enters(motion, hit.get_normal()):
             passing = hit.get_collider() as TerrainObject
             if passing != null:
                 armed = false
+                passage_expires_effect = true
                 ghost_entry_step = tick
                 ignored_id = passing.object_id
                 probe.add_collision_exception_with(passing)
@@ -64,7 +73,8 @@ func predict(ball: GolfBall, card: CardDefinition, drag: Vector2, angular_offset
             if not TerrainQuery.overlaps(probe_shape.shape, probe_shape.global_transform, passing):
                 probe.remove_collision_exception_with(passing)
                 passing = null
-                gravity_multiplier = 1.0
+                if passage_expires_effect:
+                    gravity_multiplier = 1.0
     for body: PhysicsBody2D in probe.get_collision_exceptions():
         probe.remove_collision_exception_with(body)
     return {"points": points, "ghost_points": ghost_points, "ignored_id": ignored_id, "collider": collided, "hit_step": hit_step, "ghost_entry_step": ghost_entry_step}
