@@ -1,12 +1,13 @@
 [gd_scene format=3]
 [ext_resource type="Theme" path="res://resources/ui/default_theme.tres" id="theme"]
 [ext_resource type="Script" path="res://scripts/ui/result_screen.gd" id="script"]
+[ext_resource type="StyleBox" path="res://resources/ui/pixel/menu_panel.tres" id="menu_panel"]
 
 [sub_resource type="Animation" id="intro"]
 resource_name = "intro"
 length = 0.38
 tracks/0/type = "value"
-tracks/0/path = NodePath("Center/Content:modulate")
+tracks/0/path = NodePath("Center:modulate")
 tracks/0/keys = {"times": PackedFloat32Array(0, 0.38), "transitions": PackedFloat32Array(0.5, 1), "update": 0, "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]}
 tracks/1/type = "value"
 tracks/1/path = NodePath("Background:modulate")
@@ -31,7 +32,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 1, 1, 1)
+color = Color(0, 0, 0, 0)
 mouse_filter = 2
 
 [node name="Center" type="CenterContainer" parent="."]
@@ -41,6 +42,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MenuPanel" type="Panel" parent="Center"]
+custom_minimum_size = Vector2(412, 380)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("menu_panel")
 
 [node name="Content" type="VBoxContainer" parent="Center"]
 custom_minimum_size = Vector2(340, 0)
