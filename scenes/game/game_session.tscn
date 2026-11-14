@@ -1,0 +1,36 @@
+[gd_scene load_steps=10 format=3]
+[ext_resource type="Script" path="res://scripts/game/game_session.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/ball/ball.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/game/trajectory_preview.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="4"]
+[ext_resource type="Resource" path="res://resources/game/default_tuning.tres" id="5"]
+[ext_resource type="Resource" path="res://resources/levels/catalog.tres" id="6"]
+[ext_resource type="Script" path="res://scripts/cards/deck_model.gd" id="7"]
+[ext_resource type="Resource" path="res://resources/cards/catalog.tres" id="8"]
+[ext_resource type="Texture2D" path="res://art/all_tiles.png" id="9"]
+[node name="GameSession" type="Node2D" node_paths=PackedStringArray("course_host", "ball", "deck", "hud")]
+texture_filter = 1
+script = ExtResource("1")
+tuning = ExtResource("5")
+courses = ExtResource("6")
+course_host = NodePath("CourseHost")
+ball = NodePath("Ball")
+deck = NodePath("DeckModel")
+hud = NodePath("CanvasLayer/HUD")
+[node name="CourseHost" type="Node2D" parent="."]
+[node name="Ball" parent="." instance=ExtResource("2")]
+position = Vector2(-70, -40)
+[node name="AimController" type="Node2D" parent="."]
+[node name="TrajectoryPreview" parent="." instance=ExtResource("3")]
+[node name="CameraRig" type="Node2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="CameraRig"]
+zoom = Vector2(3, 3)
+[node name="DeckModel" type="Node" parent="."]
+script = ExtResource("7")
+catalog = ExtResource("8")
+[node name="ArtInspection" type="Node2D" parent="."]
+[node name="Atlas" type="Sprite2D" parent="ArtInspection"]
+position = Vector2(30, 20)
+texture = ExtResource("9")
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="HUD" parent="CanvasLayer" instance=ExtResource("4")]

@@ -8,3 +8,8 @@
 
 # macOS Finder metadata
 .DS_Store
+
+# Local verification captures, logs, and export output
+/screenshots/
+/build/
+/logs/

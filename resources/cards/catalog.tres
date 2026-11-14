@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CardCatalog" load_steps=13 format=3]
+[ext_resource type="Script" path="res://scripts/cards/card_catalog.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/cards/card_definition.gd" id="2"]
+[ext_resource type="Resource" path="res://resources/cards/classic.tres" id="c0"]
+[ext_resource type="Resource" path="res://resources/cards/sniper.tres" id="c1"]
+[ext_resource type="Resource" path="res://resources/cards/slow.tres" id="c2"]
+[ext_resource type="Resource" path="res://resources/cards/heavy.tres" id="c3"]
+[ext_resource type="Resource" path="res://resources/cards/bounce.tres" id="c4"]
+[ext_resource type="Resource" path="res://resources/cards/glue.tres" id="c5"]
+[ext_resource type="Resource" path="res://resources/cards/dash.tres" id="c6"]
+[ext_resource type="Resource" path="res://resources/cards/fire.tres" id="c7"]
+[ext_resource type="Resource" path="res://resources/cards/ghost.tres" id="c8"]
+[ext_resource type="Resource" path="res://resources/cards/rewind.tres" id="c9"]
+[resource]
+script = ExtResource("1")
+cards = Array[ExtResource("2")]([ExtResource("c0"), ExtResource("c1"), ExtResource("c2"), ExtResource("c3"), ExtResource("c4"), ExtResource("c5"), ExtResource("c6"), ExtResource("c7"), ExtResource("c8"), ExtResource("c9")])

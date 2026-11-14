@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3]
+[ext_resource type="Script" path="res://scripts/ball/ball.gd" id="1"]
+[ext_resource type="Texture2D" path="res://art/ball.png" id="2"]
+[ext_resource type="Resource" path="res://resources/game/default_tuning.tres" id="3"]
+[sub_resource type="CircleShape2D" id="Shape"]
+radius = 2.0
+[sub_resource type="AnimationLibrary" id="Effects"]
+[node name="Ball" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collision_shape", "effect_animation")]
+texture_filter = 1
+script = ExtResource("1")
+tuning = ExtResource("3")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+effect_animation = NodePath("EffectAnimation")
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("Shape")
+[node name="EffectVisuals" type="Node2D" parent="."]
+[node name="Aura" type="Sprite2D" parent="EffectVisuals"]
+visible = false
+[node name="FireTrail" type="GPUParticles2D" parent="EffectVisuals"]
+emitting = false
+amount = 12
+[node name="ImpactParticles" type="GPUParticles2D" parent="EffectVisuals"]
+emitting = false
+one_shot = true
+[node name="EffectAnimation" type="AnimationPlayer" parent="."]
+libraries = {&"": SubResource("Effects")}

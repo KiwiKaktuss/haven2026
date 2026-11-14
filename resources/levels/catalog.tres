@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CourseCatalog" load_steps=7 format=3]
+[ext_resource type="Script" path="res://scripts/levels/course_catalog.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/levels/course_definition.gd" id="2"]
+[ext_resource type="Resource" path="res://resources/levels/first_fairway.tres" id="c0"]
+[ext_resource type="Resource" path="res://resources/levels/cold_snap.tres" id="c1"]
+[ext_resource type="Resource" path="res://resources/levels/spring_works.tres" id="c2"]
+[ext_resource type="Resource" path="res://resources/levels/final_ascent.tres" id="c3"]
+[resource]
+script = ExtResource("1")
+courses = Array[ExtResource("2")]([ExtResource("c0"), ExtResource("c1"), ExtResource("c2"), ExtResource("c3")])

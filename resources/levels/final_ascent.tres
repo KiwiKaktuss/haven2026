@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CourseDefinition" load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/levels/course_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/levels/final_ascent.tscn" id="2"]
+[resource]
+script = ExtResource("1")
+id = &"final_ascent"
+title = "Final Ascent"
+scene = ExtResource("2")

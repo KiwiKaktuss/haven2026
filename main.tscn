@@ -1,3 +1,13 @@
-[gd_scene format=3 uid="uid://1xa8a3r8vswf"]
-
-[node name="Node2D" type="Node2D" unique_id=809615825]
+[gd_scene load_steps=4 format=3 uid="uid://1xa8a3r8vswf"]
+[ext_resource type="Script" path="res://scripts/game/main.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/ui/main_menu.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/game/game_session.tscn" id="3"]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("screen_host", "game_host")]
+texture_filter = 1
+script = ExtResource("1")
+menu_scene = ExtResource("2")
+game_scene = ExtResource("3")
+screen_host = NodePath("ScreenHost")
+game_host = NodePath("GameHost")
+[node name="ScreenHost" type="CanvasLayer" parent="."]
+[node name="GameHost" type="Node2D" parent="."]

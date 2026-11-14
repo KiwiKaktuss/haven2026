@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/levels/course.gd" id="1"]
+[node name="Course" type="Node2D" node_paths=PackedStringArray("start_marker")]
+script = ExtResource("1")
+start_marker = NodePath("StartMarker")
+[node name="Terrain" type="Node2D" parent="."]
+[node name="MovingPlatforms" type="Node2D" parent="."]
+[node name="Decorations" type="Node2D" parent="."]
+[node name="StartMarker" type="Marker2D" parent="."]
+position = Vector2(-70, -40)
+[node name="Hints" type="Node2D" parent="."]

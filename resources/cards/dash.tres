@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CardDefinition" load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/cards/card_definition.gd" id="1"]
+[sub_resource type="Curve" id="Spread"]
+max_value = 20.0
+_data = [Vector2(0, 0.2), 0.0, 0.0, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
+point_count = 2
+[resource]
+script = ExtResource("1")
+id = &"dash"
+display_name = "Dash Ball"
+description = "Immediate strong impulse with low spread."
+cost = 3
+power = 235.0
+spread_curve = SubResource("Spread")
+effect = 6
