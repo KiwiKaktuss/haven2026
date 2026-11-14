@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SurfaceDefinition" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/terrain/surface_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = &"launch_spring"
+material = 3
+friction = 1.0
+bounce = 0.8
+attaches_on_contact = false
+minimum_launch_speed = 208.0
