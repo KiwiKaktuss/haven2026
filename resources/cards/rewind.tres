@@ -19,7 +19,6 @@ id = &"rewind"
 display_name = "Reverse"
 description = "Return to your last safe spot, then launch a new shot."
 cost = 5
-power = 155.0
 spread_curve = SubResource("Spread")
 effect = 9
 artwork = SubResource("CardArt")

@@ -19,6 +19,7 @@ id = &"heavy"
 display_name = "Heavy"
 description = "Fall faster, bounce less, and resist knockback."
 cost = 2
+power = 240.0
 spread_curve = SubResource("Spread")
 effect = 3
 artwork = SubResource("CardArt")

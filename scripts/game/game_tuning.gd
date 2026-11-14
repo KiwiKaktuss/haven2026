@@ -17,8 +17,9 @@ extends Resource
 @export var drag_dead_zone: float = 8.0
 @export var maximum_drag: float = 160.0
 @export_group("Shot feel")
-## Shared by live shots and prediction. 25% more speed gives ~56% more range.
-@export_range(1.0, 2.0) var shot_power_multiplier: float = 1.25
+## Shared by live shots and prediction. At 1.6, ordinary shots clear ~320 px
+## at full strength and 45 degrees, while short drags still allow fine control.
+@export_range(1.0, 2.0) var shot_power_multiplier: float = 1.6
 @export_range(0.1, 2.0) var card_redraw_delay: float = 1.0
 @export_range(0.2, 1.0) var card_deal_seconds: float = 0.58
 @export_group("Elixir")

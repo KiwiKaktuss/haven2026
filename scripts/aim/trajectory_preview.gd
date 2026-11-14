@@ -8,7 +8,8 @@ extends Node2D
 @export var envelope: Polygon2D
 @export var origin_marker: Line2D
 @export var ghost_marker: Line2D
-@export_range(0.1, 5.0) var horizon_seconds: float = 2.5
+## Includes a full-strength vertical Fireball's ascent and return.
+@export_range(0.1, 5.0) var horizon_seconds: float = 4.0
 @export var line_screen_width: float = 2.0
 @export_range(0.05, 1.0) var unaffordable_opacity: float = 0.3
 var central: Dictionary = {}

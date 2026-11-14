@@ -78,7 +78,7 @@ func run() -> void:
                 check(index == card.effect, "Correct active glyph for " + str(card.id))
         check(visible_count == 1, "Exactly one active effect glyph for " + str(card.id))
         check(session.ball.fire_trail.emitting == (card.effect == CardDefinition.Effect.FIRE), "Fire trail follows actual active effect")
-        check(is_equal_approx(ShotCalculation.impulse(card, Vector2(0, 160), session.tuning).length(), card.power * 1.25), "Increased range shared by each card")
+        check(is_equal_approx(ShotCalculation.impulse(card, Vector2(0, 160), session.tuning).length(), card.power * session.tuning.shot_power_multiplier), "Increased range shared by each card")
     session.ball.set_card_effect(null)
     check(session.ball.sprite.modulate == Color.WHITE and feedback.get_node("Markers/Classic").visible, "Ghost/reset returns to solid Classic appearance")
     # A differently sized back reference keeps the authored screen-space footprint.
