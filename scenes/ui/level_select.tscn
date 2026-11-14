@@ -1,6 +1,23 @@
 [gd_scene format=3]
 [ext_resource type="Theme" path="res://resources/ui/default_theme.tres" id="theme"]
 [ext_resource type="Script" path="res://scripts/ui/level_select.gd" id="script"]
+[ext_resource type="Script" path="res://scripts/ui/menu_background.gd" id="background"]
+[ext_resource type="Texture2D" path="res://art/background2.png" id="sky"]
+
+[sub_resource type="StyleBoxFlat" id="selector_panel"]
+bg_color = Color(0.97, 0.97, 1, 0.97)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.78, 0.8, 0.94, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_left = 4
+corner_radius_bottom_right = 4
+shadow_color = Color(0.12, 0.16, 0.3, 0.16)
+shadow_size = 12
+shadow_offset = Vector2(0, 6)
 
 [node name="LevelSelect" type="Control"]
 texture_filter = 2
@@ -13,15 +30,17 @@ grow_vertical = 2
 theme = ExtResource("theme")
 script = ExtResource("script")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 1, 1, 1)
 mouse_filter = 2
+script = ExtResource("background")
+sky_only = true
+sky_texture = ExtResource("sky")
 
 [node name="Center" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -30,6 +49,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+
+[node name="MenuPanel" type="Panel" parent="Center"]
+custom_minimum_size = Vector2(584, 452)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("selector_panel")
 
 [node name="Content" type="VBoxContainer" parent="Center"]
 custom_minimum_size = Vector2(520, 0)
@@ -39,12 +65,14 @@ theme_override_constants/separation = 14
 text = "Choose a course"
 theme_override_font_sizes/font_size = 32
 mouse_filter = 2
+horizontal_alignment = 1
 
 
 [node name="Subtitle" type="Label" parent="Center/Content"]
 text = "Four courses. Your own way through."
 theme_override_font_sizes/font_size = 16
 mouse_filter = 2
+horizontal_alignment = 1
 
 
 [node name="Course0" type="Button" parent="Center/Content"]

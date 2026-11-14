@@ -84,10 +84,12 @@ func run() -> void:
     click("Margin/Content/Footer/Back")
     await finish_menu_travel()
     click("Center/Content/Play")
+    await finish_menu_travel()
     check(screen().get_node("Center/Content/Course3").visible, "All four courses immediately available")
     click("Center/Content/Back")
-    await ticks()
+    await finish_menu_travel()
     click("Center/Content/Play")
+    await finish_menu_travel()
     click("Center/Content/Course0")
     await ticks(4)
     var session: GameSession = main.session
@@ -180,12 +182,14 @@ func run() -> void:
     check(main.game_host.get_child_count() == 0 and screen().has_node("Center/Content/Deck"), "Pause to main menu cleans whole attempt")
     for index: int in range(4):
         main._show_levels()
+        await finish_menu_travel()
         click("Center/Content/Course%s" % index)
         check(main.course_index == index and main.session.course.goal_cup != null, "Selectable course has lifecycle targets")
         main.session.finish_attempt(true)
         if index == 3:
             check(screen().get_node("Center/Content/Next").text == "Choose a course", "Final result offers course selection")
             click("Center/Content/Next")
+            await finish_menu_travel()
             check(screen().has_node("Center/Content/Course0"), "Final next returns to course selection")
         else:
             click("Center/Content/Menu")

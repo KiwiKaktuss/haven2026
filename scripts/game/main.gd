@@ -14,17 +14,28 @@ extends Node2D
 var save: SaveStore = SaveStore.new()
 var session: GameSession
 var course_index: int = 0
-const MENU_TRAVEL_SECONDS: float = 1.65
+const MENU_TRAVEL_SECONDS: float = 1.15
 var _menu_screen: Control
 var _deck_screen: Control
+var _levels_screen: Control
 var _journey_tween: Tween
 var _journey_progress: float = 0.0
 var _journey_moving: bool = false
+var _background_scroll_time: float = 0.0
 
 func _ready() -> void:
     save.read_save(cards, courses)
     get_viewport().size_changed.connect(_layout_menu_journey)
     _show_menu()
+
+func _process(delta: float) -> void:
+    _background_scroll_time += delta
+    _synchronize_menu_backgrounds()
+
+func _synchronize_menu_backgrounds() -> void:
+    for room: Control in [_menu_screen, _levels_screen]:
+        if is_instance_valid(room):
+            room.get_node("Background").synchronize_scroll(_background_scroll_time)
 
 func _clear_screens() -> void:
     if _journey_tween != null:
@@ -34,6 +45,7 @@ func _clear_screens() -> void:
     _journey_progress = 0.0
     _menu_screen = null
     _deck_screen = null
+    _levels_screen = null
     for screen: Node in screen_host.get_children():
         screen_host.remove_child(screen)
         screen.queue_free()
@@ -55,8 +67,8 @@ func _screen(packed: PackedScene) -> Control:
 func _show_menu() -> void:
     if _journey_moving:
         return
-    if is_instance_valid(_menu_screen) and is_instance_valid(_deck_screen):
-        if _journey_progress > 0.0:
+    if is_instance_valid(_menu_screen):
+        if not is_zero_approx(_journey_progress):
             _travel_to_menu_depth(0.0)
         return
     _clear_games()
@@ -72,11 +84,19 @@ func _show_menu() -> void:
     _layout_menu_journey()
 
 func _show_levels() -> void:
+    if _journey_moving:
+        return
     _clear_games()
-    var screen: Control = _screen(level_select_scene)
-    screen.course_requested.connect(_start_course)
-    screen.back_requested.connect(_show_menu)
-    screen.show_records(save.records)
+    if not is_instance_valid(_menu_screen):
+        _show_menu()
+    if not is_instance_valid(_levels_screen):
+        _levels_screen = level_select_scene.instantiate() as Control
+        _levels_screen.clip_contents = true
+        screen_host.add_child(_levels_screen)
+        _levels_screen.course_requested.connect(_start_course)
+        _levels_screen.back_requested.connect(_show_menu)
+    _levels_screen.show_records(save.records)
+    _travel_to_menu_depth(-1.0)
 
 func _show_deck() -> void:
     if _journey_moving:
@@ -103,32 +123,41 @@ func _leave_deck(ids: Array[StringName]) -> void:
     _show_menu()
 
 func _travel_to_menu_depth(depth: float) -> void:
+    if is_equal_approx(depth, _journey_progress):
+        return
     _journey_moving = true
-    _menu_screen.show()
-    _deck_screen.show()
-    # Disabled processing also keeps cards, tooltips, and keyboard focus from
-    # reacting while the camera is travelling between the two rooms.
-    _menu_screen.process_mode = Node.PROCESS_MODE_DISABLED
-    _deck_screen.process_mode = Node.PROCESS_MODE_DISABLED
-    for card: Node in _deck_screen.find_children("*", "Button", true, false):
-        if card is CardView:
-            card._hide_information()
+    # Room coordinates: selector above the surface, deck editor below it.
+    var rooms: Array[Control] = [_levels_screen, _menu_screen, _deck_screen]
+    for room: Control in rooms:
+        if is_instance_valid(room):
+            room.show()
+            room.process_mode = Node.PROCESS_MODE_DISABLED
+    if is_instance_valid(_deck_screen):
+        for card: Node in _deck_screen.find_children("*", "Button", true, false):
+            if card is CardView:
+                card._hide_information()
     var focused: Control = get_viewport().gui_get_focus_owner()
     if focused != null:
         focused.release_focus()
-    var destination: Control = _deck_screen if depth == 1.0 else _menu_screen
+    var destination: Control = _levels_screen if depth == -1.0 else (_deck_screen if depth == 1.0 else _menu_screen)
+    var focus_path: String = "Center/Content/Play" if _journey_progress < 0.0 else "Center/Content/Deck"
+    if depth == -1.0:
+        focus_path = "Center/Content/Course0"
+    elif depth == 1.0:
+        focus_path = "Margin/Content/Footer/Back"
     screen_host.move_child(destination, 0)
     _layout_menu_journey()
     _journey_tween = create_tween()
     _journey_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-    _journey_tween.tween_method(_set_menu_depth, _journey_progress, depth, MENU_TRAVEL_SECONDS)
+    _journey_tween.tween_method(_set_menu_depth, _journey_progress, depth, MENU_TRAVEL_SECONDS * absf(depth - _journey_progress))
     _journey_tween.finished.connect(func() -> void:
         _journey_moving = false
         _journey_tween = null
-        _menu_screen.visible = depth == 0.0
-        _deck_screen.visible = depth == 1.0
+        for room: Control in rooms:
+            if is_instance_valid(room):
+                room.visible = room == destination
         destination.process_mode = Node.PROCESS_MODE_INHERIT
-        var button: Button = destination.get_node("Margin/Content/Footer/Back" if depth == 1.0 else "Center/Content/Deck")
+        var button: Button = destination.get_node(focus_path)
         button.grab_focus())
 
 func _set_menu_depth(depth: float) -> void:
@@ -137,19 +166,19 @@ func _set_menu_depth(depth: float) -> void:
 
 func _layout_menu_journey() -> void:
     var viewport_size: Vector2 = get_viewport_rect().size
-    var height: float = viewport_size.y
-    if is_instance_valid(_menu_screen):
-        # The journey owns room geometry. Fixed anchors prevent viewport resize
-        # notifications from also adding their delta to a moving room's size.
-        _menu_screen.set_anchors_preset(Control.PRESET_TOP_LEFT)
-        _menu_screen.size = viewport_size
-        _menu_screen.position.y = -_journey_progress * height
-        _menu_screen.get_node("Center").modulate.a = 1.0 - smoothstep(0.0, 0.65, _journey_progress)
-    if is_instance_valid(_deck_screen):
-        _deck_screen.set_anchors_preset(Control.PRESET_TOP_LEFT)
-        _deck_screen.size = viewport_size
-        _deck_screen.position.y = (1.0 - _journey_progress) * height
-        _deck_screen.get_node("Margin").modulate.a = smoothstep(0.25, 1.0, _journey_progress)
+    var rooms: Array[Control] = [_levels_screen, _menu_screen, _deck_screen]
+    for index: int in range(rooms.size()):
+        var room: Control = rooms[index]
+        if not is_instance_valid(room):
+            continue
+        # Fixed anchors keep viewport resize deltas out of moving room geometry.
+        room.set_anchors_preset(Control.PRESET_TOP_LEFT)
+        room.size = viewport_size
+        var room_depth: float = float(index - 1)
+        room.position.y = (room_depth - _journey_progress) * viewport_size.y
+        if room != _deck_screen:
+            room.get_node("Background").world_origin_y = room_depth * viewport_size.y
+    _synchronize_menu_backgrounds()
 
 func _start_course(index: int) -> void:
     _clear_screens()

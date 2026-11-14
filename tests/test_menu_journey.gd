@@ -1,5 +1,5 @@
 extends SceneTree
-## The menu and editor share a continuous surface-to-underground camera journey.
+## The selector, surface menu, and deck editor share a continuous camera journey.
 var main: Node2D
 var checks: int = 0
 var failures: int = 0
@@ -115,10 +115,46 @@ func run() -> void:
     main.save.path = SAVE_PATH
     click(back)
     await finish_travel()
-    click(original_menu.get_node("Center/Content/Deck"))
-    main._show_levels()
+    click(original_menu.get_node("Center/Content/Play"))
+    check(main._journey_moving and is_instance_valid(main._levels_screen), "Play starts an upward journey into the selector")
+    main._journey_tween.pause()
+    main._journey_tween.custom_step(main.MENU_TRAVEL_SECONDS * 0.5)
     await frames()
-    check(main.screen_host.get_child_count() == 1 and not main._journey_moving, "Leaving the menu flow cancels travel without orphaned screens")
+    var selector: Control = main._levels_screen
+    check(original_menu.position.y > 0.0 and selector.position.y < 0.0, "Ascending lowers the surface while revealing the selector above")
+    check(is_equal_approx(selector.get_global_rect().end.y, original_menu.position.y), "Selector and surface share a seamless boundary")
+    var menu_sky: Control = original_menu.get_node("Background")
+    var selector_sky: Control = selector.get_node("Background")
+    check(menu_sky._offsets == selector_sky._offsets, "All scroll phases use the same clock during travel")
+    check(menu_sky.sky_texture == selector_sky.sky_texture and selector_sky.sky_only, "Selector uses background2 with the same sky texture as the surface")
+    check(original_menu.get_node("Center").modulate.a == 1.0 and selector.get_node("Center").modulate.a == 1.0, "Both screens stay fully opaque during travel")
+    await capture("06_rising_to_selector")
+    root.size = Vector2i(800, 700)
+    await frames()
+    check(is_equal_approx(selector.get_global_rect().end.y, original_menu.position.y), "Resizing during ascent keeps both rooms joined")
+    await finish_travel()
+    check(selector.can_process() and selector.position.y == 0.0 and not original_menu.visible, "Only the selector becomes interactive on arrival")
+    var previous_scroll: float = selector_sky._scroll_time
+    await frames()
+    check(selector_sky._scroll_time > previous_scroll and menu_sky._offsets == selector_sky._offsets, "Both backgrounds remain synchronized while the menu is hidden")
+    root.size = Vector2i(960, 640)
+    await frames()
+    await capture("07_selector")
+    click(selector.get_node("Center/Content/Back"))
+    main._journey_tween.pause()
+    main._journey_tween.custom_step(main.MENU_TRAVEL_SECONDS * 0.5)
+    await frames()
+    check(menu_sky._offsets == selector_sky._offsets, "Returning to the menu never restarts either sky")
+    await capture("08_returning_from_selector")
+    await finish_travel()
+    check(original_menu.can_process() and original_menu.position.y == 0.0 and not selector.visible, "Back glides down to the original menu")
+    click(original_menu.get_node("Center/Content/Deck"))
+    var screen_count: int = main.screen_host.get_child_count()
+    main._show_levels()
+    check(main._journey_moving and main.screen_host.get_child_count() == screen_count, "Navigation requests during travel cannot interrupt the journey")
+    main._start_course(0)
+    await frames()
+    check(main.screen_host.get_child_count() == 0 and not main._journey_moving, "Launching a course cancels travel without orphaned screens")
     main.free()
     DirAccess.remove_absolute(SAVE_PATH)
     print("Menu journey: %s checks, %s failure(s)" % [checks, failures])

@@ -60,17 +60,21 @@ func run() -> void:
         await process_frame
     check(slot.get_node("Information").get_global_rect().end.y < slot.get_global_rect().position.y, "Equipped card description also appears above the card")
     slot._hide_information()
-    for window_size: Vector2i in [Vector2i(800, 640), Vector2i(960, 640), Vector2i(961, 641), Vector2i(1440, 900), Vector2i(1600, 1280)]:
+    for window_size: Vector2i in [Vector2i(800, 640), Vector2i(960, 640), Vector2i(961, 641), Vector2i(1440, 900), Vector2i(1600, 1280), Vector2i(1512, 982), Vector2i(2860, 1707)]:
         root.size = window_size
         for frame: int in range(3):
             await process_frame
-        var grid_aligned: bool = true
+        var proportional: bool = true
         for tile: CardView in editor.get_node("Margin/Content/Grid").get_children():
             var art_rect: Rect2 = tile.get_node("Artwork").get_global_rect()
             var art_scale: Vector2 = tile.get_node("Artwork").get_screen_transform().get_scale()
-            grid_aligned = grid_aligned and art_rect.position.is_equal_approx(art_rect.position.round()) and art_rect.size == Vector2(66, 93)
-            grid_aligned = grid_aligned and art_scale.is_equal_approx(art_scale.round())
-        check(grid_aligned, "Original card pixels stay integer-aligned at " + str(window_size))
+            proportional = proportional and art_rect.size == Vector2(66, 93)
+            proportional = proportional and is_equal_approx(art_scale.x, art_scale.y)
+        check(proportional, "Card artwork keeps its proportions at " + str(window_size))
+        # Check the actual rendered content bounds: integer scaling previously
+        # left borders on all four sides at larger, non-multiple screen sizes.
+        var rendered: Rect2 = root.get_final_transform() * root.get_visible_rect()
+        check(rendered.position.is_equal_approx(Vector2.ZERO) and rendered.size.is_equal_approx(Vector2(root.size)), "Game content fills the window at " + str(window_size))
     root.size = Vector2i(960, 640)
     var original: Array[StringName] = editor.selected.duplicate()
     editor._toggle(&"heavy")
@@ -118,7 +122,7 @@ func run() -> void:
     var frame_texture: CanvasTexture = frame_style.texture as CanvasTexture
     check(frame_texture.diffuse_texture.resource_path == "res://art/ui/panel.svg" and frame_style.texture_margin_left == 12, "Shared style uses a three-pixel stepped frame")
     check(hand.get_theme_stylebox("normal") is StyleBoxEmpty and not hand.get_node("Caption").is_visible_in_tree(), "Gameplay cards retain the sprite-only presentation")
-    check(ProjectSettings.get_setting("display/window/stretch/scale_mode") == "integer", "Window scaling preserves integer sprite pixels")
+    check(hand.get_node("Artwork").texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST, "Sprites retain nearest filtering when scaling to fit")
     session.free()
     print("Card UI: %s checks, %s failure(s)" % [checks, failures])
     quit(0 if failures == 0 else 1)
