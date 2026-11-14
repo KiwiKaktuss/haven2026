@@ -3,6 +3,22 @@
 [ext_resource type="StyleBox" path="res://resources/ui/accent_button.tres" id="accent"]
 [ext_resource type="Script" uid="uid://d3dmeuomfi6ku" path="res://scripts/ui/main_menu.gd" id="script"]
 [ext_resource type="Theme" uid="uid://vd5i5ly3o81k" path="res://resources/ui/default_theme.tres" id="theme"]
+[ext_resource type="Script" path="res://scripts/ui/menu_background.gd" id="background"]
+
+[sub_resource type="StyleBoxFlat" id="menu_panel"]
+bg_color = Color(0.97, 0.97, 1, 0.97)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.78, 0.8, 0.94, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_left = 4
+corner_radius_bottom_right = 4
+shadow_color = Color(0.12, 0.16, 0.3, 0.16)
+shadow_size = 12
+shadow_offset = Vector2(0, 6)
 
 [node name="MainMenu" type="Control" unique_id=732525874]
 texture_filter = 2
@@ -15,7 +31,7 @@ grow_vertical = 2
 theme = ExtResource("theme")
 script = ExtResource("script")
 
-[node name="Background" type="ColorRect" parent="." unique_id=851892988]
+[node name="Background" type="Control" parent="." unique_id=851892988]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,14 +39,22 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("background")
 
 [node name="Center" type="CenterContainer" parent="." unique_id=321424996]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.92
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+
+[node name="MenuPanel" type="Panel" parent="Center"]
+custom_minimum_size = Vector2(408, 332)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("menu_panel")
 
 [node name="Content" type="VBoxContainer" parent="Center" unique_id=1652621312]
 custom_minimum_size = Vector2(336, 0)
@@ -38,8 +62,8 @@ layout_mode = 2
 theme_override_constants/separation = 14
 
 [node name="Eyebrow" type="Label" parent="Center/Content" unique_id=1593862207]
-visible = false
 layout_mode = 2
+theme_override_colors/font_color = Color(0.38, 0.42, 0.57, 1)
 theme_override_font_sizes/font_size = 12
 text = "A LITTLE GOLF. A FEW GOOD CARDS."
 horizontal_alignment = 1
