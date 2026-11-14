@@ -67,6 +67,7 @@ func _screen(packed: PackedScene) -> Control:
 func _show_menu() -> void:
     if _journey_moving:
         return
+    get_node("/root/GameAudio").play_menu_music()
     if is_instance_valid(_menu_screen):
         if not is_zero_approx(_journey_progress):
             _travel_to_menu_depth(0.0)
@@ -239,6 +240,7 @@ func _open_card_lab() -> void:
 func _open_lab(packed: PackedScene) -> void:
     _clear_screens()
     _clear_games()
+    get_node("/root/GameAudio").play_level_music()
     var lab: Node2D = packed.instantiate() as Node2D
     lab.connect(&"exit_requested", _show_menu)
     game_host.add_child(lab)

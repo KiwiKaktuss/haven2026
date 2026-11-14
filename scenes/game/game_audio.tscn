@@ -1,0 +1,42 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/game/game_audio.gd" id="script"]
+[ext_resource type="AudioStream" path="res://sound/mainmenu.mp3" id="menu"]
+[ext_resource type="AudioStream" path="res://sound/lvl.mp3" id="level"]
+[ext_resource type="AudioStream" path="res://sound/click.mp3" id="click"]
+[ext_resource type="AudioStream" path="res://sound/hover.mp3" id="hover"]
+[ext_resource type="AudioStream" path="res://sound/golfball_hit.mp3" id="ball"]
+[ext_resource type="AudioStream" path="res://sound/wallhit.mp3" id="wall"]
+
+[node name="GameAudio" type="Node"]
+process_mode = 3
+script = ExtResource("script")
+menu_music = ExtResource("menu")
+level_music = ExtResource("level")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+volume_db = -12.0
+bus = &"Music"
+
+[node name="Click" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("click")
+volume_db = -4.0
+max_polyphony = 4
+bus = &"SFX"
+
+[node name="Hover" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("hover")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="GolfballHit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("ball")
+volume_db = -4.0
+max_polyphony = 4
+bus = &"SFX"
+
+[node name="WallHit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("wall")
+volume_db = -5.0
+max_polyphony = 4
+bus = &"SFX"

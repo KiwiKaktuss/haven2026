@@ -29,6 +29,7 @@ var _resume_state: State = State.READY
 @export var inspection_mode: bool = false
 
 func _ready() -> void:
+    get_node("/root/GameAudio").play_level_music()
     start_attempt()
     if has_node("Backdrop"):
         $Backdrop.configure(course_index)
