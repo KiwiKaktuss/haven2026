@@ -140,7 +140,7 @@ func run() -> void:
     session.aim.begin(Vector2(400, 240))
     session.aim.move_pointer(Vector2(370, 290))
     escape()
-    check(session.state == GameSession.State.PAUSED and not session.aim.aiming and not session.hud.visible, "Pause cancels gesture and hides HUD")
+    check(session.state == GameSession.State.PAUSED and not session.aim.aiming and session.hud.visible, "Pause cancels gesture and keeps HUD visible beneath overlay")
     var at: Vector2 = session.ball.global_position
     var amount: float = session.elixir
     await ticks(10)

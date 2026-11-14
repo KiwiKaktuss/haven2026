@@ -1,9 +1,9 @@
 [gd_resource type="Theme" format=3 uid="uid://vd5i5ly3o81k"]
 
-[ext_resource type="FontFile" path="res://fonts/Barlow/Barlow-SemiBold.ttf" id="barlow"]
 [ext_resource type="StyleBox" uid="uid://crmctx0gn5bsi" path="res://resources/ui/pixel/action.tres" id="action"]
 [ext_resource type="StyleBox" uid="uid://djyd01lat8xph" path="res://resources/ui/pixel/action_hover.tres" id="action_hover"]
 [ext_resource type="StyleBox" uid="uid://cxbqfpprxw71q" path="res://resources/ui/pixel/action_pressed.tres" id="action_pressed"]
+[ext_resource type="FontFile" uid="uid://5vbifkutn3sm" path="res://fonts/Barlow/Barlow-SemiBold.ttf" id="barlow"]
 [ext_resource type="StyleBox" uid="uid://bew5lod5uc7xa" path="res://resources/ui/pixel/disabled.tres" id="disabled"]
 [ext_resource type="StyleBox" uid="uid://cskitckn2wepp" path="res://resources/ui/pixel/hover.tres" id="hover"]
 [ext_resource type="StyleBox" uid="uid://dyll1jrt8i3ys" path="res://resources/ui/pixel/info.tres" id="info"]

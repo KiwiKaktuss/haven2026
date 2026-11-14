@@ -2,6 +2,8 @@
 [ext_resource type="Theme" path="res://resources/ui/default_theme.tres" id="theme"]
 [ext_resource type="Script" path="res://scripts/ui/pause_menu.gd" id="script"]
 
+[ext_resource type="StyleBox" path="res://resources/ui/pixel/menu_panel.tres" id="menu_panel"]
+
 [node name="PauseMenu" type="Control"]
 texture_filter = 2
 layout_mode = 1
@@ -20,7 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 1, 1, 1)
+color = Color(0, 0, 0, 0.6)
 mouse_filter = 2
 
 [node name="Center" type="CenterContainer" parent="."]
@@ -31,18 +33,26 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="MenuPanel" type="Panel" parent="Center"]
+custom_minimum_size = Vector2(412, 300)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("menu_panel")
+
 [node name="Content" type="VBoxContainer" parent="Center"]
 custom_minimum_size = Vector2(340, 0)
 theme_override_constants/separation = 14
 
 [node name="Title" type="Label" parent="Center/Content"]
 text = "Paused"
+theme_override_colors/font_color = Color(0.17, 0.18, 0.24, 1)
 theme_override_font_sizes/font_size = 36
 mouse_filter = 2
 horizontal_alignment = 1
 
 [node name="Resume" type="Button" parent="Center/Content"]
 custom_minimum_size = Vector2(0, 48)
+theme_override_colors/font_focus_color = Color(0.17, 0.18, 0.24, 1)
 text = "Resume"
 
 

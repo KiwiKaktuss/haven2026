@@ -58,8 +58,6 @@ func pause_attempt() -> bool:
     state = State.PAUSED
     if aim != null:
         aim.cancel()
-    if hud != null:
-        hud.hide()
     process_mode = Node.PROCESS_MODE_DISABLED
     return true
 
