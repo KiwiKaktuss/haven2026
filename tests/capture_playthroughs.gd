@@ -35,7 +35,7 @@ func select(id: StringName) -> void:
 
 func prepare_ghost(sticky: bool) -> void:
     replacement = &'glue' if sticky else &'heavy'
-    var ids: Array[StringName] = [&'ghost', replacement, &'classic', &'dash', &'rewind', &'sniper']
+    var ids: Array[StringName] = [&'ghost', replacement, &'classic', &'dash', &'sniper']
     for seed_value: int in 100:
         lab.session.deck.random.seed = seed_value
         lab.session.deck.start_attempt(ids)

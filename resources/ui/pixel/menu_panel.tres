@@ -1,6 +1,6 @@
-[gd_resource type="StyleBoxTexture" format=3]
+[gd_resource type="StyleBoxTexture" format=3 uid="uid://dis7nqri1ul8t"]
 
-[ext_resource type="Texture2D" path="res://art/ui/menu_panel.svg" id="image"]
+[ext_resource type="Texture2D" uid="uid://doucck1ka1hxt" path="res://art/ui/menu_panel.svg" id="image"]
 
 [sub_resource type="CanvasTexture" id="texture"]
 diffuse_texture = ExtResource("image")

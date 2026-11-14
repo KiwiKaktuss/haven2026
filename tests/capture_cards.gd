@@ -18,7 +18,7 @@ func prepare(index: int) -> void:
     var id: StringName = sequence[index]
     var ids: Array[StringName] = [id]
     for card: CardDefinition in catalog.cards:
-        if ids.size() < 6 and not ids.has(card.id):
+        if ids.size() < CardCatalog.DECK_SIZE and not ids.has(card.id):
             ids.append(card.id)
     lab.fixture_selector.selected = 2 if id == &"ghost" else (3 if id == &"glue" else 0)
     lab.reset_lab()

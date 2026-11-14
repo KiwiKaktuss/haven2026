@@ -19,7 +19,7 @@ func prepare(id: StringName) -> void:
     var deck: DeckModel = lab.session.deck
     var ids: Array[StringName] = [id]
     for card: CardDefinition in deck.catalog.cards:
-        if ids.size() < 6 and not ids.has(card.id):
+        if ids.size() < CardCatalog.DECK_SIZE and not ids.has(card.id):
             ids.append(card.id)
     deck.start_attempt(ids)
     for slot: int in range(3):

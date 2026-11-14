@@ -27,13 +27,13 @@ func conservation(deck: DeckModel) -> bool:
             if ids.has(card.id) or not deck.equipped.has(card.id):
                 return false
             ids.append(card.id)
-    return ids.size() == 6 and deck.hand.size() == 3
+    return ids.size() == CardCatalog.DECK_SIZE and deck.hand.size() == 3
 
 func choose(id: StringName) -> void:
     # A fixture hand containing the requested card; production only uses cycling.
     var ids: Array[StringName] = [id]
     for card: CardDefinition in catalog.cards:
-        if not ids.has(card.id) and ids.size() < 6:
+        if not ids.has(card.id) and ids.size() < CardCatalog.DECK_SIZE:
             ids.append(card.id)
     session.deck.start_attempt(ids)
     for slot: int in range(3):
@@ -61,8 +61,8 @@ func run() -> void:
     ball = session.ball
     ball.simulation_enabled = false
     var deck: DeckModel = session.deck
-    check(deck.hand.size() == 3 and deck.draw_pile.size() == 3 and deck.discard_pile.is_empty(), "Initial piles")
-    var invalid: Array[StringName] = [&"classic", &"classic", &"fire", &"slow", &"bounce", &"glue"]
+    check(deck.hand.size() == 3 and deck.draw_pile.size() == CardCatalog.DECK_SIZE - 3 and deck.discard_pile.is_empty(), "Initial piles")
+    var invalid: Array[StringName] = [&"classic", &"classic", &"fire", &"slow", &"bounce"]
     check(not deck.start_attempt(invalid), "Duplicate deck rejected")
     invalid[1] = &"missing"
     check(not deck.start_attempt(invalid), "Unknown card rejected")
@@ -117,7 +117,7 @@ func run() -> void:
     var reshuffles_on_play: bool = deck.draw_pile.is_empty()
     check(session.try_shot(Vector2(0, 160)), "Valid release commits")
     check(session.shots == 1 and session.elixir == 6 and shot_events == [&"fire"] and nested == [false], "One commit; no reentrancy")
-    var correct_piles: bool = deck.discard_pile.is_empty() and deck.draw_pile.size() == 3 if reshuffles_on_play else deck.discard_pile.has(old_card)
+    var correct_piles: bool = deck.discard_pile.is_empty() and deck.draw_pile.size() == CardCatalog.DECK_SIZE - 3 if reshuffles_on_play else deck.discard_pile.has(old_card)
     check(deck.selected_slot == old_slot and correct_piles and conservation(deck), "Successful play cycles, including a discard reshuffle")
     check(is_equal_approx((ball.velocity - old_velocity).length(), old_card.power * session.tuning.shot_power_multiplier), "Random angle does not randomize power")
     session.advance_clock(3)

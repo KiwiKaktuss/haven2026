@@ -25,8 +25,12 @@ func read_save(catalog: CardCatalog, courses: CourseCatalog) -> void:
         for id: Variant in raw:
             if id is String and catalog.find_card(StringName(id)) != null and not candidate.has(StringName(id)):
                 candidate.append(StringName(id))
-        if raw.size() == 6 and candidate.size() == 6:
-            equipped = candidate
+        # Preserve equipped choices when migrating earlier deck sizes.
+        if raw.size() == candidate.size() and raw.size() in [4, CardCatalog.DECK_SIZE, 6]:
+            equipped.assign(candidate.slice(0, CardCatalog.DECK_SIZE))
+            for id: StringName in catalog.default_deck:
+                if equipped.size() < CardCatalog.DECK_SIZE and not equipped.has(id):
+                    equipped.append(id)
     var saved_records: Variant = data.get("records", {})
     if saved_records is Dictionary:
         for course: CourseDefinition in courses.courses:

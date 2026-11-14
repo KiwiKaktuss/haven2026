@@ -21,7 +21,7 @@ func advance_deal(delta: float) -> void:
 		replacement_remaining[slot] = maxf(0.0, replacement_remaining[slot] - delta)
 
 func valid_deck(ids: Array[StringName]) -> bool:
-	if catalog == null or ids.size() != 6:
+	if catalog == null or ids.size() != CardCatalog.DECK_SIZE:
 		return false
 	var seen: Array[StringName] = []
 	for id: StringName in ids:

@@ -24,7 +24,7 @@ func prepare(index: int) -> void:
     # Choose a real fixture opening without changing the authored deck contents.
     var deck_ids: Array[StringName] = [ids[index]]
     for card: CardDefinition in catalog.cards:
-        if deck_ids.size() < 6 and not deck_ids.has(card.id):
+        if deck_ids.size() < CardCatalog.DECK_SIZE and not deck_ids.has(card.id):
             deck_ids.append(card.id)
     session.deck.start_attempt(deck_ids)
     var found: bool = false

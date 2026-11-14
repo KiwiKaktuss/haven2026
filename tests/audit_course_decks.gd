@@ -33,7 +33,7 @@ func _initialize() -> void:
     print('This does not prove every shuffle/spread outcome or human difficulty; search-only results are excluded.')
     quit()
 func enumerate(catalog: CardCatalog, start: int, selected: Array, rows: Array) -> void:
-    if selected.size() == 6:
+    if selected.size() == CardCatalog.DECK_SIZE:
         var direct_power: float = 0
         var neutral_launches: Array = []
         var effects: Array = []

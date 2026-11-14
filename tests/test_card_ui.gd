@@ -1,5 +1,5 @@
 extends SceneTree
-## Card art mapping, six-card editing, swaps, and HUD resource feedback.
+## Card art mapping, five-card editing, swaps, and HUD resource feedback.
 var checks: int = 0
 var failures: int = 0
 var catalog: CardCatalog = load("res://resources/cards/catalog.tres")
@@ -23,7 +23,9 @@ func run() -> void:
     var editor: Control = load("res://scenes/ui/deck_editor.tscn").instantiate()
     root.add_child(editor)
     editor.configure(catalog.default_deck)
-    check(editor.selected.size() == 6, "Default deck has six cards")
+    check(editor.selected.size() == CardCatalog.DECK_SIZE, "Default deck has five cards")
+    check(editor.get_node("Margin/Content/BattleDeck/DeckContent/Hand").get_child_count() == 5, "Editor has exactly five deck slots")
+    check(editor.get_node("Margin/Content/Header/Count").text == "5 / 5 cards", "Deck counter uses the five-card limit")
     var slot: CardView = editor.get_node("Margin/Content/BattleDeck/DeckContent/Hand/Slot0")
     check(slot.definition.id == catalog.default_deck[0], "Battle Deck shows the equipped order")
     var collection: CardView = editor.get_node("Margin/Content/Grid/Card0")
@@ -78,19 +80,19 @@ func run() -> void:
     root.size = Vector2i(960, 640)
     var original: Array[StringName] = editor.selected.duplicate()
     editor._toggle(&"heavy")
-    check(editor.pending_swap == &"heavy" and editor.selected == original, "Choosing seventh card stages a swap")
+    check(editor.pending_swap == &"heavy" and editor.selected == original, "Choosing sixth card stages a swap")
     check(not editor.get_node("Margin/Content/Footer/Back").disabled, "Back remains available during a pending swap")
     var pending_tile: CardView = editor.get_node("Margin/Content/Grid/Card4")
     check(pending_tile.pending_choice and pending_tile.get_node("Marker").text == "↔", "Pending replacement has its own visible state")
     editor._deck_slot_clicked(2)
-    check(editor.selected[2] == &"heavy" and editor.selected.size() == 6 and editor.pending_swap.is_empty(), "Slot click completes six-card replacement")
+    check(editor.selected[2] == &"heavy" and editor.selected.size() == CardCatalog.DECK_SIZE and editor.pending_swap.is_empty(), "Slot click completes five-card replacement")
     editor._toggle(&"dash")
     editor._cancel_swap()
     check(not editor.selected.has(&"dash") and editor.pending_swap.is_empty(), "Cancel preserves the equipped deck")
     editor._deck_slot_clicked(0)
-    check(editor.selected.size() == 5 and not editor.get_node("Margin/Content/Footer/Back").disabled, "An incomplete edit never traps the player")
+    check(editor.selected.size() == CardCatalog.DECK_SIZE - 1 and not editor.get_node("Margin/Content/Footer/Back").disabled, "An incomplete edit never traps the player")
     editor._toggle(&"dash")
-    check(editor.selected.size() == 6 and editor.selected.has(&"dash"), "Collection fills an empty deck slot")
+    check(editor.selected.size() == CardCatalog.DECK_SIZE and editor.selected.has(&"dash"), "Collection fills an empty deck slot")
     for id: StringName in editor.selected.duplicate():
         editor._toggle(id)
     check(editor.selected.is_empty() and slot.definition == null and slot.get_node("Artwork").texture == null, "Empty slots never retain stale artwork")

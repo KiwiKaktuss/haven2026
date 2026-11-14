@@ -68,9 +68,9 @@ popup/item_4/id = 4
 size_flags_horizontal = 3
 item_count = 2
 selected = 0
-popup/item_0/text = "Default six cards"
+popup/item_0/text = "Default five cards"
 popup/item_0/id = 0
-popup/item_1/text = "Alternate six (Heavy / Dash / Ghost / Rewind)"
+popup/item_1/text = "Alternate five (Heavy / Dash / Ghost / Rewind / Glue)"
 popup/item_1/id = 1
 [node name="Hand" type="HBoxContainer" parent="CanvasLayer/CardControls"]
 mouse_filter = 2

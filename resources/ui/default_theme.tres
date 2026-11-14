@@ -1,5 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://vd5i5ly3o81k"]
 
+[ext_resource type="FontFile" path="res://fonts/Barlow/Barlow-SemiBold.ttf" id="barlow"]
 [ext_resource type="StyleBox" uid="uid://crmctx0gn5bsi" path="res://resources/ui/pixel/action.tres" id="action"]
 [ext_resource type="StyleBox" uid="uid://djyd01lat8xph" path="res://resources/ui/pixel/action_hover.tres" id="action_hover"]
 [ext_resource type="StyleBox" uid="uid://cxbqfpprxw71q" path="res://resources/ui/pixel/action_pressed.tres" id="action_pressed"]
@@ -14,6 +15,7 @@
 bg_color = Color(0.47, 0.65, 0.56, 1)
 
 [resource]
+default_font = ExtResource("barlow")
 default_font_size = 16
 Button/colors/font_color = Color(0.17, 0.18, 0.24, 1)
 Button/colors/font_disabled_color = Color(0.45, 0.49, 0.57, 1)

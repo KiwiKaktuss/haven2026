@@ -9,7 +9,7 @@ extends "res://scripts/game/physics_lab.gd"
 @export var deck_selector: OptionButton
 @export var trial_starts: Array[Vector2] = [Vector2(48, 70), Vector2(160, 70), Vector2(272, 70), Vector2(384, 70), Vector2(496, 250)]
 @export var debug_drag: Vector2 = Vector2(-36, 80)
-@export var alternate_deck: Array[StringName] = [&"classic", &"heavy", &"dash", &"ghost", &"rewind", &"glue"]
+@export var alternate_deck: Array[StringName] = [&"heavy", &"dash", &"ghost", &"rewind", &"glue"]
 
 func _ready() -> void:
     super._ready()

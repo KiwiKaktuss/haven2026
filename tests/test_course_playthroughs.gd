@@ -109,7 +109,7 @@ func run() -> void:
         var valid: bool = validator.valid_deck(ids)
         validator.free()
         if not valid:
-            push_error('Playthrough requires six unique catalog card IDs')
+            push_error('Playthrough requires five unique catalog card IDs')
             quit(1)
             return
         for index: int in courses.courses.size():
@@ -155,7 +155,7 @@ func write_report() -> void:
     file.store_string(JSON.stringify(rows, '  '))
 
 func enumerate_decks(start: int, selected: Array[StringName], decks: Array[Array], constrained_only: bool) -> void:
-    if selected.size() == 6:
+    if selected.size() == CardCatalog.DECK_SIZE:
         if not constrained_only or not selected.any(func(id: StringName) -> bool: return id in [&'classic', &'dash', &'fire']):
             decks.append(selected.duplicate())
         return

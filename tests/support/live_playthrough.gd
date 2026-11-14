@@ -40,7 +40,7 @@ func verify(tree: SceneTree, row: Dictionary) -> bool:
                 if ids.has(card.id) or not session.deck.equipped.has(card.id):
                     ok = false
                 ids.append(card.id)
-        ok = ok and ids.size() == 6 and session.deck.hand.size() == 3 and session.elixir >= 0.0 and session.elixir <= session.tuning.maximum_elixir
+        ok = ok and ids.size() == CardCatalog.DECK_SIZE and session.deck.hand.size() == 3 and session.elixir >= 0.0 and session.elixir <= session.tuning.maximum_elixir
         if session.state in [GameSession.State.WON, GameSession.State.LOST]:
             break
     ok = ok and next == row.actions.size() and session.state == GameSession.State.WON and session.shots == row.actions.size()

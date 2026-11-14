@@ -8,7 +8,7 @@ var _saved_selection: Array[StringName] = []
 func _ready() -> void:
     for index: int in range(catalog.cards.size()):
         get_node("Margin/Content/Grid/Card%s" % index).pressed.connect(_toggle.bind(catalog.cards[index].id))
-    for index: int in range(6):
+    for index: int in range(CardCatalog.DECK_SIZE):
         get_node("Margin/Content/BattleDeck/DeckContent/Hand/Slot%s" % index).pressed.connect(_deck_slot_clicked.bind(index))
     $Margin/Content/Footer/Back.pressed.connect(_done)
     refresh()
@@ -16,7 +16,7 @@ func _ready() -> void:
 func configure(ids: Array[StringName]) -> void:
     selected.clear()
     for id: StringName in ids:
-        if catalog.find_card(id) != null and not selected.has(id) and selected.size() < 6:
+        if catalog.find_card(id) != null and not selected.has(id) and selected.size() < CardCatalog.DECK_SIZE:
             selected.append(id)
     pending_swap = &""
     _saved_selection = selected.duplicate()
@@ -28,7 +28,7 @@ func _toggle(id: StringName) -> void:
     if selected.has(id):
         selected.erase(id)
         pending_swap = &""
-    elif selected.size() < 6:
+    elif selected.size() < CardCatalog.DECK_SIZE:
         selected.append(id)
         pending_swap = &""
     else:
@@ -55,7 +55,7 @@ func refresh() -> void:
         var view: CardView = get_node("Margin/Content/Grid/Card%s" % index)
         view.show_card(card, selected.has(card.id) or pending_swap == card.id)
         view.set_pending(pending_swap == card.id)
-    for index: int in range(6):
+    for index: int in range(CardCatalog.DECK_SIZE):
         var view: CardView = get_node("Margin/Content/BattleDeck/DeckContent/Hand/Slot%s" % index)
         if index < selected.size():
             var card: CardDefinition = catalog.find_card(selected[index])
@@ -63,11 +63,11 @@ func refresh() -> void:
             view.set_pending(false)
         else:
             view.show_empty(index)
-    $Margin/Content/Header/Count.text = "%s / 6 cards" % selected.size()
+    $Margin/Content/Header/Count.text = "%s / %s cards" % [selected.size(), CardCatalog.DECK_SIZE]
     if not pending_swap.is_empty():
         $Margin/Content/BattleDeck/DeckContent/Summary/Tip.text = "Replace a deck card with %s, or click it again to cancel." % catalog.find_card(pending_swap).display_name
     else:
-        $Margin/Content/BattleDeck/DeckContent/Summary/Tip.text = "Six cards · Three in hand" if selected.size() == 6 else "Choose %s more card%s to complete your deck." % [6 - selected.size(), "" if selected.size() == 5 else "s"]
+        $Margin/Content/BattleDeck/DeckContent/Summary/Tip.text = "Five cards · Three in hand" if selected.size() == CardCatalog.DECK_SIZE else "Choose %s more card%s to complete your deck." % [CardCatalog.DECK_SIZE - selected.size(), "" if selected.size() == CardCatalog.DECK_SIZE - 1 else "s"]
 
 func show_save_error() -> void:
     $Margin/Content/BattleDeck/DeckContent/Summary/Tip.text = "Could not save your deck. Press Back to try again."
@@ -75,5 +75,5 @@ func show_save_error() -> void:
 func _done() -> void:
     _cancel_swap()
     # Back always navigates. An unfinished edit cannot overwrite a valid deck.
-    var ids: Array[StringName] = selected if selected.size() == 6 else _saved_selection
+    var ids: Array[StringName] = selected if selected.size() == CardCatalog.DECK_SIZE else _saved_selection
     done_requested.emit(ids.duplicate())

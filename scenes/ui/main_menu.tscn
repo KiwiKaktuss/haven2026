@@ -90,6 +90,12 @@ text = "Play"
 [node name="Deck" type="Button" parent="Center/Content" unique_id=170866608]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
 text = "Edit deck"
 
 [node name="CenterContainer" type="Control" parent="." unique_id=1258031862]

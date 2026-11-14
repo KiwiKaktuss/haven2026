@@ -27,7 +27,7 @@ func ticks(count: int = 1) -> void:
 func choose(id: StringName) -> void:
     var ids: Array[StringName] = [id]
     for card: CardDefinition in catalog.cards:
-        if ids.size() < 6 and not ids.has(card.id):
+        if ids.size() < CardCatalog.DECK_SIZE and not ids.has(card.id):
             ids.append(card.id)
     session.deck.start_attempt(ids)
     for slot: int in range(3):

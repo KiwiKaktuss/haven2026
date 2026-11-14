@@ -21,7 +21,7 @@ func run() -> void:
         check(not ids.has(card.id), "Unique stable card ID")
         ids.append(card.id)
         check(card.spread_curve.sample(1.0) > 0.0, "Nonzero angular spread")
-    check(catalog.default_deck.size() == 6, "Six equipped cards")
+    check(catalog.default_deck.size() == CardCatalog.DECK_SIZE, "Five equipped cards")
     for id: StringName in catalog.default_deck:
         check(catalog.find_card(id) != null, "Default deck references catalog")
     var courses: CourseCatalog = load("res://resources/levels/catalog.tres")
