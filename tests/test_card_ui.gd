@@ -123,6 +123,17 @@ func run() -> void:
     check(frame_texture.diffuse_texture.resource_path == "res://art/ui/panel.svg" and frame_style.texture_margin_left == 12, "Shared style uses a three-pixel stepped frame")
     check(hand.get_theme_stylebox("normal") is StyleBoxEmpty and not hand.get_node("Caption").is_visible_in_tree(), "Gameplay cards retain the sprite-only presentation")
     check(hand.get_node("Artwork").texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST, "Sprites retain nearest filtering when scaling to fit")
+    for frame: int in range(24):
+        await process_frame
+    var artwork: Control = hand.get_node("Artwork")
+    check(is_zero_approx(artwork.position.y) and artwork.get_global_rect().get_center().is_equal_approx(hand.get_global_rect().get_center()), "Selected card grows around its center without lifting")
+    check(artwork.get_global_rect().size.x > hand.size.x and artwork.get_global_rect().size.y > hand.size.y, "Selected artwork is slightly larger without resizing its slot")
+    check(hand.get_node("ReadyMark").visible and hand.get_node("SelectionShadow").visible, "Selection has both its underline and lower shadow")
+    session.deck.select_slot(1)
+    for frame: int in range(24):
+        await process_frame
+    check(artwork.scale.is_equal_approx(Vector2.ONE) and is_zero_approx(artwork.position.y), "Previous card returns to normal size at the same height")
+    check(not hand.get_node("ReadyMark").visible and not hand.get_node("SelectionShadow").visible, "Previous card clears its selection decoration")
     session.free()
     print("Card UI: %s checks, %s failure(s)" % [checks, failures])
     quit(0 if failures == 0 else 1)

@@ -1,10 +1,25 @@
 [gd_scene format=3]
 [ext_resource type="PackedScene" path="res://scenes/ui/card_view.tscn" id="card"]
+[ext_resource type="Texture2D" path="res://art/cards.png" id="cards"]
+[sub_resource type="AtlasTexture" id="preview"]
+atlas = ExtResource("cards")
+region = Rect2(44, 0, 22, 31)
 [sub_resource type="StyleBoxEmpty" id="empty"]
+[sub_resource type="StyleBoxFlat" id="selection_shadow"]
+bg_color = Color(0.08, 0.14, 0.17, 0.1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_left = 4
+corner_radius_bottom_right = 4
+shadow_color = Color(0.08, 0.14, 0.17, 0.28)
+shadow_size = 6
+shadow_offset = Vector2(0, 4)
 [node name="HandCard" instance=ExtResource("card")]
 custom_minimum_size = Vector2(88, 124)
 show_information = false
 decorated = false
+selected_lift = 0.0
+hover_lift = 0.0
 focus_mode = 0
 theme_override_styles/normal = SubResource("empty")
 theme_override_styles/hover = SubResource("empty")
@@ -12,6 +27,7 @@ theme_override_styles/pressed = SubResource("empty")
 theme_override_styles/hover_pressed = SubResource("empty")
 theme_override_styles/focus = SubResource("empty")
 [node name="Artwork" parent="." index="0"]
+texture = SubResource("preview")
 anchor_left = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -24,7 +40,18 @@ visible = false
 [node name="Marker" parent="." index="2"]
 visible = false
 
-[node name="ReadyMark" type="ColorRect" parent="." index="5"]
+[node name="SelectionShadow" type="Panel" parent="." index="5"]
+visible = false
+show_behind_parent = true
+modulate = Color(1, 1, 1, 0)
+offset_left = 8.0
+offset_top = 118.0
+offset_right = 80.0
+offset_bottom = 126.0
+theme_override_styles/panel = SubResource("selection_shadow")
+mouse_filter = 2
+
+[node name="ReadyMark" type="ColorRect" parent="." index="6"]
 offset_left = 18.0
 offset_top = 129.0
 offset_right = 70.0

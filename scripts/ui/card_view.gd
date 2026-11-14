@@ -5,6 +5,7 @@ extends Button
 @export var show_information: bool = true
 @export var selected_lift: float = 6.0
 @export var hover_lift: float = 3.0
+@export_range(1.0, 1.15, 0.005) var selected_scale: float = 1.05
 @export var information_gap: float = 6.0
 @export_range(1.0, 30.0) var lift_speed: float = 18.0
 @export_range(0.1, 1.0) var unaffordable_opacity: float = 0.48
@@ -18,6 +19,7 @@ var _hovered: bool = false
 var _information_fit_queued: bool = false
 var deal_pending: bool = false
 var _lift_target: float = 0.0
+var _scale_target: float = 1.0
 var _feedback_tween: Tween
 
 func set_deal_pending(value: bool) -> void:
@@ -26,10 +28,21 @@ func set_deal_pending(value: bool) -> void:
     mouse_filter = Control.MOUSE_FILTER_IGNORE if value else Control.MOUSE_FILTER_STOP
     if has_node("ReadyMark"):
         $ReadyMark.visible = selected and not value
+    if value and has_node("SelectionShadow"):
+        $SelectionShadow.hide()
 
 func _process(delta: float) -> void:
     if not decorated:
-        $Artwork.position.y = lerpf($Artwork.position.y, _lift_target, 1.0 - exp(-lift_speed * delta))
+        var weight: float = 1.0 - exp(-lift_speed * delta)
+        $Artwork.position.y = lerpf($Artwork.position.y, _lift_target, weight)
+        var target_scale: Vector2 = Vector2.ONE * _scale_target
+        $Artwork.scale = $Artwork.scale.lerp(target_scale, weight)
+        if $Artwork.scale.distance_to(target_scale) < 0.0001:
+            $Artwork.scale = target_scale
+        if has_node("SelectionShadow"):
+            var show_shadow: bool = selected and not deal_pending and definition != null
+            $SelectionShadow.modulate.a = lerpf($SelectionShadow.modulate.a, 1.0 if show_shadow else 0.0, weight)
+            $SelectionShadow.visible = not deal_pending and $SelectionShadow.modulate.a > 0.01
 
 func land() -> void:
     if decorated:
@@ -53,6 +66,12 @@ func _ready() -> void:
     visibility_changed.connect(_visibility_changed)
     $Information.resized.connect(_position_information)
     $Information.minimum_size_changed.connect(_queue_information_fit)
+    $Artwork.resized.connect(_update_artwork_pivot)
+    _update_artwork_pivot()
+
+func _update_artwork_pivot() -> void:
+    if not decorated:
+        $Artwork.pivot_offset = $Artwork.size * 0.5
 
 func bind(card: CardDefinition, is_selected: bool, can_afford: bool = true, _key: String = "") -> void:
     definition = card
@@ -95,6 +114,7 @@ func _refresh_visuals() -> void:
         $Marker.text = "↔" if pending_choice else "✓"
     else:
         _lift_target = -selected_lift if selected else (-hover_lift if _hovered else 0.0)
+        _scale_target = selected_scale if selected else 1.0
         $Artwork.self_modulate.a = 1.0 if affordable else unaffordable_opacity
         if has_node("ReadyMark"):
             $ReadyMark.visible = selected and not deal_pending

@@ -33,6 +33,7 @@ func run() -> void:
     check(session.try_shot(Vector2(-40, 90), cursor), "Successful shot")
     var replacement: CardDefinition = session.deck.hand[0]
     check(not session.deck.slot_ready(0) and not view.get_node("Artwork").visible, "Played slot stays empty")
+    check(not view.get_node("ReadyMark").visible and not view.get_node("SelectionShadow").visible, "Empty slot has no leftover selection line or shadow")
     var flight: CardFlight = hud.get_node("Flights").get_child(0)
     check(flight.get_node("Card").texture == used.artwork and flight.destination == cursor, "Old card travels toward release cursor")
     var before: Array = [session.elixir, session.shots, session.random.state, session.deck.hand.duplicate()]

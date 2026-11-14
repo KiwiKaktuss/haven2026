@@ -4,6 +4,7 @@ extends Control
 ## Speeds are atlas pixels per second; lower atlas rows drift more slowly.
 
 const ATLAS: Texture2D = preload("res://art/Sprite-0011.png")
+const DEFAULT_SKY: Texture2D = preload("res://art/background2.png")
 const STRIP_WIDTH: float = 512.0
 const STRIP_HEIGHT: float = 128.0
 const HILLS_COLOR: Color = Color8(50, 132, 100)
@@ -14,7 +15,7 @@ const MOUNTAINS_COLOR: Color = Color8(43, 78, 149)
 @export_range(0.0, 20.0, 0.1) var clouds_speed: float = 1.4
 @export_range(0.0, 20.0, 0.1) var sky_speed: float = 0.35
 @export var sky_only: bool = false
-@export var sky_texture: Texture2D = preload("res://art/background2.png")
+@export var sky_texture: Texture2D = DEFAULT_SKY
 var world_origin_y: float = 0.0
 
 var _offsets: PackedFloat64Array = PackedFloat64Array([0.0, 0.0, 0.0, 0.0])
@@ -57,10 +58,13 @@ func _draw() -> void:
 	var strip_height: float = STRIP_HEIGHT * art_scale
 	# Repeat at the same pixel scale in both rooms. The world-space vertical
 	# origin joins the sky pattern across the selector/menu boundary.
-	var sky_height: float = sky_texture.get_height() * art_scale
+	# Scene overrides can explicitly clear an exported resource, including in
+	# the editor where this @tool script draws before _ready() runs.
+	var sky: Texture2D = sky_texture if sky_texture != null else DEFAULT_SKY
+	var sky_height: float = sky.get_height() * art_scale
 	var top: float = -fposmod(world_origin_y, sky_height)
 	while top < size.y:
-		_draw_strip(0, Rect2(Vector2.ZERO, sky_texture.get_size()), top, sky_height, art_scale, sky_texture)
+		_draw_strip(0, Rect2(Vector2.ZERO, sky.get_size()), top, sky_height, art_scale, sky)
 		top += sky_height
 	# Soften the atlas's high-contrast sky dithering behind the menu.
 	draw_rect(Rect2(Vector2.ZERO, size), Color(0.91, 0.93, 1.0, 0.78))

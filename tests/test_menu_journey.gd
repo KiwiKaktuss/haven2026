@@ -50,6 +50,15 @@ func run() -> void:
     root.add_child(main)
     await frames()
     var original_menu: Control = main._menu_screen
+    var background: Control = original_menu.get_node("Background")
+    var sky: Texture2D = background.sky_texture
+    check(sky != null and sky.resource_path == "res://art/background2.png", "Menu has its saved sky texture")
+    # Reproduce the cleared Inspector override that used to crash _draw().
+    background.sky_texture = null
+    background.queue_redraw()
+    await frames()
+    background.sky_texture = sky
+    background.queue_redraw()
     await capture("01_menu")
     click(original_menu.get_node("Center/Content/Deck"))
     check(main._journey_moving and main.screen_host.get_child_count() == 2, "Edit deck starts a continuous journey with both rooms present")

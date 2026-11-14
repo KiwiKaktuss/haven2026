@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d3xtlqc4dm3pe"]
 
 [ext_resource type="Script" uid="uid://bhuyp4vsivxn3" path="res://scripts/ui/menu_background.gd" id="background"]
+[ext_resource type="Texture2D" path="res://art/background2.png" id="sky"]
 [ext_resource type="Script" uid="uid://d3dmeuomfi6ku" path="res://scripts/ui/main_menu.gd" id="script"]
 [ext_resource type="Theme" uid="uid://vd5i5ly3o81k" path="res://resources/ui/default_theme.tres" id="theme"]
 
@@ -41,8 +42,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("background")
-sky_only = null
-sky_texture = null
+sky_texture = ExtResource("sky")
 
 [node name="Center" type="CenterContainer" parent="." unique_id=321424996]
 layout_mode = 1
