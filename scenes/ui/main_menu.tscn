@@ -1,12 +1,10 @@
 [gd_scene format=3 uid="uid://d3xtlqc4dm3pe"]
 
 [ext_resource type="Script" uid="uid://bhuyp4vsivxn3" path="res://scripts/ui/menu_background.gd" id="background"]
-[ext_resource type="Texture2D" path="res://art/background2.png" id="sky"]
+[ext_resource type="Texture2D" uid="uid://bb1m40l15ox2e" path="res://art/DeckGolf.png" id="logo"]
+[ext_resource type="StyleBox" uid="uid://dis7nqri1ul8t" path="res://resources/ui/pixel/menu_panel.tres" id="menu_panel"]
 [ext_resource type="Script" uid="uid://d3dmeuomfi6ku" path="res://scripts/ui/main_menu.gd" id="script"]
 [ext_resource type="Theme" uid="uid://vd5i5ly3o81k" path="res://resources/ui/default_theme.tres" id="theme"]
-[ext_resource type="Texture2D" path="res://art/DeckGolf.png" id="logo"]
-
-[ext_resource type="StyleBox" path="res://resources/ui/pixel/menu_panel.tres" id="menu_panel"]
 
 [node name="MainMenu" type="Control" unique_id=732525874]
 texture_filter = 2
@@ -30,7 +28,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("background")
-sky_texture = ExtResource("sky")
 
 [node name="Center" type="CenterContainer" parent="." unique_id=321424996]
 layout_mode = 1
@@ -52,12 +49,12 @@ custom_minimum_size = Vector2(336, 0)
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="LogoSlot" type="Control" parent="Center/Content"]
+[node name="LogoSlot" type="Control" parent="Center/Content" unique_id=1844519776]
 custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Logo" type="TextureRect" parent="Center/Content/LogoSlot"]
+[node name="Logo" type="TextureRect" parent="Center/Content/LogoSlot" unique_id=1749209939]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = 8
@@ -91,12 +88,20 @@ text = "Play"
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
 text = "Edit deck"
+
+[node name="Credits" type="Label" parent="Center/Content" unique_id=1278586593]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -7.73)
+theme_override_font_sizes/font_size = 10
+text = "made by KiwiKaktus for Haven2026 jam"
+horizontal_alignment = 1
 
 [node name="CenterContainer" type="Control" parent="." unique_id=1258031862]
 visible = false
