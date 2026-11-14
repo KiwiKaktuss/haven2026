@@ -1,10 +1,13 @@
-[gd_scene format=3]
-[ext_resource type="Theme" path="res://resources/ui/default_theme.tres" id="theme"]
-[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="script"]
+[gd_scene format=3 uid="uid://dnh2gc3mg0a3u"]
+
+[ext_resource type="Texture2D" uid="uid://dm1ducg4mhv1g" path="res://art/card_from_behind.png" id="back"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hand_card.tscn" id="card"]
-[ext_resource type="Texture2D" path="res://art/dock.png" id="dock"]
-[ext_resource type="Texture2D" path="res://art/line.png" id="line"]
-[ext_resource type="Texture2D" path="res://art/ui/badge.svg" id="frame"]
+[ext_resource type="Texture2D" uid="uid://dxa7orccdl5ee" path="res://art/dock.png" id="dock"]
+[ext_resource type="PackedScene" path="res://scenes/ui/card_flight.tscn" id="flight"]
+[ext_resource type="Texture2D" uid="uid://cnqp5xlk4gxoe" path="res://art/ui/badge.svg" id="frame"]
+[ext_resource type="Texture2D" uid="uid://b50wt6jxo86jf" path="res://art/line.png" id="line"]
+[ext_resource type="Script" uid="uid://qigccmo7t7ql" path="res://scripts/ui/hud.gd" id="script"]
+[ext_resource type="Theme" uid="uid://vd5i5ly3o81k" path="res://resources/ui/default_theme.tres" id="theme"]
 
 [sub_resource type="AtlasTexture" id="ink"]
 atlas = ExtResource("frame")
@@ -18,34 +21,100 @@ modulate_color = Color(0.35, 0.4, 0.45, 1)
 texture = SubResource("ink")
 modulate_color = Color(1.5, 1.4, 1.5, 1)
 
-[node name="HUD" type="Control"]
+[sub_resource type="Animation" id="reject"]
+resource_name = "reject"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 0.4, 0.45, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="spend"]
+resource_name = "spend"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1.4, 1.15, 1.5, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="elixir_fx"]
+_data = {
+&"reject": SubResource("reject"),
+&"spend": SubResource("spend")
+}
+
+[sub_resource type="Animation" id="deal"]
+resource_name = "deal"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.12, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-0.05, 0.05, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="deck_fx"]
+_data = {
+&"deal": SubResource("deal")
+}
+
+[node name="HUD" type="Control" unique_id=1859367485]
 texture_filter = 2
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("theme")
 script = ExtResource("script")
+flight_scene = ExtResource("flight")
 
-[node name="Top" type="MarginContainer" parent="."]
+[node name="Top" type="MarginContainer" parent="." unique_id=1413082864]
+layout_mode = 0
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -112.0
-offset_right = -24.0
 offset_top = 20.0
+offset_right = -24.0
 offset_bottom = 52.0
 mouse_filter = 2
 
-[node name="TimerSlot" type="MarginContainer" parent="Top"]
+[node name="TimerSlot" type="MarginContainer" parent="Top" unique_id=951803896]
+layout_mode = 2
 mouse_filter = 2
 
-[node name="TimerLabel" type="Label" parent="Top/TimerSlot"]
+[node name="TimerLabel" type="Label" parent="Top/TimerSlot" unique_id=1010316859]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
 text = "0:00"
 horizontal_alignment = 2
-theme_override_font_sizes/font_size = 24
-mouse_filter = 2
 
-[node name="Bottom" type="CenterContainer" parent="."]
+[node name="Bottom" type="CenterContainer" parent="." unique_id=404683087]
+layout_mode = 0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -53,49 +122,57 @@ offset_top = -208.0
 offset_bottom = -12.0
 mouse_filter = 2
 
-[node name="Stack" type="Control" parent="Bottom"]
+[node name="Stack" type="Control" parent="Bottom" unique_id=1551201114]
 custom_minimum_size = Vector2(552, 196)
+layout_mode = 2
 mouse_filter = 2
 
-[node name="Dock" type="TextureRect" parent="Bottom/Stack"]
+[node name="Dock" type="TextureRect" parent="Bottom/Stack" unique_id=471018748]
+texture_filter = 1
+layout_mode = 0
 offset_top = 32.0
 offset_right = 552.0
 offset_bottom = 196.0
-texture_filter = 1
+mouse_filter = 2
 texture = ExtResource("dock")
 expand_mode = 1
-mouse_filter = 2
 
-[node name="Elixir" type="Control" parent="Bottom/Stack"]
+[node name="Elixir" type="Control" parent="Bottom/Stack" unique_id=122500055]
+anchors_preset = 0
 offset_left = 64.0
 offset_top = 2.0
 offset_right = 488.0
 offset_bottom = 18.0
 mouse_filter = 2
 
-[node name="ElixirBar" type="ProgressBar" parent="Bottom/Stack/Elixir"]
+[node name="ElixirBar" type="ProgressBar" parent="Bottom/Stack/Elixir" unique_id=118748553]
+texture_filter = 1
+layout_mode = 0
 anchor_right = 1.0
 offset_left = 4.0
 offset_top = 4.0
 offset_right = -4.0
 offset_bottom = 12.0
-max_value = 10.0
-step = 0.01
-show_percentage = false
 mouse_filter = 2
-texture_filter = 1
 theme_override_styles/background = SubResource("elixir_empty")
 theme_override_styles/fill = SubResource("elixir_fill")
+max_value = 10.0
+show_percentage = false
 
-[node name="Frame" type="TextureRect" parent="Bottom/Stack/Elixir"]
+[node name="Frame" type="TextureRect" parent="Bottom/Stack/Elixir" unique_id=1372445871]
+texture_filter = 1
+layout_mode = 0
 anchor_right = 1.0
 offset_bottom = 16.0
-texture_filter = 1
+mouse_filter = 2
 texture = ExtResource("line")
 expand_mode = 1
-mouse_filter = 2
 
-[node name="Hand" type="HBoxContainer" parent="Bottom/Stack"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Bottom/Stack/Elixir" unique_id=1097792539]
+libraries/ = SubResource("elixir_fx")
+
+[node name="Hand" type="HBoxContainer" parent="Bottom/Stack" unique_id=1964474154]
+layout_mode = 0
 offset_left = 124.0
 offset_top = 52.0
 offset_right = 428.0
@@ -104,17 +181,68 @@ mouse_filter = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Card0" parent="Bottom/Stack/Hand" instance=ExtResource("card")]
-custom_minimum_size = Vector2(88, 124)
-show_information = false
-focus_mode = 0
+[node name="Card0" parent="Bottom/Stack/Hand" unique_id=181118433 instance=ExtResource("card")]
+layout_mode = 2
 
-[node name="Card1" parent="Bottom/Stack/Hand" instance=ExtResource("card")]
-custom_minimum_size = Vector2(88, 124)
-show_information = false
-focus_mode = 0
+[node name="Card1" parent="Bottom/Stack/Hand" unique_id=1164059320 instance=ExtResource("card")]
+layout_mode = 2
 
-[node name="Card2" parent="Bottom/Stack/Hand" instance=ExtResource("card")]
-custom_minimum_size = Vector2(88, 124)
-show_information = false
-focus_mode = 0
+[node name="Card2" parent="Bottom/Stack/Hand" unique_id=1422300814 instance=ExtResource("card")]
+layout_mode = 2
+
+[node name="DeckPile" type="Control" parent="Bottom/Stack" unique_id=1174526992]
+anchors_preset = 0
+offset_left = 24.0
+offset_top = 88.0
+offset_right = 92.0
+offset_bottom = 184.0
+pivot_offset = Vector2(34, 48)
+mouse_filter = 2
+
+[node name="Back0" type="TextureRect" parent="Bottom/Stack/DeckPile" unique_id=565734381]
+texture_filter = 1
+layout_mode = 0
+offset_left = -9.0
+offset_top = -9.0
+offset_right = 55.0
+offset_bottom = 81.0
+mouse_filter = 2
+texture = ExtResource("back")
+expand_mode = 1
+
+[node name="Back1" type="TextureRect" parent="Bottom/Stack/DeckPile" unique_id=780218118]
+texture_filter = 1
+layout_mode = 0
+offset_left = -6.0
+offset_top = -6.0
+offset_right = 58.0
+offset_bottom = 84.0
+mouse_filter = 2
+texture = ExtResource("back")
+expand_mode = 1
+
+[node name="Back2" type="TextureRect" parent="Bottom/Stack/DeckPile" unique_id=1482171391]
+texture_filter = 1
+layout_mode = 0
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 61.0
+offset_bottom = 87.0
+mouse_filter = 2
+texture = ExtResource("back")
+expand_mode = 1
+
+[node name="Back3" type="TextureRect" parent="Bottom/Stack/DeckPile" unique_id=1231805489]
+texture_filter = 1
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 90.0
+mouse_filter = 2
+texture = ExtResource("back")
+expand_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Bottom/Stack/DeckPile" unique_id=772658489]
+libraries/ = SubResource("deck_fx")
+
+[node name="Flights" type="Node2D" parent="." unique_id=1606376304]
+z_index = 20

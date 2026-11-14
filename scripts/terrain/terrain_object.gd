@@ -7,4 +7,4 @@ var surface_velocity: Vector2 = Vector2.ZERO
 var frame_displacement: Vector2 = Vector2.ZERO
 
 func is_moving_surface() -> bool:
-    return is_class("AnimatableBody2D")
+	return is_class("AnimatableBody2D")

@@ -2,6 +2,9 @@ class_name GolfBall
 extends CharacterBody2D
 signal effect_changed(effect: CardDefinition.Effect)
 signal contacted(body: TerrainObject, normal: Vector2)
+signal launched(card: CardDefinition, impulse: Vector2, from_position: Vector2)
+signal struck(body: TerrainObject, normal: Vector2, speed: float)
+signal ghost_entered
 @export var tuning: GameTuning
 @export var sprite: Sprite2D
 @export var collision_shape: CollisionShape2D
@@ -62,12 +65,14 @@ func set_card_effect(card: CardDefinition, notify: bool = true) -> void:
         effect_changed.emit(active_effect)
 
 func play_card(card: CardDefinition, impulse: Vector2, notify: bool = true) -> void:
+    var from_position: Vector2 = global_position
     if card.effect == CardDefinition.Effect.REWIND:
         # Preserve the qualified return point; teleport only the shot origin.
         global_position = safe_position
         reset_physics_interpolation()
     set_card_effect(card, false)
     launch(impulse, ShotCalculation.clears_velocity(card))
+    launched.emit(card, impulse, from_position)
     if notify:
         effect_changed.emit(active_effect)
 
@@ -88,6 +93,9 @@ func _ghost_before_move(motion: Vector2) -> void:
     ghost_state = GhostState.PASSING
     ghost_expires_on_exit = true
     add_collision_exception_with(body)
+    if active_effect == CardDefinition.Effect.GHOST:
+        sprite.modulate.a = ghost_tint.a * 0.5
+    ghost_entered.emit()
 
 func _ghost_after_move() -> void:
     if ghost_state != GhostState.PASSING:
@@ -128,6 +136,10 @@ func launch(impulse: Vector2, clear_momentum: bool = false) -> void:
     velocity = momentum + impulse
 
 func reset_motion(at_position: Vector2) -> void:
+    if effect_animation != null:
+        effect_animation.stop()
+    sprite.scale = Vector2.ONE
+    sprite.rotation = 0.0
     _clear_ghost()
     set_card_effect(null)
     global_position = at_position
@@ -185,6 +197,8 @@ func step_motion(delta: float) -> void:
             departing_body = null
             leaving_old = false
         contacted.emit(body, normal)
+        if incoming < -tuning.bounce_threshold:
+            struck.emit(body, normal, -incoming)
         if (glue_enabled or body.surface.attaches_on_contact) and not leaving_old:
             attached_body = body
             local_anchor = body.to_local(global_position)

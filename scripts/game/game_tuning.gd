@@ -16,6 +16,11 @@ extends Resource
 @export_group("Aiming (screen pixels)")
 @export var drag_dead_zone: float = 8.0
 @export var maximum_drag: float = 160.0
+@export_group("Shot feel")
+## Shared by live shots and prediction. 25% more speed gives ~56% more range.
+@export_range(1.0, 2.0) var shot_power_multiplier: float = 1.25
+@export_range(0.1, 2.0) var card_redraw_delay: float = 1.0
+@export_range(0.2, 1.0) var card_deal_seconds: float = 0.58
 @export_group("Elixir")
 @export var maximum_elixir: int = 10
 @export var regeneration_seconds: float = 3.0

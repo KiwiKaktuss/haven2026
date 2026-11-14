@@ -8,7 +8,7 @@ func _enter_tree() -> void:
 func run_check() -> void:
     for frame: int in range(60):
         await get_tree().process_frame
-    for path: String in ["res://scenes/ball/ball.tscn", "res://scenes/game/trajectory_preview.tscn", "res://scenes/ui/hud.tscn", "res://scenes/game/game_session.tscn"]:
+    for path: String in ["res://scenes/ball/ball.tscn", "res://scenes/game/trajectory_preview.tscn", "res://scenes/ui/hud.tscn", "res://scenes/ui/card_flight.tscn", "res://scenes/feedback/ball_feedback.tscn", "res://scenes/feedback/feedback_burst.tscn", "res://scenes/game/game_session.tscn"]:
         EditorInterface.open_scene_from_path(path)
         for frame: int in range(120):
             await get_tree().process_frame
@@ -65,6 +65,16 @@ func run_check() -> void:
         get_tree().root.add_child(instance)
         passed = passed and instance.get_node(slot_path).custom_minimum_size == Vector2(139, 49)
         instance.free()
+    EditorInterface.open_scene_from_path("res://scenes/ui/card_flight.tscn")
+    for frame: int in range(120):
+        await get_tree().process_frame
+        if EditorInterface.get_edited_scene_root().scene_file_path == "res://scenes/ui/card_flight.tscn":
+            break
+    var flight: Node = EditorInterface.get_edited_scene_root()
+    flight.set("back_texture", load("res://art/ball.png"))
+    EditorInterface.mark_scene_as_unsaved()
+    EditorInterface.save_scene_as("res://tests/.editor_check/flight.tscn", false)
+    await get_tree().process_frame
     var output: Array = []
     var code: int = OS.execute(OS.get_executable_path(), ["--headless", "--path", ProjectSettings.globalize_path("res://"), "--script", "res://tests/test_editor_layout.gd", "--log-file", "/tmp/haven2026-editor-layout-runtime.log"], output, true)
     for line: String in output:

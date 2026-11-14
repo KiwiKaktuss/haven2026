@@ -2,6 +2,8 @@ class_name GameSession
 extends Node2D
 ## Owns attempt state; never constructs terrain or HUD hierarchies.
 signal shot_committed(card: CardDefinition)
+signal card_presented(card: CardDefinition, slot: int, screen_position: Vector2)
+signal shot_rejected(slot: int)
 signal elixir_changed(amount: float)
 signal pause_requested
 signal follow_requested
@@ -28,6 +30,8 @@ var _resume_state: State = State.READY
 
 func _ready() -> void:
     start_attempt()
+    if has_node("Backdrop"):
+        $Backdrop.configure(course_index)
     if courses == null or courses.courses.is_empty():
         return
     var definition: CourseDefinition = courses.courses[clampi(course_index, 0, courses.courses.size() - 1)]
@@ -106,18 +110,21 @@ func advance_clock(delta: float) -> void:
         return
     if state == State.PLAYING:
         elapsed_seconds += delta
+    deck.advance_deal(delta)
     var next: float = minf(float(tuning.maximum_elixir), elixir + delta / maxf(tuning.regeneration_seconds, 0.001))
     if next != elixir:
         elixir = next
         elixir_changed.emit(elixir)
 
 ## drag is current pointer minus fixed mouse-down anchor in screen pixels.
-## All failure paths precede RNG use, detachment, pile changes and signals.
-func try_shot(drag: Vector2) -> bool:
+## All failure paths precede RNG use, detachment, pile changes and success signals.
+func try_shot(drag: Vector2, screen_position: Vector2 = Vector2.INF) -> bool:
     if _committing or state not in [State.READY, State.PLAYING]:
         return false
     var card: CardDefinition = deck.selected_card()
-    if card == null or not ShotCalculation.valid_drag(drag, tuning) or elixir < card.cost:
+    if card == null or not deck.slot_ready(deck.selected_slot) or not ShotCalculation.valid_drag(drag, tuning) or elixir < card.cost:
+        if card != null and ShotCalculation.valid_drag(drag, tuning):
+            shot_rejected.emit(deck.selected_slot)
         return false
     _committing = true
     var half_spread: float = ShotCalculation.spread(card, ShotCalculation.strength(drag, tuning))
@@ -126,12 +133,15 @@ func try_shot(drag: Vector2) -> bool:
     ball.play_card(card, impulse, false)
     shots += 1
     state = State.PLAYING
+    var played_slot: int = deck.selected_slot
     deck.cycle_selected(false)
+    deck.replacement_remaining[played_slot] = tuning.card_redraw_delay + tuning.card_deal_seconds
     # Publish only after every authoritative field is consistent. Reentrant
     # signal listeners cannot initiate a nested transaction.
     ball.effect_changed.emit(ball.active_effect)
     deck.hand_changed.emit()
     elixir_changed.emit(elixir)
+    card_presented.emit(card, played_slot, screen_position if screen_position.is_finite() else get_viewport().get_mouse_position())
     shot_committed.emit(card)
     follow_requested.emit()
     _committing = false

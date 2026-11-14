@@ -1,10 +1,24 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene format=3]
 [ext_resource type="Script" path="res://scripts/ball/ball.gd" id="1"]
 [ext_resource type="Texture2D" path="res://art/ball.png" id="2"]
 [ext_resource type="Resource" path="res://resources/game/default_tuning.tres" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/feedback/ball_feedback.tscn" id="feedback"]
 [sub_resource type="CircleShape2D" id="Shape"]
 radius = 2.0
+[sub_resource type="Animation" id="launch"]
+resource_name = "launch"
+length = 0.24
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.08, 0.24), "transitions": PackedFloat32Array(1, 1, 1), "update": 0, "values": [Vector2(1.7, 0.65), Vector2(0.85, 1.15), Vector2(1, 1)]}
+[sub_resource type="Animation" id="impact"]
+resource_name = "impact"
+length = 0.24
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.08, 0.24), "transitions": PackedFloat32Array(1, 1, 1), "update": 0, "values": [Vector2(0.65, 1.35), Vector2(1.1, 0.9), Vector2(1, 1)]}
 [sub_resource type="AnimationLibrary" id="Effects"]
+_data = {&"launch": SubResource("launch"), &"impact": SubResource("impact")}
 [node name="Ball" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collision_shape", "effect_animation", "fire_trail")]
 texture_filter = 1
 collision_layer = 2
@@ -41,3 +55,6 @@ emitting = false
 one_shot = true
 [node name="EffectAnimation" type="AnimationPlayer" parent="."]
 libraries = {&"": SubResource("Effects")}
+
+[node name="Feedback" parent="." node_paths=PackedStringArray("ball") instance=ExtResource("feedback")]
+ball = NodePath("..")

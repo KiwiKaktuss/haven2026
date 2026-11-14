@@ -7,11 +7,11 @@
 [ext_resource type="Resource" path="res://resources/game/default_tuning.tres" id="5"]
 [ext_resource type="Resource" path="res://resources/levels/catalog.tres" id="6"]
 [ext_resource type="Script" uid="uid://cqxdgqpisq218" path="res://scripts/cards/deck_model.gd" id="7"]
-[ext_resource type="Resource" path="res://resources/cards/catalog.tres" id="8"]
+[ext_resource type="Resource" uid="uid://cb2nsbhlnhbj0" path="res://resources/cards/catalog.tres" id="8"]
 [ext_resource type="Texture2D" uid="uid://f6t57kv2v8rd" path="res://art/all_tiles.png" id="9"]
-
-[ext_resource type="Script" path="res://scripts/aim/aim_controller.gd" id="aim"]
-[ext_resource type="Script" path="res://scripts/camera/course_camera.gd" id="camera"]
+[ext_resource type="Script" uid="uid://d3rkyxdkcr33j" path="res://scripts/aim/aim_controller.gd" id="aim"]
+[ext_resource type="PackedScene" path="res://scenes/feedback/course_backdrop.tscn" id="backdrop"]
+[ext_resource type="Script" uid="uid://bqckng8b055yt" path="res://scripts/camera/course_camera.gd" id="camera"]
 
 [node name="GameSession" type="Node2D" unique_id=1347492993 node_paths=PackedStringArray("course_host", "ball", "deck", "hud", "aim", "camera_controller")]
 texture_filter = 1
@@ -29,7 +29,6 @@ camera_controller = NodePath("CameraRig")
 
 [node name="Ball" parent="." unique_id=448906579 instance=ExtResource("2")]
 position = Vector2(-70, -40)
-simulation_enabled = true
 
 [node name="AimController" type="Node2D" parent="." unique_id=990583632 node_paths=PackedStringArray("session", "preview", "camera")]
 process_physics_priority = 100
@@ -37,16 +36,14 @@ script = ExtResource("aim")
 session = NodePath("..")
 preview = NodePath("../TrajectoryPreview")
 camera = NodePath("../CameraRig/Camera2D")
-enabled = true
 
 [node name="TrajectoryPreview" parent="." unique_id=1397546951 instance=ExtResource("3")]
 
-[node name="CameraRig" type="Node2D" parent="." unique_id=715251886 node_paths=PackedStringArray("session", "ball", "camera")]
+[node name="CameraRig" type="Node2D" parent="." unique_id=715251886 node_paths=PackedStringArray("camera", "ball", "session")]
 script = ExtResource("camera")
-session = NodePath("..")
-ball = NodePath("../Ball")
 camera = NodePath("Camera2D")
-enabled = true
+ball = NodePath("../Ball")
+session = NodePath("..")
 follow_offset = Vector2(100, 70)
 viewport_inset_top_left = Vector2(24, 56)
 viewport_inset_bottom_right = Vector2(24, 208)
@@ -68,5 +65,8 @@ texture = ExtResource("9")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=369564048]
 
 [node name="HUD" parent="CanvasLayer" unique_id=1096128400 instance=ExtResource("4")]
+layout_mode = 3
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Backdrop" parent="." unique_id=830088 instance=ExtResource("backdrop")]

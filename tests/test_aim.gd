@@ -257,7 +257,7 @@ func prediction_cases() -> void:
     var card: CardDefinition = catalog.find_card(&"classic")
     var drag: Vector2 = Vector2(0, 80)
     var predicted: Dictionary = preview.predict(ball, card, drag)
-    var expected: Vector2 = ball.global_position + BallMotion.accelerate(Vector2(17, -90), ball.tuning.gravity, dt) * dt
+    var expected: Vector2 = ball.global_position + BallMotion.accelerate(Vector2(17, 0) + ShotCalculation.impulse(card, drag, ball.tuning), ball.tuning.gravity, dt) * dt
     check(predicted.points[1].distance_to(expected) < 0.01, "Preview uses carry exactly once")
     ball.play_card(card, ShotCalculation.impulse(card, drag, ball.tuning))
     ball.step_motion(dt)

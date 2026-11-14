@@ -6,6 +6,8 @@ extends Button
 @export var selected_lift: float = 6.0
 @export var hover_lift: float = 3.0
 @export var information_gap: float = 6.0
+@export_range(1.0, 30.0) var lift_speed: float = 18.0
+@export_range(0.1, 1.0) var unaffordable_opacity: float = 0.48
 @export var selected_style: StyleBox = preload("res://resources/ui/pixel/selected.tres")
 @export var pending_style: StyleBox = preload("res://resources/ui/pixel/hover.tres")
 var definition: CardDefinition
@@ -14,6 +16,34 @@ var affordable: bool = true
 var pending_choice: bool = false
 var _hovered: bool = false
 var _information_fit_queued: bool = false
+var deal_pending: bool = false
+var _lift_target: float = 0.0
+var _feedback_tween: Tween
+
+func set_deal_pending(value: bool) -> void:
+    deal_pending = value
+    $Artwork.visible = not value and definition != null
+    mouse_filter = Control.MOUSE_FILTER_IGNORE if value else Control.MOUSE_FILTER_STOP
+    if has_node("ReadyMark"):
+        $ReadyMark.visible = selected and not value
+
+func _process(delta: float) -> void:
+    if not decorated:
+        $Artwork.position.y = lerpf($Artwork.position.y, _lift_target, 1.0 - exp(-lift_speed * delta))
+
+func land() -> void:
+    if decorated:
+        return
+    $Artwork.position.y = -16.0
+
+func reject_play() -> void:
+    if decorated:
+        return
+    if _feedback_tween != null:
+        _feedback_tween.kill()
+    _feedback_tween = create_tween()
+    for offset: float in [-4.0, 4.0, -2.0, 0.0]:
+        _feedback_tween.tween_property($Artwork, "position:x", offset, 0.055)
 
 func _ready() -> void:
     mouse_entered.connect(_show_information)
@@ -29,7 +59,7 @@ func bind(card: CardDefinition, is_selected: bool, can_afford: bool = true, _key
     selected = is_selected
     affordable = can_afford
     $Artwork.texture = card.artwork
-    $Artwork.show()
+    $Artwork.visible = not deal_pending
     $EmptySymbol.hide()
     $Caption.text = card.display_name
     set_pressed_no_signal(selected)
@@ -64,7 +94,10 @@ func _refresh_visuals() -> void:
         $Marker.visible = selected and definition != null
         $Marker.text = "↔" if pending_choice else "✓"
     else:
-        $Artwork.position.y = -selected_lift if selected else (-hover_lift if _hovered else 0.0)
+        _lift_target = -selected_lift if selected else (-hover_lift if _hovered else 0.0)
+        $Artwork.self_modulate.a = 1.0 if affordable else unaffordable_opacity
+        if has_node("ReadyMark"):
+            $ReadyMark.visible = selected and not deal_pending
 
 func _show_information() -> void:
     _hovered = true

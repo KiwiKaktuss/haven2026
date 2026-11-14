@@ -16,70 +16,84 @@ extends Node2D
 @export var viewport_inset_bottom_right: Vector2 = Vector2.ZERO
 @export var enabled: bool = true
 var following: bool = true
+@export_group("Feedback")
+@export_range(0.0, 4.0) var maximum_kick_pixels: float = 2.0
+@export_range(1.0, 30.0) var kick_decay: float = 16.0
+var _kick: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
-    session.follow_requested.connect(recenter)
-    get_viewport().size_changed.connect(_viewport_changed)
-    _viewport_changed()
+	session.follow_requested.connect(recenter)
+	session.shot_committed.connect(_shot_kick)
+	ball.struck.connect(_impact_kick)
+	get_viewport().size_changed.connect(_viewport_changed)
+	_viewport_changed()
 
 func configure(course: GolfCourse) -> void:
-    bounds = course.camera_bounds
-    minimum_zoom = course.minimum_zoom
-    maximum_zoom = course.maximum_zoom
-    pan_speed = course.camera_pan_speed
-    smoothing = course.camera_smoothing
-    _viewport_changed()
-    recenter(true)
+	bounds = course.camera_bounds
+	minimum_zoom = course.minimum_zoom
+	maximum_zoom = course.maximum_zoom
+	pan_speed = course.camera_pan_speed
+	smoothing = course.camera_smoothing
+	_viewport_changed()
+	recenter(true)
 
 func overview_zoom() -> float:
-    var viewport_size: Vector2 = (get_viewport_rect().size - viewport_inset_top_left - viewport_inset_bottom_right).max(Vector2.ONE)
-    var fit: float = minf(viewport_size.x / maxf(bounds.size.x, 1), viewport_size.y / maxf(bounds.size.y, 1))
-    return minf(minimum_zoom, fit)
+	var viewport_size: Vector2 = (get_viewport_rect().size - viewport_inset_top_left - viewport_inset_bottom_right).max(Vector2.ONE)
+	var fit: float = minf(viewport_size.x / maxf(bounds.size.x, 1), viewport_size.y / maxf(bounds.size.y, 1))
+	return minf(minimum_zoom, fit)
 
 func _viewport_changed() -> void:
-    if not is_inside_tree():
-        return
-    set_zoom(camera.zoom.x)
+	if not is_inside_tree():
+		return
+	set_zoom(camera.zoom.x)
 
 func set_zoom(amount: float) -> void:
-    camera.zoom = Vector2.ONE * clampf(amount, overview_zoom(), maximum_zoom)
-    camera.global_position = clamped(camera.global_position)
+	camera.zoom = Vector2.ONE * clampf(amount, overview_zoom(), maximum_zoom)
+	camera.global_position = clamped(camera.global_position)
 
 func clamped(at: Vector2) -> Vector2:
-    var usable: Vector2 = (get_viewport_rect().size - viewport_inset_top_left - viewport_inset_bottom_right).max(Vector2.ONE)
-    var offset: Vector2 = (viewport_inset_top_left - viewport_inset_bottom_right) * 0.5 / camera.zoom
-    var half: Vector2 = usable * 0.5 / camera.zoom
-    var visible_center: Vector2 = at + offset
-    var center: Vector2 = bounds.get_center()
-    return Vector2(center.x if half.x * 2 >= bounds.size.x else clampf(visible_center.x, bounds.position.x + half.x, bounds.end.x - half.x), center.y if half.y * 2 >= bounds.size.y else clampf(visible_center.y, bounds.position.y + half.y, bounds.end.y - half.y)) - offset
+	var usable: Vector2 = (get_viewport_rect().size - viewport_inset_top_left - viewport_inset_bottom_right).max(Vector2.ONE)
+	var offset: Vector2 = (viewport_inset_top_left - viewport_inset_bottom_right) * 0.5 / camera.zoom
+	var half: Vector2 = usable * 0.5 / camera.zoom
+	var visible_center: Vector2 = at + offset
+	var center: Vector2 = bounds.get_center()
+	return Vector2(center.x if half.x * 2 >= bounds.size.x else clampf(visible_center.x, bounds.position.x + half.x, bounds.end.x - half.x), center.y if half.y * 2 >= bounds.size.y else clampf(visible_center.y, bounds.position.y + half.y, bounds.end.y - half.y)) - offset
 
 func recenter(snap: bool = false) -> void:
-    following = true
-    if snap:
-        camera.global_position = clamped(ball.global_position + follow_offset / camera.zoom)
+	following = true
+	if snap:
+		camera.global_position = clamped(ball.global_position + follow_offset / camera.zoom)
 
 func pan(direction: Vector2, delta: float) -> void:
-    if direction.is_zero_approx():
-        return
-    following = false
-    camera.global_position = clamped(camera.global_position + direction.limit_length() * pan_speed * delta / camera.zoom.x)
+	if direction.is_zero_approx():
+		return
+	following = false
+	camera.global_position = clamped(camera.global_position + direction.limit_length() * pan_speed * delta / camera.zoom.x)
 
 func _unhandled_input(event: InputEvent) -> void:
-    if not enabled or session.state not in [GameSession.State.READY, GameSession.State.PLAYING]:
-        return
-    if event.is_action_pressed(&"zoom_in"):
-        set_zoom(camera.zoom.x * wheel_factor)
-        get_viewport().set_input_as_handled()
-    elif event.is_action_pressed(&"zoom_out"):
-        set_zoom(camera.zoom.x / wheel_factor)
-        get_viewport().set_input_as_handled()
-    elif event.is_action_pressed(&"recenter"):
-        recenter()
-        get_viewport().set_input_as_handled()
+	if not enabled or session.state not in [GameSession.State.READY, GameSession.State.PLAYING]:
+		return
+	if event.is_action_pressed(&"zoom_in"):
+		set_zoom(camera.zoom.x * wheel_factor)
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed(&"zoom_out"):
+		set_zoom(camera.zoom.x / wheel_factor)
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed(&"recenter"):
+		recenter()
+		get_viewport().set_input_as_handled()
 
 func _process(delta: float) -> void:
-    if not enabled or session.state not in [GameSession.State.READY, GameSession.State.PLAYING]:
-        return
-    pan(Input.get_vector(&"pan_left", &"pan_right", &"pan_up", &"pan_down"), delta)
-    if following:
-        camera.global_position = camera.global_position.lerp(clamped(ball.global_position + follow_offset / camera.zoom), 1.0 - exp(-smoothing * delta))
+	if not enabled or session.state not in [GameSession.State.READY, GameSession.State.PLAYING]:
+		return
+	pan(Input.get_vector(&"pan_left", &"pan_right", &"pan_up", &"pan_down"), delta)
+	if following:
+		camera.global_position = camera.global_position.lerp(clamped(ball.global_position + follow_offset / camera.zoom), 1.0 - exp(-smoothing * delta))
+	_kick = _kick.lerp(Vector2.ZERO, 1.0 - exp(-kick_decay * delta))
+	camera.offset = _kick / camera.zoom
+
+func _shot_kick(_card: CardDefinition) -> void:
+	_kick = -ball.world_velocity().normalized() * maximum_kick_pixels
+
+func _impact_kick(_body: TerrainObject, normal: Vector2, speed: float) -> void:
+	_kick = normal * maximum_kick_pixels * clampf(speed / 300.0, 0.0, 0.75)

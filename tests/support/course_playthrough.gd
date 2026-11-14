@@ -49,8 +49,9 @@ func step() -> void:
 
 func shoot(slot: int, impulse: Vector2) -> bool:
     var card: CardDefinition = session.deck.hand[slot]
-    var drag: Vector2 = -impulse / card.power * session.tuning.maximum_drag
-    if impulse.length() > card.power + 0.001 or not ShotCalculation.valid_drag(drag, session.tuning):
+    var maximum_power: float = card.power * session.tuning.shot_power_multiplier
+    var drag: Vector2 = -impulse / maximum_power * session.tuning.maximum_drag
+    if impulse.length() > maximum_power + 0.001 or not ShotCalculation.valid_drag(drag, session.tuning):
         return false
     var origin: Vector2 = session.ball.global_position
     session.deck.select_slot(slot)
@@ -73,6 +74,7 @@ func snapshot() -> Dictionary:
         'elapsed': session.elapsed_seconds, 'random': session.random.state,
         'deck_random': session.deck.random.state, 'hand': session.deck.hand.duplicate(),
         'draw': session.deck.draw_pile.duplicate(), 'discard': session.deck.discard_pile.duplicate(),
+        'deal_remaining': session.deck.replacement_remaining.duplicate(),
         'slot': session.deck.selected_slot, 'dwell': session.course.goal_cup.dwell,
         'entered_mover_envelope': entered_mover_envelope}
 
@@ -103,6 +105,7 @@ func restore(saved: Dictionary) -> void:
     session.deck.draw_pile.assign(saved.draw)
     session.deck.discard_pile.assign(saved.discard)
     session.deck.selected_slot = saved.slot
+    session.deck.replacement_remaining = saved.deal_remaining.duplicate()
     session.course.goal_cup.dwell = saved.dwell
     entered_mover_envelope = saved.entered_mover_envelope
 

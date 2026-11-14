@@ -1,0 +1,36 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://scripts/feedback/feedback_burst.gd" id="script"]
+[ext_resource type="Texture2D" path="res://art/ball.png" id="pixel"]
+[sub_resource type="Animation" id="pop"]
+resource_name = "pop"
+length = 0.42
+tracks/0/type = "value"
+tracks/0/path = NodePath("Ring:scale")
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.32), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Vector2(0.5, 0.5), Vector2(3.5, 3.5)]}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Ring:modulate")
+tracks/1/keys = {"times": PackedFloat32Array(0, 0.32), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [Color(1, 1, 1, 0.85), Color(1, 1, 1, 0)]}
+[sub_resource type="AnimationLibrary" id="library"]
+_data = {&"pop": SubResource("pop")}
+[node name="FeedbackBurst" type="Node2D"]
+texture_filter = 1
+z_index = 6
+script = ExtResource("script")
+[node name="Ring" type="Line2D" parent="."]
+points = PackedVector2Array(4.000, 0.000, 3.464, 2.000, 2.000, 3.464, 0.000, 4.000, -2.000, 3.464, -3.464, 2.000, -4.000, 0.000, -3.464, -2.000, -2.000, -3.464, -0.000, -4.000, 2.000, -3.464, 3.464, -2.000, 4.000, -0.000)
+width = 0.7
+[node name="Particles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 12
+lifetime = 0.35
+one_shot = true
+explosiveness = 1.0
+texture = ExtResource("pixel")
+spread = 70.0
+gravity = Vector2(0, 28)
+initial_velocity_min = 12.0
+initial_velocity_max = 40.0
+scale_amount_min = 0.16
+scale_amount_max = 0.4
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {&"": SubResource("library")}

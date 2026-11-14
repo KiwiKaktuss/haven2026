@@ -114,10 +114,12 @@ func run() -> void:
     var old_slot: int = deck.selected_slot
     var old_card: CardDefinition = deck.selected_card()
     var old_velocity: Vector2 = ball.world_velocity()
+    var reshuffles_on_play: bool = deck.draw_pile.is_empty()
     check(session.try_shot(Vector2(0, 160)), "Valid release commits")
     check(session.shots == 1 and session.elixir == 6 and shot_events == [&"fire"] and nested == [false], "One commit; no reentrancy")
-    check(deck.selected_slot == old_slot and deck.discard_pile.has(old_card) and conservation(deck), "Successful play cycles")
-    check(is_equal_approx((ball.velocity - old_velocity).length(), old_card.power), "Random angle does not randomize power")
+    var correct_piles: bool = deck.discard_pile.is_empty() and deck.draw_pile.size() == 3 if reshuffles_on_play else deck.discard_pile.has(old_card)
+    check(deck.selected_slot == old_slot and correct_piles and conservation(deck), "Successful play cycles, including a discard reshuffle")
+    check(is_equal_approx((ball.velocity - old_velocity).length(), old_card.power * session.tuning.shot_power_multiplier), "Random angle does not randomize power")
     session.advance_clock(3)
     check(session.elapsed_seconds == 3 and session.elixir == 7, "Active clock/regeneration")
     var prior_effect: CardDefinition.Effect = ball.active_effect

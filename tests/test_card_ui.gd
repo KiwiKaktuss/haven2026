@@ -104,7 +104,7 @@ func run() -> void:
     session.elixir = 0
     session.hud.refresh()
     var hand: CardView = session.hud.get_node("Bottom/Stack/Hand/Card0")
-    check(not hand.affordable and hand.get_node("Artwork").modulate == Color.WHITE, "Affordability leaves the original sprite unchanged")
+    check(not hand.affordable and hand.get_node("Artwork").self_modulate.a < 1.0, "Unaffordable cards fade without changing source textures")
     hand._show_information()
     check(not hand.get_node("Information").visible, "Gameplay hand stays graphics only on hover")
     session.elixir = 10
