@@ -3,14 +3,14 @@ signal done_requested(ids: Array[StringName])
 @export var catalog: CardCatalog = preload("res://resources/cards/catalog.tres")
 var selected: Array[StringName] = []
 var pending_swap: StringName = &""
+var _saved_selection: Array[StringName] = []
 
 func _ready() -> void:
     for index: int in range(catalog.cards.size()):
         get_node("Margin/Content/Grid/Card%s" % index).pressed.connect(_toggle.bind(catalog.cards[index].id))
     for index: int in range(6):
         get_node("Margin/Content/BattleDeck/DeckContent/Hand/Slot%s" % index).pressed.connect(_deck_slot_clicked.bind(index))
-    $Margin/Content/Footer/Done.pressed.connect(_done)
-    $Margin/Content/Footer/CancelSwap.pressed.connect(_cancel_swap)
+    $Margin/Content/Footer/Back.pressed.connect(_done)
     refresh()
 
 func configure(ids: Array[StringName]) -> void:
@@ -19,6 +19,7 @@ func configure(ids: Array[StringName]) -> void:
         if catalog.find_card(id) != null and not selected.has(id) and selected.size() < 6:
             selected.append(id)
     pending_swap = &""
+    _saved_selection = selected.duplicate()
     refresh()
 
 func _toggle(id: StringName) -> void:
@@ -63,13 +64,16 @@ func refresh() -> void:
         else:
             view.show_empty(index)
     $Margin/Content/Header/Count.text = "%s / 6 cards" % selected.size()
-    $Margin/Content/Footer/Done.disabled = selected.size() != 6 or not pending_swap.is_empty()
-    $Margin/Content/Footer/CancelSwap.visible = not pending_swap.is_empty()
     if not pending_swap.is_empty():
-        $Margin/Content/Footer/Hint.text = "Choose a deck card to replace with %s." % catalog.find_card(pending_swap).display_name
+        $Margin/Content/BattleDeck/DeckContent/Summary/Tip.text = "Replace a deck card with %s, or click it again to cancel." % catalog.find_card(pending_swap).display_name
     else:
-        $Margin/Content/Footer/Hint.text = "Choose a collection card to swap." if selected.size() == 6 else "Choose %s more card%s from the collection." % [6 - selected.size(), "" if selected.size() == 5 else "s"]
+        $Margin/Content/BattleDeck/DeckContent/Summary/Tip.text = "Six cards · Three in hand" if selected.size() == 6 else "Choose %s more card%s to complete your deck." % [6 - selected.size(), "" if selected.size() == 5 else "s"]
+
+func show_save_error() -> void:
+    $Margin/Content/BattleDeck/DeckContent/Summary/Tip.text = "Could not save your deck. Press Back to try again."
 
 func _done() -> void:
-    if selected.size() == 6 and pending_swap.is_empty():
-        done_requested.emit(selected.duplicate())
+    _cancel_swap()
+    # Back always navigates. An unfinished edit cannot overwrite a valid deck.
+    var ids: Array[StringName] = selected if selected.size() == 6 else _saved_selection
+    done_requested.emit(ids.duplicate())

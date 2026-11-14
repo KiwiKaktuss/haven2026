@@ -9,6 +9,8 @@ func run() -> void:
     for size: Vector2i in [Vector2i(800, 640), Vector2i(1440, 900)]:
         root.size = size
         main._show_deck()
+        while main._journey_moving:
+            await process_frame
         await frames()
         await save_image("deck_%s" % size.x)
         main._start_course(3)

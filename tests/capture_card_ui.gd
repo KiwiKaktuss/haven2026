@@ -8,6 +8,8 @@ func _initialize() -> void:
     call_deferred("run")
 
 func settle() -> void:
+    while main != null and main._journey_moving:
+        await process_frame
     # Native window resizing and text shaping can finish after fast render frames.
     await create_timer(0.3).timeout
     for frame: int in range(12):
@@ -62,7 +64,7 @@ func run() -> void:
         for card: Control in editor.get_node("Margin/Content/Grid").get_children():
             enclosed(editor.get_global_rect(), card.get_global_rect(), card.name)
             enclosed(card.get_global_rect().grow(8), card.get_node("Artwork").get_global_rect(), card.name + " content")
-        enclosed(editor.get_global_rect(), editor.get_node("Margin/Content/Footer/Done").get_global_rect(), "Save deck")
+        enclosed(editor.get_global_rect(), editor.get_node("Margin/Content/Footer/Back").get_global_rect(), "Back")
         await capture("deck_%s" % window_size.x)
         if window_size.x == 960:
             var view: CardView = editor.get_node("Margin/Content/Grid/Card0")

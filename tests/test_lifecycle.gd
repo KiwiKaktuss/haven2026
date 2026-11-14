@@ -26,6 +26,10 @@ func screen() -> Control:
 func click(path: String) -> void:
     screen().get_node(path).pressed.emit()
 
+func finish_menu_travel() -> void:
+    while main._journey_moving:
+        await process_frame
+
 func pointer(at: Vector2, down: bool) -> void:
     var move := InputEventMouseMotion.new()
     move.position = at
@@ -62,20 +66,23 @@ func run() -> void:
     root.add_child(main)
     await ticks(2)
     click("Center/Content/Deck")
+    await finish_menu_travel()
     check(screen().selected == store.equipped, "Deck editor retains equipped choices")
     var original: Array[StringName] = screen().selected.duplicate()
     screen()._toggle(original[0])
-    check(screen().selected.size() == 5 and screen().get_node("Margin/Content/Footer/Done").disabled, "Cannot leave with five cards")
+    check(screen().selected.size() == 5 and not screen().get_node("Margin/Content/Footer/Back").disabled, "Back remains available with five cards")
     var done_events: Array = []
     screen().done_requested.connect(func(_ids: Array[StringName]) -> void: done_events.append(true))
     screen()._done()
-    check(done_events.is_empty(), "Invalid deck cannot emit Done")
-    screen()._toggle(original[0])
+    check(done_events.size() == 1 and main.save.equipped == original, "Leaving an incomplete edit preserves the saved deck")
+    await finish_menu_travel()
+    click("Center/Content/Deck")
+    await finish_menu_travel()
     screen()._toggle(&"glue")
     check(screen().selected.size() == 6 and not screen().selected.has(&"glue") and screen().pending_swap == &"glue", "Six-card cap stages a replacement")
     screen()._cancel_swap()
-    click("Margin/Content/Footer/Done")
-    await ticks()
+    click("Margin/Content/Footer/Back")
+    await finish_menu_travel()
     click("Center/Content/Play")
     check(screen().get_node("Center/Content/Course3").visible, "All four courses immediately available")
     click("Center/Content/Back")

@@ -4,6 +4,27 @@
 [ext_resource type="StyleBox" uid="uid://4xk1aoxu4nrf" path="res://resources/ui/pixel/panel.tres" id="panel"]
 [ext_resource type="Script" uid="uid://cxd6krumbxvfw" path="res://scripts/ui/deck_editor.gd" id="script"]
 [ext_resource type="Theme" uid="uid://vd5i5ly3o81k" path="res://resources/ui/default_theme.tres" id="theme"]
+[ext_resource type="Texture2D" path="res://art/green.png" id="green"]
+
+[sub_resource type="Gradient" id="depth_gradient"]
+colors = PackedColorArray(0.035, 0.12, 0.09, 0, 0.035, 0.12, 0.09, 0.32)
+
+[sub_resource type="GradientTexture2D" id="depth_texture"]
+gradient = SubResource("depth_gradient")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="StyleBoxFlat" id="back_focus"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.92, 0.88, 0.67, 1)
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [node name="DeckEditor" type="Control" unique_id=164491461]
 texture_filter = 2
@@ -16,12 +37,24 @@ grow_vertical = 2
 theme = ExtResource("theme")
 script = ExtResource("script")
 
-[node name="Background" type="ColorRect" parent="." unique_id=1689673262]
+[node name="Background" type="TextureRect" parent="." unique_id=1689673262]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-color = Color(0.94, 0.95, 0.96, 1)
+texture = ExtResource("green")
+expand_mode = 1
+
+[node name="DepthShade" type="TextureRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("depth_texture")
+expand_mode = 1
 
 [node name="Margin" type="CenterContainer" parent="." unique_id=245160860]
 layout_mode = 0
@@ -45,11 +78,13 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.95, 0.98, 0.93, 1)
 text = "Battle Deck"
 
 [node name="Count" type="Label" parent="Margin/Content/Header" unique_id=1902948944]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.83, 0.93, 0.86, 1)
 text = "6 / 6 CARDS"
 
 [node name="HoverSpace" type="Control" parent="Margin/Content" unique_id=1120756092]
@@ -105,11 +140,13 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.95, 0.98, 0.93, 1)
 text = "Card Collection"
 
 [node name="Tip" type="Label" parent="Margin/Content/CollectionHeader" unique_id=1933599651]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.83, 0.93, 0.86, 1)
 text = "10 cards · Hover for details"
 
 [node name="Grid" type="GridContainer" parent="Margin/Content" unique_id=460636755]
@@ -162,26 +199,13 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 theme_override_constants/separation = 9
+alignment = 1
 
-[node name="Hint" type="RichTextLabel" parent="Margin/Content/Footer" unique_id=275736701]
-custom_minimum_size = Vector2(0, 24)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 13
-fit_content = true
-scroll_active = false
-
-[node name="CancelSwap" type="Button" parent="Margin/Content/Footer" unique_id=827959795]
-visible = false
-custom_minimum_size = Vector2(90, 42)
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "Cancel"
-
-[node name="Done" type="Button" parent="Margin/Content/Footer" unique_id=1154145059]
-custom_minimum_size = Vector2(150, 42)
+[node name="Back" type="Button" parent="Margin/Content/Footer" unique_id=1154145059]
+custom_minimum_size = Vector2(180, 42)
 layout_mode = 2
 theme_type_variation = &"PrimaryButton"
-text = "Save deck"
+theme_override_colors/font_focus_color = Color(0.17, 0.18, 0.24, 1)
+theme_override_styles/focus = SubResource("back_focus")
+text = "Back"
+tooltip_text = "Return to the menu. Complete decks are saved automatically."

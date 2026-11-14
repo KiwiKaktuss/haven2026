@@ -75,7 +75,7 @@ func run() -> void:
     var original: Array[StringName] = editor.selected.duplicate()
     editor._toggle(&"heavy")
     check(editor.pending_swap == &"heavy" and editor.selected == original, "Choosing seventh card stages a swap")
-    check(editor.get_node("Margin/Content/Footer/Done").disabled, "Pending swap must be resolved before saving")
+    check(not editor.get_node("Margin/Content/Footer/Back").disabled, "Back remains available during a pending swap")
     var pending_tile: CardView = editor.get_node("Margin/Content/Grid/Card4")
     check(pending_tile.pending_choice and pending_tile.get_node("Marker").text == "↔", "Pending replacement has its own visible state")
     editor._deck_slot_clicked(2)
@@ -84,7 +84,7 @@ func run() -> void:
     editor._cancel_swap()
     check(not editor.selected.has(&"dash") and editor.pending_swap.is_empty(), "Cancel preserves the equipped deck")
     editor._deck_slot_clicked(0)
-    check(editor.selected.size() == 5 and editor.get_node("Margin/Content/Footer/Done").disabled, "Removing card disables saving")
+    check(editor.selected.size() == 5 and not editor.get_node("Margin/Content/Footer/Back").disabled, "An incomplete edit never traps the player")
     editor._toggle(&"dash")
     check(editor.selected.size() == 6 and editor.selected.has(&"dash"), "Collection fills an empty deck slot")
     for id: StringName in editor.selected.duplicate():

@@ -15,6 +15,8 @@ func setup() -> void:
 func _process(_delta: float) -> bool:
     if main == null:
         return false
+    if main._journey_moving:
+        return false
     frame += 1
     if frame == 8:
         capture("menu")
