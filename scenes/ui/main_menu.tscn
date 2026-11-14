@@ -1,48 +1,88 @@
-[gd_scene load_steps=3 format=3]
-[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1"]
-[ext_resource type="Theme" path="res://resources/ui/default_theme.tres" id="2"]
-[node name="MainMenu" type="Control"]
+[gd_scene format=3 uid="uid://d3xtlqc4dm3pe"]
+
+[ext_resource type="StyleBox" path="res://resources/ui/accent_button.tres" id="accent"]
+[ext_resource type="Script" uid="uid://d3dmeuomfi6ku" path="res://scripts/ui/main_menu.gd" id="script"]
+[ext_resource type="Theme" uid="uid://vd5i5ly3o81k" path="res://resources/ui/default_theme.tres" id="theme"]
+
+[node name="MainMenu" type="Control" unique_id=732525874]
+texture_filter = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2")
-script = ExtResource("1")
-[node name="CenterContainer" type="CenterContainer" parent="."]
+theme = ExtResource("theme")
+script = ExtResource("script")
+
+[node name="Background" type="ColorRect" parent="." unique_id=851892988]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-layout_mode = 2
-theme_override_constants/separation = 22
-[node name="TitleSlot" type="MarginContainer" parent="CenterContainer/VBoxContainer"]
-custom_minimum_size = Vector2(600, 70)
-layout_mode = 2
-[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer/TitleSlot"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "DECK GOLF"
-horizontal_alignment = 1
-[node name="StatusSlot" type="MarginContainer" parent="CenterContainer/VBoxContainer"]
-custom_minimum_size = Vector2(600, 80)
-layout_mode = 2
-[node name="StatusLabel" type="Label" parent="CenterContainer/VBoxContainer/StatusSlot"]
-layout_mode = 2
-text = "Project foundation · Physics lab ready
-Cards and playable courses are next."
-horizontal_alignment = 1
-[node name="InspectButton" type="Button" parent="CenterContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 54)
-layout_mode = 2
-text = "Inspect supplied art & session"
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="PhysicsLabButton" type="Button" parent="CenterContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 54)
-layout_mode = 2
-text = "Open physics lab"
-[connection signal="pressed" from="CenterContainer/VBoxContainer/PhysicsLabButton" to="." method="_on_lab_pressed"]
+[node name="Center" type="CenterContainer" parent="." unique_id=321424996]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/InspectButton" to="." method="_on_inspect_pressed"]
+[node name="Content" type="VBoxContainer" parent="Center" unique_id=1652621312]
+custom_minimum_size = Vector2(336, 0)
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Eyebrow" type="Label" parent="Center/Content" unique_id=1593862207]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "A LITTLE GOLF. A FEW GOOD CARDS."
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="Center/Content" unique_id=2084158847]
+layout_mode = 2
+theme_override_font_sizes/font_size = 56
+text = "Deck Golf"
+horizontal_alignment = 1
+
+[node name="Space" type="Control" parent="Center/Content" unique_id=791200815]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
+[node name="Play" type="Button" parent="Center/Content" unique_id=2034484558]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_styles/normal = ExtResource("accent")
+text = "Play"
+
+[node name="Deck" type="Button" parent="Center/Content" unique_id=170866608]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Edit deck"
+
+[node name="CenterContainer" type="Control" parent="." unique_id=1258031862]
+visible = false
+anchors_preset = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=686773991]
+layout_mode = 0
+
+[node name="InspectButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1065639121]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Inspect"
+
+[node name="PhysicsLabButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=581642124]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Physics lab"
+
+[node name="CardLabButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1850900973]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Card lab"

@@ -7,6 +7,8 @@ signal contacted(body: TerrainObject, normal: Vector2)
 @export var collision_shape: CollisionShape2D
 @export var effect_animation: AnimationPlayer
 @export var simulation_enabled: bool = true
+@export var fire_trail: CPUParticles2D
+@export var ghost_tint: Color = Color(0.55, 0.85, 1.0, 0.45)
 var active_effect: CardDefinition.Effect = CardDefinition.Effect.CLASSIC
 var safe_position: Vector2
 var contact_body: TerrainObject
@@ -22,6 +24,71 @@ var departure_normal: Vector2
 var gravity_multiplier: float = 1.0
 var bounce_retention: float = -1.0
 var glue_enabled: bool = false
+var knockback_multiplier: float = 1.0
+enum GhostState { INACTIVE, ARMED, PASSING, SPENT }
+var ghost_state: GhostState = GhostState.INACTIVE
+var ghost_body: TerrainObject
+var ignored_object_id: StringName
+
+func _clear_ghost() -> void:
+    if is_instance_valid(ghost_body):
+        remove_collision_exception_with(ghost_body)
+    ghost_body = null
+    ignored_object_id = &""
+    ghost_state = GhostState.INACTIVE
+
+func set_card_effect(card: CardDefinition, notify: bool = true) -> void:
+    _clear_ghost()
+    active_effect = CardDefinition.Effect.CLASSIC if card == null else card.effect
+    gravity_multiplier = 1.0 if card == null else card.gravity_multiplier
+    bounce_retention = card.bounce_retention if card != null and active_effect in [CardDefinition.Effect.HEAVY, CardDefinition.Effect.BOUNCE] else -1.0
+    knockback_multiplier = 1.0 if card == null else card.knockback_multiplier
+    glue_enabled = active_effect == CardDefinition.Effect.GLUE
+    if active_effect == CardDefinition.Effect.GHOST:
+        ghost_state = GhostState.ARMED
+    if fire_trail != null:
+        fire_trail.emitting = active_effect == CardDefinition.Effect.FIRE
+    sprite.modulate = ghost_tint if active_effect == CardDefinition.Effect.GHOST else Color.WHITE
+    if notify:
+        effect_changed.emit(active_effect)
+
+func play_card(card: CardDefinition, impulse: Vector2, notify: bool = true) -> void:
+    if card.effect == CardDefinition.Effect.REWIND:
+        # Preserve the qualified return point; teleport only the shot origin.
+        global_position = safe_position
+        reset_physics_interpolation()
+    set_card_effect(card, false)
+    launch(impulse, ShotCalculation.clears_velocity(card))
+    if notify:
+        effect_changed.emit(active_effect)
+
+func apply_knockback(impulse: Vector2) -> void:
+    launch(impulse * knockback_multiplier)
+
+func _ghost_before_move(motion: Vector2) -> void:
+    if ghost_state != GhostState.ARMED:
+        return
+    var hit: KinematicCollision2D = move_and_collide(motion, true, tuning.collision_margin)
+    if hit == null or not TerrainQuery.enters(motion, hit.get_normal()):
+        return
+    var body: TerrainObject = hit.get_collider() as TerrainObject
+    if body == null:
+        return
+    ghost_body = body
+    ignored_object_id = body.object_id
+    ghost_state = GhostState.PASSING
+    add_collision_exception_with(body)
+
+func _ghost_after_move() -> void:
+    if ghost_state != GhostState.PASSING:
+        return
+    if TerrainQuery.overlaps(collision_shape.shape, collision_shape.global_transform, ghost_body):
+        return
+    var passed_id: StringName = ignored_object_id
+    set_card_effect(null, false)
+    ghost_state = GhostState.SPENT
+    ignored_object_id = passed_id
+    effect_changed.emit(active_effect)
 
 func _ready() -> void:
     safe_position = global_position
@@ -45,6 +112,7 @@ func launch(impulse: Vector2, clear_momentum: bool = false) -> void:
     velocity = momentum + impulse
 
 func reset_motion(at_position: Vector2) -> void:
+    set_card_effect(null)
     global_position = at_position
     velocity = Vector2.ZERO
     attached_body = null
@@ -63,6 +131,7 @@ func step_motion(delta: float) -> void:
     if is_instance_valid(attached_body):
         global_position = attached_body.to_global(local_anchor)
         velocity = Vector2.ZERO
+        _ghost_after_move()
         _track_safe(delta)
         return
     var previous_support: TerrainObject = support_body if is_instance_valid(support_body) else null
@@ -80,6 +149,7 @@ func step_motion(delta: float) -> void:
         if remaining <= 0.000001 or velocity.length_squared() < 0.000001:
             break
         var motion: Vector2 = velocity * remaining
+        _ghost_before_move(motion)
         var hit: KinematicCollision2D = move_and_collide(motion, false, tuning.collision_margin)
         if hit == null:
             break
@@ -102,6 +172,7 @@ func step_motion(delta: float) -> void:
             attached_body = body
             local_anchor = body.to_local(global_position)
             velocity = Vector2.ZERO
+            _ghost_after_move()
             _track_safe(delta)
             return
         relative = BallMotion.impact(relative, normal, body.surface, tuning, bounce_retention)
@@ -131,6 +202,7 @@ func step_motion(delta: float) -> void:
             departing_body = null
     if support_body == null:
         contact_body = null
+    _ghost_after_move()
     _track_safe(delta)
 
 func _track_safe(delta: float) -> void:

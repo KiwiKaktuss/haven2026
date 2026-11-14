@@ -1,12 +1,32 @@
 [gd_scene format=3]
-[node name="TrajectoryPreview" type="Node2D"]
+[ext_resource type="Script" path="res://scripts/aim/trajectory_preview.gd" id="1"]
+[sub_resource type="CircleShape2D" id="Circle"]
+radius = 2.0
+[node name="TrajectoryPreview" type="Node2D" node_paths=PackedStringArray("probe", "probe_shape", "central_line", "envelope", "origin_marker", "ghost_marker")]
 visible = false
+z_index = 5
+script = ExtResource("1")
+probe = NodePath("QueryProbe")
+probe_shape = NodePath("QueryProbe/CollisionShape2D")
+central_line = NodePath("CentralPath")
+envelope = NodePath("SpreadEnvelope")
+origin_marker = NodePath("OriginMarker")
+ghost_marker = NodePath("GhostPassMarker")
 [node name="SpreadEnvelope" type="Polygon2D" parent="."]
-color = Color(0.5, 0.8, 1, 0.18)
+color = Color(0.65, 0.84, 0.62, 0.24)
 [node name="CentralPath" type="Line2D" parent="."]
 width = 1.0
-default_color = Color(0.8, 0.95, 1, 1)
-[node name="OriginMarker" type="Sprite2D" parent="."]
+default_color = Color(0.25, 0.45, 0.28, 1)
+[node name="OriginMarker" type="Line2D" parent="."]
+points = PackedVector2Array(-4, 0, 0, -4, 4, 0, 0, 4, -4, 0)
+width = 1.5
+default_color = Color(0.1, 0.16, 0.1, 1)
 [node name="GhostPassMarker" type="Line2D" parent="."]
-width = 1.0
-default_color = Color(0.7, 0.5, 1, 0.7)
+width = 2.0
+default_color = Color(0.15, 0.28, 0.16, 0.9)
+[node name="QueryProbe" type="CharacterBody2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 1
+[node name="CollisionShape2D" type="CollisionShape2D" parent="QueryProbe"]
+shape = SubResource("Circle")

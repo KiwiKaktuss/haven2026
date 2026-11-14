@@ -14,6 +14,8 @@
 [ext_resource type="Script" path="res://scripts/ball/ball.gd" id="12_f6wtt"]
 [ext_resource type="Resource" path="res://resources/game/default_tuning.tres" id="13_sgxbm"]
 
+[ext_resource type="Theme" path="res://resources/ui/default_theme.tres" id="ui_theme"]
+
 [node name="PhysicsLab" type="Node2D" unique_id=1233193971 node_paths=PackedStringArray("balls")]
 script = ExtResource("1_6wn4s")
 balls = [NodePath("Balls/NormalBall"), NodePath("Balls/IceBall"), NodePath("Balls/StickyBall"), NodePath("Balls/BouncyBall"), NodePath("Balls/HorizontalBall"), NodePath("Balls/VerticalBall"), NodePath("Balls/SlopeBall"), NodePath("Balls/WallBall"), NodePath("Balls/CeilingBall")]
@@ -308,6 +310,8 @@ zoom = Vector2(2, 2)
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1541067377]
 
 [node name="Instructions" type="Label" parent="CanvasLayer" unique_id=1387887457]
+theme = ExtResource("ui_theme")
+texture_filter = 2
 offset_left = 24.0
 offset_top = 12.0
 offset_right = 24.0
@@ -317,6 +321,8 @@ text = "PHYSICS LAB · R reset · Space launch all (debug only)
 Normal / Ice / Sticky / Bouncy     |     lower: horizontal / vertical / slope / wall / ceiling / thin"
 
 [node name="MainMenuButton" type="Button" parent="CanvasLayer" unique_id=147204952]
+theme = ExtResource("ui_theme")
+texture_filter = 2
 custom_minimum_size = Vector2(140, 36)
 offset_left = 24.0
 offset_top = 590.0

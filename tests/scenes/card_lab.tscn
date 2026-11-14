@@ -1,0 +1,113 @@
+[gd_scene format=3]
+[ext_resource type="PackedScene" path="res://tests/scenes/physics_lab.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/game/card_lab.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/game/game_session.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/cards/deck_model.gd" id="4"]
+[ext_resource type="Resource" path="res://resources/cards/catalog.tres" id="5"]
+[ext_resource type="Resource" path="res://resources/game/default_tuning.tres" id="6"]
+[ext_resource type="PackedScene" path="res://tests/scenes/cup_terrain_fixture.tscn" id="7"]
+[ext_resource type="Script" path="res://scripts/aim/aim_controller.gd" id="aim"]
+[ext_resource type="Script" path="res://scripts/camera/course_camera.gd" id="camera"]
+[ext_resource type="PackedScene" path="res://scenes/game/trajectory_preview.tscn" id="preview"]
+[ext_resource type="PackedScene" path="res://scenes/ui/aim_feedback.tscn" id="feedback"]
+[ext_resource type="Theme" path="res://resources/ui/default_theme.tres" id="ui_theme"]
+
+[node name="CardLab" node_paths=PackedStringArray("session", "hand_buttons", "status", "fixture_selector", "deck_selector", "aim", "camera_controller") instance=ExtResource("1")]
+script = ExtResource("2")
+session = NodePath("CardSession")
+hand_buttons = [NodePath("CanvasLayer/CardControls/Hand/Slot1"), NodePath("CanvasLayer/CardControls/Hand/Slot2"), NodePath("CanvasLayer/CardControls/Hand/Slot3")]
+status = NodePath("CanvasLayer/CardControls/StatusSlot/Status")
+fixture_selector = NodePath("CanvasLayer/CardControls/Selectors/Fixture")
+deck_selector = NodePath("CanvasLayer/CardControls/Selectors/Deck")
+aim = NodePath("AimController")
+camera_controller = NodePath("CameraController")
+[node name="Instructions" parent="CanvasLayer" index="0"]
+text = "AIM LAB · Drag to shoot · Right-click cancel · 1/2/3 select · R reset\nWASD/arrows pan · Wheel zoom · Space follow · Preview uses current platform positions"
+[node name="Camera2D" parent="." index="3"]
+position = Vector2(272, 180)
+zoom = Vector2(1.6, 1.6)
+
+[node name="CardSession" type="Node2D" parent="." node_paths=PackedStringArray("ball", "deck", "aim", "camera_controller")]
+script = ExtResource("3")
+tuning = ExtResource("6")
+ball = NodePath("../Balls/NormalBall")
+deck = NodePath("DeckModel")
+aim = NodePath("../AimController")
+camera_controller = NodePath("../CameraController")
+[node name="DeckModel" type="Node" parent="CardSession"]
+script = ExtResource("4")
+catalog = ExtResource("5")
+[node name="CupTerrain" parent="Terrain" instance=ExtResource("7")]
+position = Vector2(472, 256)
+[node name="CardControls" type="VBoxContainer" parent="CanvasLayer"]
+theme = ExtResource("ui_theme")
+texture_filter = 2
+mouse_filter = 2
+offset_left = 190.0
+offset_top = 478.0
+offset_right = 940.0
+offset_bottom = 630.0
+theme_override_constants/separation = 8
+[node name="Selectors" type="HBoxContainer" parent="CanvasLayer/CardControls"]
+mouse_filter = 2
+[node name="Fixture" type="OptionButton" parent="CanvasLayer/CardControls/Selectors"]
+size_flags_horizontal = 3
+item_count = 5
+selected = 0
+popup/item_0/text = "Normal start"
+popup/item_0/id = 0
+popup/item_1/text = "Ice start"
+popup/item_1/id = 1
+popup/item_2/text = "Sticky start"
+popup/item_2/id = 2
+popup/item_3/text = "Bouncy start"
+popup/item_3/id = 3
+popup/item_4/text = "Cup start"
+popup/item_4/id = 4
+[node name="Deck" type="OptionButton" parent="CanvasLayer/CardControls/Selectors"]
+size_flags_horizontal = 3
+item_count = 2
+selected = 0
+popup/item_0/text = "Default six cards"
+popup/item_0/id = 0
+popup/item_1/text = "Alternate six (Heavy / Dash / Ghost / Rewind)"
+popup/item_1/id = 1
+[node name="Hand" type="HBoxContainer" parent="CanvasLayer/CardControls"]
+mouse_filter = 2
+[node name="Slot1" type="Button" parent="CanvasLayer/CardControls/Hand"]
+focus_mode = 0
+custom_minimum_size = Vector2(235, 36)
+size_flags_horizontal = 3
+[node name="Slot2" type="Button" parent="CanvasLayer/CardControls/Hand"]
+focus_mode = 0
+custom_minimum_size = Vector2(235, 36)
+size_flags_horizontal = 3
+[node name="Slot3" type="Button" parent="CanvasLayer/CardControls/Hand"]
+focus_mode = 0
+custom_minimum_size = Vector2(235, 36)
+size_flags_horizontal = 3
+[node name="StatusSlot" type="MarginContainer" parent="CanvasLayer/CardControls"]
+custom_minimum_size = Vector2(0, 64)
+mouse_filter = 2
+[node name="Status" type="Label" parent="CanvasLayer/CardControls/StatusSlot"]
+theme_override_font_sizes/font_size = 16
+mouse_filter = 2
+
+[node name="TrajectoryPreview" parent="." instance=ExtResource("preview")]
+[node name="AimController" type="Node2D" parent="." node_paths=PackedStringArray("session", "preview", "camera")]
+process_physics_priority = 100
+script = ExtResource("aim")
+session = NodePath("../CardSession")
+preview = NodePath("../TrajectoryPreview")
+camera = NodePath("../Camera2D")
+[node name="CameraController" type="Node2D" parent="." node_paths=PackedStringArray("session", "ball", "camera")]
+script = ExtResource("camera")
+session = NodePath("../CardSession")
+ball = NodePath("../Balls/NormalBall")
+camera = NodePath("../Camera2D")
+bounds = Rect2(-16, -16, 576, 392)
+minimum_zoom = 1.0
+maximum_zoom = 5.0
+follow_offset = Vector2(100, 60)
+[node name="AimFeedback" parent="CanvasLayer" node_paths=PackedStringArray("aim") instance=ExtResource("feedback")]
+aim = NodePath("../../AimController")

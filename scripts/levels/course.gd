@@ -6,3 +6,5 @@ extends Node2D
 @export var camera_pan_speed: float = 200.0
 @export var camera_smoothing: float = 5.0
 @export var start_marker: Marker2D
+@export var goal_cup: GoalCup
+@export var void_boundary: Marker2D

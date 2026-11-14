@@ -1,0 +1,28 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://scripts/ui/aim_feedback.gd" id="1"]
+[ext_resource type="Theme" path="res://resources/ui/default_theme.tres" id="theme"]
+[node name="AimFeedback" type="VBoxContainer" node_paths=PackedStringArray("power", "label")]
+texture_filter = 2
+theme = ExtResource("theme")
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 86.0
+offset_right = -24.0
+offset_bottom = 135.0
+mouse_filter = 2
+script = ExtResource("1")
+power = NodePath("PowerSlot/PowerBar")
+label = NodePath("FeedbackSlot/FeedbackLabel")
+[node name="FeedbackSlot" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(0, 24)
+mouse_filter = 2
+[node name="FeedbackLabel" type="Label" parent="FeedbackSlot"]
+mouse_filter = 2
+theme_override_font_sizes/font_size = 16
+[node name="PowerSlot" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(0, 10)
+mouse_filter = 2
+[node name="PowerBar" type="ProgressBar" parent="PowerSlot"]
+custom_minimum_size = Vector2(0, 10)
+mouse_filter = 2
+show_percentage = false

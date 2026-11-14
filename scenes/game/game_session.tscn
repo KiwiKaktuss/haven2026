@@ -10,7 +10,10 @@
 [ext_resource type="Resource" path="res://resources/cards/catalog.tres" id="8"]
 [ext_resource type="Texture2D" uid="uid://f6t57kv2v8rd" path="res://art/all_tiles.png" id="9"]
 
-[node name="GameSession" type="Node2D" unique_id=1347492993 node_paths=PackedStringArray("course_host", "ball", "deck", "hud")]
+[ext_resource type="Script" path="res://scripts/aim/aim_controller.gd" id="aim"]
+[ext_resource type="Script" path="res://scripts/camera/course_camera.gd" id="camera"]
+
+[node name="GameSession" type="Node2D" unique_id=1347492993 node_paths=PackedStringArray("course_host", "ball", "deck", "hud", "aim", "camera_controller")]
 texture_filter = 1
 script = ExtResource("1")
 tuning = ExtResource("5")
@@ -19,18 +22,32 @@ course_host = NodePath("CourseHost")
 ball = NodePath("Ball")
 deck = NodePath("DeckModel")
 hud = NodePath("CanvasLayer/HUD")
+aim = NodePath("AimController")
+camera_controller = NodePath("CameraRig")
 
 [node name="CourseHost" type="Node2D" parent="." unique_id=1589404745]
 
 [node name="Ball" parent="." unique_id=448906579 instance=ExtResource("2")]
 position = Vector2(-70, -40)
-simulation_enabled = false
+simulation_enabled = true
 
-[node name="AimController" type="Node2D" parent="." unique_id=990583632]
+[node name="AimController" type="Node2D" parent="." unique_id=990583632 node_paths=PackedStringArray("session", "preview", "camera")]
+process_physics_priority = 100
+script = ExtResource("aim")
+session = NodePath("..")
+preview = NodePath("../TrajectoryPreview")
+camera = NodePath("../CameraRig/Camera2D")
+enabled = true
 
 [node name="TrajectoryPreview" parent="." unique_id=1397546951 instance=ExtResource("3")]
 
-[node name="CameraRig" type="Node2D" parent="." unique_id=715251886]
+[node name="CameraRig" type="Node2D" parent="." unique_id=715251886 node_paths=PackedStringArray("session", "ball", "camera")]
+script = ExtResource("camera")
+session = NodePath("..")
+ball = NodePath("../Ball")
+camera = NodePath("Camera2D")
+enabled = true
+follow_offset = Vector2(100, 70)
 
 [node name="Camera2D" type="Camera2D" parent="CameraRig" unique_id=479079140]
 zoom = Vector2(3, 3)
@@ -40,6 +57,7 @@ script = ExtResource("7")
 catalog = ExtResource("8")
 
 [node name="ArtInspection" type="Node2D" parent="." unique_id=361368283]
+visible = false
 
 [node name="Atlas" type="Sprite2D" parent="ArtInspection" unique_id=1160260916]
 position = Vector2(30, 20)

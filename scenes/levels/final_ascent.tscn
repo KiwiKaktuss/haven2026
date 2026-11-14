@@ -1,11 +1,36 @@
-[gd_scene load_steps=2 format=3]
-[ext_resource type="Script" path="res://scripts/levels/course.gd" id="1"]
-[node name="Course" type="Node2D" node_paths=PackedStringArray("start_marker")]
-script = ExtResource("1")
+[gd_scene format=3]
+[ext_resource type="Script" path="res://scripts/levels/course.gd" id="script"]
+[ext_resource type="PackedScene" path="res://scenes/terrain/terrain_object.tscn" id="terrain"]
+[ext_resource type="PackedScene" path="res://scenes/levels/goal_cup.tscn" id="cup"]
+[node name="Course" type="Node2D" node_paths=PackedStringArray("start_marker", "goal_cup", "void_boundary")]
+script = ExtResource("script")
+camera_bounds = Rect2(-64, -120, 480, 320)
+minimum_zoom = 1.5
 start_marker = NodePath("StartMarker")
+goal_cup = NodePath("GoalCup")
+void_boundary = NodePath("VoidBoundary")
 [node name="Terrain" type="Node2D" parent="."]
+[node name="StartIsland" parent="Terrain" instance=ExtResource("terrain")]
+position = Vector2(0, 40)
+scale = Vector2(2, 2)
+object_id = &"start"
+[node name="LandingIsland" parent="Terrain" instance=ExtResource("terrain")]
+position = Vector2(152, 24)
+scale = Vector2(1.5, 2)
+object_id = &"landing"
+[node name="GoalApproach" parent="Terrain" instance=ExtResource("terrain")]
+position = Vector2(264, 40)
+object_id = &"approach"
 [node name="MovingPlatforms" type="Node2D" parent="."]
 [node name="Decorations" type="Node2D" parent="."]
 [node name="StartMarker" type="Marker2D" parent="."]
-position = Vector2(-70, -40)
+position = Vector2(24, 37.9)
+[node name="GoalCup" parent="." instance=ExtResource("cup")]
+position = Vector2(328, 40)
+[node name="VoidBoundary" type="Marker2D" parent="."]
+position = Vector2(0, 180)
+[node name="DangerLine" type="Line2D" parent="VoidBoundary"]
+points = PackedVector2Array(-64, -24, 416, -24)
+width = 0.6
+default_color = Color(0.76, 0.82, 0.76, 1)
 [node name="Hints" type="Node2D" parent="."]

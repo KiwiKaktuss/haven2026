@@ -1,16 +1,32 @@
-[gd_scene load_steps=5 format=3 uid="uid://1xa8a3r8vswf"]
+[gd_scene format=3 uid="uid://1xa8a3r8vswf"]
 [ext_resource type="Script" path="res://scripts/game/main.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/ui/main_menu.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/game/game_session.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://tests/scenes/physics_lab.tscn" id="4"]
 
+[ext_resource type="PackedScene" path="res://tests/scenes/card_lab.tscn" id="card_lab"]
+
+[ext_resource type="PackedScene" path="res://scenes/ui/level_select.tscn" id="levels"]
+[ext_resource type="PackedScene" path="res://scenes/ui/deck_editor.tscn" id="deck"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="pause"]
+[ext_resource type="PackedScene" path="res://scenes/ui/result_screen.tscn" id="result"]
+[ext_resource type="Resource" path="res://resources/cards/catalog.tres" id="cards"]
+[ext_resource type="Resource" path="res://resources/levels/catalog.tres" id="courses"]
 [node name="Main" type="Node2D" node_paths=PackedStringArray("screen_host", "game_host")]
 texture_filter = 1
 script = ExtResource("1")
+level_select_scene = ExtResource("levels")
+deck_editor_scene = ExtResource("deck")
+pause_menu_scene = ExtResource("pause")
+result_scene = ExtResource("result")
+cards = ExtResource("cards")
+courses = ExtResource("courses")
 menu_scene = ExtResource("2")
 game_scene = ExtResource("3")
+card_lab_scene = ExtResource("card_lab")
 physics_lab_scene = ExtResource("4")
 screen_host = NodePath("ScreenHost")
 game_host = NodePath("GameHost")
 [node name="ScreenHost" type="CanvasLayer" parent="."]
+layer = 10
 [node name="GameHost" type="Node2D" parent="."]
