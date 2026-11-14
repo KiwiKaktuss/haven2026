@@ -11,6 +11,9 @@ extends Node2D
 @export var wheel_factor: float = 1.15
 ## Screen pixels: a fixed offset remains usable at close and overview zoom.
 @export var follow_offset: Vector2 = Vector2.ZERO
+## Screen-space room reserved for the HUD; also used when fitting an overview.
+@export var viewport_inset_top_left: Vector2 = Vector2.ZERO
+@export var viewport_inset_bottom_right: Vector2 = Vector2.ZERO
 @export var enabled: bool = true
 var following: bool = true
 
@@ -29,7 +32,7 @@ func configure(course: GolfCourse) -> void:
     recenter(true)
 
 func overview_zoom() -> float:
-    var viewport_size: Vector2 = get_viewport_rect().size
+    var viewport_size: Vector2 = (get_viewport_rect().size - viewport_inset_top_left - viewport_inset_bottom_right).max(Vector2.ONE)
     var fit: float = minf(viewport_size.x / maxf(bounds.size.x, 1), viewport_size.y / maxf(bounds.size.y, 1))
     return minf(minimum_zoom, fit)
 
@@ -43,9 +46,12 @@ func set_zoom(amount: float) -> void:
     camera.global_position = clamped(camera.global_position)
 
 func clamped(at: Vector2) -> Vector2:
-    var half: Vector2 = get_viewport_rect().size * 0.5 / camera.zoom
+    var usable: Vector2 = (get_viewport_rect().size - viewport_inset_top_left - viewport_inset_bottom_right).max(Vector2.ONE)
+    var offset: Vector2 = (viewport_inset_top_left - viewport_inset_bottom_right) * 0.5 / camera.zoom
+    var half: Vector2 = usable * 0.5 / camera.zoom
+    var visible_center: Vector2 = at + offset
     var center: Vector2 = bounds.get_center()
-    return Vector2(center.x if half.x * 2 >= bounds.size.x else clampf(at.x, bounds.position.x + half.x, bounds.end.x - half.x), center.y if half.y * 2 >= bounds.size.y else clampf(at.y, bounds.position.y + half.y, bounds.end.y - half.y))
+    return Vector2(center.x if half.x * 2 >= bounds.size.x else clampf(visible_center.x, bounds.position.x + half.x, bounds.end.x - half.x), center.y if half.y * 2 >= bounds.size.y else clampf(visible_center.y, bounds.position.y + half.y, bounds.end.y - half.y)) - offset
 
 func recenter(snap: bool = false) -> void:
     following = true

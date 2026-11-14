@@ -162,6 +162,10 @@ func run() -> void:
     quit(0 if failures == 0 else 1)
 
 func physics_cases() -> void:
+    # The lab owns this test's collision world. Production courses now extend
+    # through these coordinates, so remove their solids before loading fixtures.
+    session.course.free()
+    session.course = null
     lab = load("res://tests/scenes/physics_lab.tscn").instantiate()
     root.add_child(lab)
     for demo: GolfBall in lab.get("balls"):

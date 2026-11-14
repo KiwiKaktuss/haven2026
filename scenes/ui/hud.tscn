@@ -16,6 +16,20 @@ mouse_filter = 2
 theme = ExtResource("theme")
 script = ExtResource("script")
 
+[node name="TopBackdrop" type="ColorRect" parent="."]
+anchor_right = 1.0
+offset_bottom = 104.0
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
+
+[node name="BottomBackdrop" type="ColorRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -216.0
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
+
 [node name="Top" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 offset_left = 28.0
