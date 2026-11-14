@@ -1,6 +1,12 @@
 [gd_resource type="Resource" script_class="CardDefinition" format=3 uid="uid://dvp7fjvkgjqr3"]
 
 [ext_resource type="Script" uid="uid://b3jrljltourar" path="res://scripts/cards/card_definition.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://d28gdncrhuipi" path="res://art/cards.png" id="art"]
+
+[sub_resource type="AtlasTexture" id="CardArt"]
+atlas = ExtResource("art")
+region = Rect2(0, 0, 22, 31)
+filter_clip = true
 
 [sub_resource type="Curve" id="Spread"]
 _limits = [0.0, 20.0, 0.0, 1.0]
@@ -10,9 +16,10 @@ point_count = 2
 [resource]
 script = ExtResource("1")
 id = &"fire"
-display_name = "Fire Ball"
-description = "Maximum power, wide spread and a fiery trail."
+display_name = "Fireball"
+description = "Hit hard with maximum power. Less accurate at full strength."
 cost = 4
 power = 285.0
 spread_curve = SubResource("Spread")
 effect = 7
+artwork = SubResource("CardArt")

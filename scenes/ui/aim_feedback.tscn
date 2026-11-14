@@ -18,7 +18,7 @@ custom_minimum_size = Vector2(0, 24)
 mouse_filter = 2
 [node name="FeedbackLabel" type="Label" parent="FeedbackSlot"]
 mouse_filter = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 18
 [node name="PowerSlot" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(0, 10)
 mouse_filter = 2

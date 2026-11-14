@@ -1,0 +1,25 @@
+[gd_scene format=3]
+[ext_resource type="PackedScene" path="res://scenes/ui/card_view.tscn" id="card"]
+[sub_resource type="StyleBoxEmpty" id="empty"]
+[node name="HandCard" instance=ExtResource("card")]
+custom_minimum_size = Vector2(88, 124)
+show_information = false
+decorated = false
+focus_mode = 0
+theme_override_styles/normal = SubResource("empty")
+theme_override_styles/hover = SubResource("empty")
+theme_override_styles/pressed = SubResource("empty")
+theme_override_styles/hover_pressed = SubResource("empty")
+theme_override_styles/focus = SubResource("empty")
+[node name="Artwork" parent="." index="0"]
+anchor_left = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+[node name="Caption" parent="." index="1"]
+visible = false
+[node name="Marker" parent="." index="2"]
+visible = false

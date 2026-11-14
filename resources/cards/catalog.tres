@@ -1,16 +1,18 @@
-[gd_resource type="Resource" script_class="CardCatalog" load_steps=13 format=3]
-[ext_resource type="Script" path="res://scripts/cards/card_catalog.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/cards/card_definition.gd" id="2"]
-[ext_resource type="Resource" path="res://resources/cards/classic.tres" id="c0"]
-[ext_resource type="Resource" path="res://resources/cards/sniper.tres" id="c1"]
-[ext_resource type="Resource" path="res://resources/cards/slow.tres" id="c2"]
-[ext_resource type="Resource" path="res://resources/cards/heavy.tres" id="c3"]
-[ext_resource type="Resource" path="res://resources/cards/bounce.tres" id="c4"]
-[ext_resource type="Resource" path="res://resources/cards/glue.tres" id="c5"]
-[ext_resource type="Resource" path="res://resources/cards/dash.tres" id="c6"]
-[ext_resource type="Resource" path="res://resources/cards/fire.tres" id="c7"]
-[ext_resource type="Resource" path="res://resources/cards/ghost.tres" id="c8"]
-[ext_resource type="Resource" path="res://resources/cards/rewind.tres" id="c9"]
+[gd_resource type="Resource" script_class="CardCatalog" format=3 uid="uid://cb2nsbhlnhbj0"]
+
+[ext_resource type="Script" uid="uid://8uqiring3ulq" path="res://scripts/cards/card_catalog.gd" id="1"]
+[ext_resource type="Script" uid="uid://b3jrljltourar" path="res://scripts/cards/card_definition.gd" id="2"]
+[ext_resource type="Resource" uid="uid://d14rsvgsw67rg" path="res://resources/cards/classic.tres" id="c0"]
+[ext_resource type="Resource" uid="uid://dlq2d7fbmky4t" path="res://resources/cards/sniper.tres" id="c1"]
+[ext_resource type="Resource" uid="uid://d1xk4yuyu8733" path="res://resources/cards/slow.tres" id="c2"]
+[ext_resource type="Resource" uid="uid://bx026e7jglpqy" path="res://resources/cards/heavy.tres" id="c3"]
+[ext_resource type="Resource" uid="uid://bb3epdtwam13f" path="res://resources/cards/bounce.tres" id="c4"]
+[ext_resource type="Resource" uid="uid://c4ifiugnb1v7q" path="res://resources/cards/glue.tres" id="c5"]
+[ext_resource type="Resource" uid="uid://cawog0fnl3g2v" path="res://resources/cards/dash.tres" id="c6"]
+[ext_resource type="Resource" uid="uid://dvp7fjvkgjqr3" path="res://resources/cards/fire.tres" id="c7"]
+[ext_resource type="Resource" uid="uid://2stkgw8ygqoi" path="res://resources/cards/ghost.tres" id="c8"]
+[ext_resource type="Resource" uid="uid://c72nufntll1jq" path="res://resources/cards/rewind.tres" id="c9"]
+
 [resource]
 script = ExtResource("1")
-cards = Array[ExtResource("2")]([ExtResource("c0"), ExtResource("c1"), ExtResource("c2"), ExtResource("c3"), ExtResource("c4"), ExtResource("c5"), ExtResource("c6"), ExtResource("c7"), ExtResource("c8"), ExtResource("c9")])
+cards = Array[ExtResource("2")]([ExtResource("c7"), ExtResource("c1"), ExtResource("c0"), ExtResource("c2"), ExtResource("c3"), ExtResource("c4"), ExtResource("c5"), ExtResource("c6"), ExtResource("c8"), ExtResource("c9")])

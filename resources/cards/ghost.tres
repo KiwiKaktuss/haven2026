@@ -1,6 +1,12 @@
 [gd_resource type="Resource" script_class="CardDefinition" format=3 uid="uid://2stkgw8ygqoi"]
 
 [ext_resource type="Script" uid="uid://b3jrljltourar" path="res://scripts/cards/card_definition.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://d28gdncrhuipi" path="res://art/cards.png" id="art"]
+
+[sub_resource type="AtlasTexture" id="CardArt"]
+atlas = ExtResource("art")
+region = Rect2(66, 31, 22, 31)
+filter_clip = true
 
 [sub_resource type="Curve" id="Spread"]
 _limits = [0.0, 20.0, 0.0, 1.0]
@@ -10,8 +16,9 @@ point_count = 2
 [resource]
 script = ExtResource("1")
 id = &"ghost"
-display_name = "Ghost Ball"
-description = "Pass through one whole solid object, then return to normal."
+display_name = "Invisible"
+description = "Pass through one whole solid object, then become solid again."
 cost = 4
 spread_curve = SubResource("Spread")
 effect = 8
+artwork = SubResource("CardArt")

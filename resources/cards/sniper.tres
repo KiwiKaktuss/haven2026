@@ -1,6 +1,12 @@
 [gd_resource type="Resource" script_class="CardDefinition" format=3 uid="uid://dlq2d7fbmky4t"]
 
 [ext_resource type="Script" uid="uid://b3jrljltourar" path="res://scripts/cards/card_definition.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://d28gdncrhuipi" path="res://art/cards.png" id="art"]
+
+[sub_resource type="AtlasTexture" id="CardArt"]
+atlas = ExtResource("art")
+region = Rect2(22, 0, 22, 31)
+filter_clip = true
 
 [sub_resource type="Curve" id="Spread"]
 _limits = [0.0, 20.0, 0.0, 1.0]
@@ -10,9 +16,10 @@ point_count = 2
 [resource]
 script = ExtResource("1")
 id = &"sniper"
-display_name = "Sniper Ball"
-description = "Lower power with very small, nonzero spread."
+display_name = "Snipe"
+description = "Line up precise shots with very little spread."
 cost = 2
 power = 145.0
 spread_curve = SubResource("Spread")
 effect = 1
+artwork = SubResource("CardArt")

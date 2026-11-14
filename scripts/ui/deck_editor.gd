@@ -2,31 +2,74 @@ extends Control
 signal done_requested(ids: Array[StringName])
 @export var catalog: CardCatalog = preload("res://resources/cards/catalog.tres")
 var selected: Array[StringName] = []
+var pending_swap: StringName = &""
 
 func _ready() -> void:
     for index: int in range(catalog.cards.size()):
         get_node("Margin/Content/Grid/Card%s" % index).pressed.connect(_toggle.bind(catalog.cards[index].id))
+    for index: int in range(6):
+        get_node("Margin/Content/BattleDeck/DeckContent/Hand/Slot%s" % index).pressed.connect(_deck_slot_clicked.bind(index))
     $Margin/Content/Footer/Done.pressed.connect(_done)
+    $Margin/Content/Footer/CancelSwap.pressed.connect(_cancel_swap)
+    refresh()
 
 func configure(ids: Array[StringName]) -> void:
-    selected = ids.duplicate()
+    selected.clear()
+    for id: StringName in ids:
+        if catalog.find_card(id) != null and not selected.has(id) and selected.size() < 6:
+            selected.append(id)
+    pending_swap = &""
     refresh()
 
 func _toggle(id: StringName) -> void:
+    if catalog.find_card(id) == null:
+        return
     if selected.has(id):
         selected.erase(id)
+        pending_swap = &""
     elif selected.size() < 6:
         selected.append(id)
+        pending_swap = &""
+    else:
+        pending_swap = &"" if pending_swap == id else id
+    refresh()
+
+func _deck_slot_clicked(index: int) -> void:
+    if index < 0 or index >= selected.size():
+        return
+    if not pending_swap.is_empty():
+        selected[index] = pending_swap
+        pending_swap = &""
+    else:
+        selected.remove_at(index)
+    refresh()
+
+func _cancel_swap() -> void:
+    pending_swap = &""
     refresh()
 
 func refresh() -> void:
     for index: int in range(catalog.cards.size()):
         var card: CardDefinition = catalog.cards[index]
-        get_node("Margin/Content/Grid/Card%s" % index).bind(card, selected.has(card.id))
-    $Margin/Content/Header/Count.text = "%s / 6 selected" % selected.size()
-    $Margin/Content/Footer/Done.disabled = selected.size() != 6
-    $Margin/Content/Footer/Hint.text = "Remove a card to choose another." if selected.size() == 6 else "Choose %s more. Numbers show elixir cost." % (6 - selected.size())
+        var view: CardView = get_node("Margin/Content/Grid/Card%s" % index)
+        view.show_card(card, selected.has(card.id) or pending_swap == card.id)
+        view.set_pending(pending_swap == card.id)
+    for index: int in range(6):
+        var view: CardView = get_node("Margin/Content/BattleDeck/DeckContent/Hand/Slot%s" % index)
+        if index < selected.size():
+            var card: CardDefinition = catalog.find_card(selected[index])
+            view.show_card(card)
+            view.set_pending(false)
+        else:
+            view.show_empty(index)
+    $Margin/Content/Header/Count.text = "%s / 6 cards" % selected.size()
+    $Margin/Content/Footer/Done.disabled = selected.size() != 6 or not pending_swap.is_empty()
+    $Margin/Content/Footer/CancelSwap.visible = not pending_swap.is_empty()
+    if not pending_swap.is_empty():
+        $Margin/Content/Footer/Hint.text = "Choose a deck card to replace with %s." % catalog.find_card(pending_swap).display_name
+    else:
+        $Margin/Content/Footer/Hint.text = "Choose a collection card to swap." if selected.size() == 6 else "Choose %s more card%s from the collection." % [6 - selected.size(), "" if selected.size() == 5 else "s"]
 
 func _done() -> void:
-    if selected.size() == 6:
+    if selected.size() == 6 and pending_swap.is_empty():
         done_requested.emit(selected.duplicate())

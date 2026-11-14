@@ -1,11 +1,13 @@
-[gd_scene format=3]
-[ext_resource type="Theme" path="res://resources/ui/default_theme.tres" id="theme"]
-[ext_resource type="Script" path="res://scripts/ui/deck_editor.gd" id="script"]
-[ext_resource type="PackedScene" path="res://scenes/ui/card_view.tscn" id="card"]
+[gd_scene format=3 uid="uid://jf4wfofpbb27"]
 
-[node name="DeckEditor" type="Control"]
+[ext_resource type="PackedScene" path="res://scenes/ui/card_view.tscn" id="card"]
+[ext_resource type="StyleBox" uid="uid://4xk1aoxu4nrf" path="res://resources/ui/pixel/panel.tres" id="panel"]
+[ext_resource type="Script" uid="uid://cxd6krumbxvfw" path="res://scripts/ui/deck_editor.gd" id="script"]
+[ext_resource type="Theme" uid="uid://vd5i5ly3o81k" path="res://resources/ui/default_theme.tres" id="theme"]
+
+[node name="DeckEditor" type="Control" unique_id=164491461]
 texture_filter = 2
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -14,102 +16,172 @@ grow_vertical = 2
 theme = ExtResource("theme")
 script = ExtResource("script")
 
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
+[node name="Background" type="ColorRect" parent="." unique_id=1689673262]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 1, 1, 1)
 mouse_filter = 2
+color = Color(0.94, 0.95, 0.96, 1)
 
-[node name="Margin" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
+[node name="Margin" type="CenterContainer" parent="." unique_id=245160860]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 28
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 28
-theme_override_constants/margin_bottom = 24
+offset_left = 18.0
+offset_top = 12.0
+offset_right = -18.0
+offset_bottom = -12.0
 
-[node name="Content" type="VBoxContainer" parent="Margin"]
-theme_override_constants/separation = 16
+[node name="Content" type="VBoxContainer" parent="Margin" unique_id=166621753]
+custom_minimum_size = Vector2(756, 0)
+layout_mode = 2
+theme_override_constants/separation = 6
 
-[node name="Header" type="HBoxContainer" parent="Margin/Content"]
+[node name="Header" type="HBoxContainer" parent="Margin/Content" unique_id=1354276339]
+custom_minimum_size = Vector2(0, 33)
+layout_mode = 2
 
-
-[node name="Title" type="Label" parent="Margin/Content/Header"]
-text = "Your deck"
-theme_override_font_sizes/font_size = 32
-mouse_filter = 2
+[node name="Title" type="Label" parent="Margin/Content/Header" unique_id=501792598]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Battle Deck"
 
-[node name="Count" type="Label" parent="Margin/Content/Header"]
-text = "6 / 6 selected"
-theme_override_font_sizes/font_size = 16
+[node name="Count" type="Label" parent="Margin/Content/Header" unique_id=1902948944]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "6 / 6 CARDS"
+
+[node name="HoverSpace" type="Control" parent="Margin/Content" unique_id=1120756092]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
 mouse_filter = 2
 
+[node name="BattleDeck" type="PanelContainer" parent="Margin/Content" unique_id=131112987]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("panel")
 
-[node name="Grid" type="GridContainer" parent="Margin/Content"]
+[node name="DeckContent" type="VBoxContainer" parent="Margin/Content/BattleDeck" unique_id=1868865433]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Hand" type="HBoxContainer" parent="Margin/Content/BattleDeck/DeckContent" unique_id=1878514477]
+layout_mode = 2
+theme_override_constants/separation = 3
+alignment = 1
+
+[node name="Slot0" parent="Margin/Content/BattleDeck/DeckContent/Hand" unique_id=681162516 instance=ExtResource("card")]
+layout_mode = 2
+
+[node name="Slot1" parent="Margin/Content/BattleDeck/DeckContent/Hand" unique_id=1978533122 instance=ExtResource("card")]
+layout_mode = 2
+
+[node name="Slot2" parent="Margin/Content/BattleDeck/DeckContent/Hand" unique_id=1300462548 instance=ExtResource("card")]
+layout_mode = 2
+
+[node name="Slot3" parent="Margin/Content/BattleDeck/DeckContent/Hand" unique_id=43310424 instance=ExtResource("card")]
+layout_mode = 2
+
+[node name="Slot4" parent="Margin/Content/BattleDeck/DeckContent/Hand" unique_id=1036365026 instance=ExtResource("card")]
+layout_mode = 2
+
+[node name="Slot5" parent="Margin/Content/BattleDeck/DeckContent/Hand" unique_id=1256107624 instance=ExtResource("card")]
+layout_mode = 2
+
+[node name="Summary" type="HBoxContainer" parent="Margin/Content/BattleDeck/DeckContent" unique_id=1667944444]
+layout_mode = 2
+
+[node name="Tip" type="Label" parent="Margin/Content/BattleDeck/DeckContent/Summary" unique_id=82570810]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "Six cards · Three in hand"
+
+[node name="CollectionHeader" type="HBoxContainer" parent="Margin/Content" unique_id=154481416]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Margin/Content/CollectionHeader" unique_id=2098122465]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+text = "Card Collection"
+
+[node name="Tip" type="Label" parent="Margin/Content/CollectionHeader" unique_id=1933599651]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "10 cards · Hover for details"
+
+[node name="Grid" type="GridContainer" parent="Margin/Content" unique_id=460636755]
+layout_mode = 2
+theme_override_constants/h_separation = 9
+theme_override_constants/v_separation = 9
 columns = 5
-size_flags_vertical = 3
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
 
-[node name="Card0" parent="Margin/Content/Grid" instance=ExtResource("card")]
+[node name="Card0" parent="Margin/Content/Grid" unique_id=1156211906 instance=ExtResource("card")]
+custom_minimum_size = Vector2(144, 141)
+layout_mode = 2
+
+[node name="Card1" parent="Margin/Content/Grid" unique_id=2037085122 instance=ExtResource("card")]
+custom_minimum_size = Vector2(144, 141)
+layout_mode = 2
+
+[node name="Card2" parent="Margin/Content/Grid" unique_id=732810343 instance=ExtResource("card")]
+custom_minimum_size = Vector2(144, 141)
+layout_mode = 2
+
+[node name="Card3" parent="Margin/Content/Grid" unique_id=1495987308 instance=ExtResource("card")]
+custom_minimum_size = Vector2(144, 141)
+layout_mode = 2
+
+[node name="Card4" parent="Margin/Content/Grid" unique_id=1329868846 instance=ExtResource("card")]
+custom_minimum_size = Vector2(144, 141)
+layout_mode = 2
+
+[node name="Card5" parent="Margin/Content/Grid" unique_id=1552773097 instance=ExtResource("card")]
+custom_minimum_size = Vector2(144, 141)
+layout_mode = 2
+
+[node name="Card6" parent="Margin/Content/Grid" unique_id=1936441259 instance=ExtResource("card")]
+custom_minimum_size = Vector2(144, 141)
+layout_mode = 2
+
+[node name="Card7" parent="Margin/Content/Grid" unique_id=639847005 instance=ExtResource("card")]
+custom_minimum_size = Vector2(144, 141)
+layout_mode = 2
+
+[node name="Card8" parent="Margin/Content/Grid" unique_id=255126514 instance=ExtResource("card")]
+custom_minimum_size = Vector2(144, 141)
+layout_mode = 2
+
+[node name="Card9" parent="Margin/Content/Grid" unique_id=1630563311 instance=ExtResource("card")]
+custom_minimum_size = Vector2(144, 141)
+layout_mode = 2
+
+[node name="Footer" type="HBoxContainer" parent="Margin/Content" unique_id=1309248405]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="Hint" type="RichTextLabel" parent="Margin/Content/Footer" unique_id=275736701]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Card1" parent="Margin/Content/Grid" instance=ExtResource("card")]
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Card2" parent="Margin/Content/Grid" instance=ExtResource("card")]
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Card3" parent="Margin/Content/Grid" instance=ExtResource("card")]
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Card4" parent="Margin/Content/Grid" instance=ExtResource("card")]
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Card5" parent="Margin/Content/Grid" instance=ExtResource("card")]
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Card6" parent="Margin/Content/Grid" instance=ExtResource("card")]
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Card7" parent="Margin/Content/Grid" instance=ExtResource("card")]
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Card8" parent="Margin/Content/Grid" instance=ExtResource("card")]
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Card9" parent="Margin/Content/Grid" instance=ExtResource("card")]
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Footer" type="HBoxContainer" parent="Margin/Content"]
-theme_override_constants/separation = 24
-
-[node name="Hint" type="Label" parent="Margin/Content/Footer"]
-text = "Select six cards. Numbers show elixir cost."
-theme_override_font_sizes/font_size = 14
+size_flags_vertical = 4
 mouse_filter = 2
-size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 13
+fit_content = true
+scroll_active = false
 
-[node name="Done" type="Button" parent="Margin/Content/Footer"]
-custom_minimum_size = Vector2(0, 48)
+[node name="CancelSwap" type="Button" parent="Margin/Content/Footer" unique_id=827959795]
+visible = false
+custom_minimum_size = Vector2(90, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Cancel"
+
+[node name="Done" type="Button" parent="Margin/Content/Footer" unique_id=1154145059]
+custom_minimum_size = Vector2(150, 42)
+layout_mode = 2
+theme_type_variation = &"PrimaryButton"
 text = "Save deck"
-custom_minimum_size = Vector2(160, 48)

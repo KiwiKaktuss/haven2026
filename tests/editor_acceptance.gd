@@ -50,12 +50,12 @@ func run_check() -> void:
                 break
         var edited: Node = EditorInterface.get_edited_scene_root()
         var is_card: bool = path.ends_with("card_view.tscn")
-        var slot_path: String = "MarginContainer/VBoxContainer/Heading/NameSlot" if is_card else "Top/CourseSlot"
+        var slot_path: String = "Artwork" if is_card else "Top/TimerSlot"
         var slot: Control = edited.get_node(slot_path)
         slot.custom_minimum_size = Vector2(139, 49)
         if is_card:
-            edited.get_node("MarginContainer/VBoxContainer/DescriptionSlot").custom_minimum_size = Vector2(0, 83)
-            edited.get_node(slot_path + "/NameLabel").add_theme_font_size_override("font_size", 19)
+            edited.get_node("Information/Margin/Content/Description").custom_minimum_size = Vector2(0, 83)
+            edited.get_node("Information/Margin/Content/Description").add_theme_font_size_override("font_size", 19)
         EditorInterface.mark_scene_as_unsaved()
         var output: String = "res://tests/.editor_check/" + ("card.tscn" if is_card else "hud.tscn")
         EditorInterface.save_scene_as(output, false)

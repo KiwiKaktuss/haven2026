@@ -1,117 +1,102 @@
-[gd_scene format=3]
-[ext_resource type="Theme" path="res://resources/ui/default_theme.tres" id="theme"]
-[ext_resource type="Script" path="res://scripts/ui/card_view.gd" id="script"]
+[gd_scene format=3 uid="uid://d3wvqpighgasn"]
 
-[node name="CardView" type="Button"]
+[ext_resource type="StyleBox" uid="uid://cskitckn2wepp" path="res://resources/ui/pixel/hover.tres" id="hover"]
+[ext_resource type="PackedScene" path="res://scenes/ui/card_info.tscn" id="info"]
+[ext_resource type="StyleBox" uid="uid://btia0ab1mvrxo" path="res://resources/ui/pixel/normal.tres" id="normal"]
+[ext_resource type="Script" uid="uid://kwyrpuf2u468" path="res://scripts/ui/card_view.gd" id="script"]
+[ext_resource type="StyleBox" uid="uid://c5jc8e7dbp7de" path="res://resources/ui/pixel/selected.tres" id="selected"]
+[ext_resource type="Theme" uid="uid://vd5i5ly3o81k" path="res://resources/ui/default_theme.tres" id="theme"]
+
+[node name="CardView" type="Button" unique_id=1612607135]
 texture_filter = 2
-custom_minimum_size = Vector2(132, 186)
-toggle_mode = true
-text = ""
+custom_minimum_size = Vector2(120, 141)
+mouse_default_cursor_shape = 2
 theme = ExtResource("theme")
+theme_override_styles/normal = ExtResource("normal")
+theme_override_styles/pressed = ExtResource("selected")
+theme_override_styles/hover = ExtResource("hover")
+theme_override_styles/hover_pressed = ExtResource("selected")
+toggle_mode = true
 script = ExtResource("script")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="Artwork" type="TextureRect" parent="." unique_id=442061274]
+texture_filter = 1
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -33.0
+offset_top = 9.0
+offset_right = 33.0
+offset_bottom = 102.0
 grow_horizontal = 2
-grow_vertical = 2
-offset_left = 12.0
-offset_top = 12.0
-offset_right = -12.0
-offset_bottom = -12.0
 mouse_filter = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-mouse_filter = 2
-theme_override_constants/separation = 6
-
-[node name="Heading" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-mouse_filter = 2
-
-[node name="NameSlot" type="MarginContainer" parent="MarginContainer/VBoxContainer/Heading"]
-size_flags_horizontal = 3
-custom_minimum_size = Vector2(0, 42)
-mouse_filter = 2
-
-[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/Heading/NameSlot"]
-text = "Classic Ball"
-theme_override_font_sizes/font_size = 17
-mouse_filter = 2
-autowrap_mode = 2
-
-[node name="CostSlot" type="MarginContainer" parent="MarginContainer/VBoxContainer/Heading"]
-custom_minimum_size = Vector2(20, 24)
-mouse_filter = 2
-
-[node name="CostLabel" type="Label" parent="MarginContainer/VBoxContainer/Heading/CostSlot"]
-text = "1"
-theme_override_font_sizes/font_size = 18
-mouse_filter = 2
-vertical_alignment = 0
-horizontal_alignment = 2
-
-[node name="ArtSlot" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 64)
-mouse_filter = 2
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ArtSlot"]
 expand_mode = 1
 stretch_mode = 5
-mouse_filter = 2
 
-[node name="DescriptionSlot" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 60)
-size_flags_vertical = 3
-mouse_filter = 2
+[node name="Caption" type="Label" parent="." unique_id=46591370]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 6.0
+offset_top = 102.0
+offset_right = -6.0
+offset_bottom = 126.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 16
+text = "NORMAL"
+horizontal_alignment = 1
 
-[node name="DescriptionLabel" type="Label" parent="MarginContainer/VBoxContainer/DescriptionSlot"]
-text = "Balanced power and accuracy."
-theme_override_font_sizes/font_size = 14
-theme_override_constants/line_spacing = 2
-mouse_filter = 2
-autowrap_mode = 2
-vertical_alignment = 0
-
-[node name="PowerSlot" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-mouse_filter = 2
-
-[node name="PowerLabel" type="Label" parent="MarginContainer/VBoxContainer/PowerSlot"]
-text = "Power"
-theme_override_font_sizes/font_size = 11
-mouse_filter = 2
-custom_minimum_size = Vector2(50, 0)
-
-[node name="PowerBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/PowerSlot"]
-custom_minimum_size = Vector2(0, 5)
-size_flags_horizontal = 3
-size_flags_vertical = 4
-show_percentage = false
-mouse_filter = 2
-
-[node name="AccuracySlot" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-mouse_filter = 2
-
-[node name="AccuracyLabel" type="Label" parent="MarginContainer/VBoxContainer/AccuracySlot"]
-text = "Accuracy"
-theme_override_font_sizes/font_size = 11
-mouse_filter = 2
-custom_minimum_size = Vector2(50, 0)
-
-[node name="AccuracyBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/AccuracySlot"]
-custom_minimum_size = Vector2(0, 5)
-size_flags_horizontal = 3
-size_flags_vertical = 4
-show_percentage = false
-mouse_filter = 2
-
-[node name="KeySlot" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
-visible = false
-mouse_filter = 2
-
-[node name="KeyLabel" type="Label" parent="MarginContainer/VBoxContainer/KeySlot"]
-text = "1"
+[node name="Marker" type="Label" parent="." unique_id=1416401120]
+layout_mode = 0
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -21.0
+offset_top = 9.0
+offset_right = -6.0
+offset_bottom = 27.0
+theme_override_colors/font_color = Color(0.21, 0.38, 0.3, 1)
 theme_override_font_sizes/font_size = 12
-mouse_filter = 2
+text = "✓"
+horizontal_alignment = 1
+
+[node name="EmptySymbol" type="Label" parent="." unique_id=373130338]
+visible = false
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -33.0
+offset_top = 3.0
+offset_right = 33.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 30
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Information" parent="." unique_id=786698016 instance=ExtResource("info")]
+anchors_preset = 0
+
+[node name="Frame" parent="Information" index="0"]
+layout_mode = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+
+[node name="Margin" parent="Information" index="1"]
+layout_mode = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+
+[node name="Content" parent="Information/Margin" index="0"]
+layout_mode = 2
+
+[node name="Title" parent="Information/Margin/Content" index="0"]
+layout_mode = 2
+
+[node name="Description" parent="Information/Margin/Content" index="1"]
+layout_mode = 2
+
+[node name="Action" parent="Information/Margin/Content" index="2"]
+layout_mode = 2
+
+[editable path="Information"]

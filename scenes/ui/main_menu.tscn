@@ -46,7 +46,7 @@ horizontal_alignment = 1
 
 [node name="Title" type="Label" parent="Center/Content" unique_id=2084158847]
 layout_mode = 2
-theme_override_font_sizes/font_size = 56
+theme_override_font_sizes/font_size = 48
 text = "Deck Golf"
 horizontal_alignment = 1
 
@@ -57,7 +57,7 @@ layout_mode = 2
 [node name="Play" type="Button" parent="Center/Content" unique_id=2034484558]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-theme_override_styles/normal = ExtResource("accent")
+theme_type_variation = &"PrimaryButton"
 text = "Play"
 
 [node name="Deck" type="Button" parent="Center/Content" unique_id=170866608]

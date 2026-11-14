@@ -1,6 +1,12 @@
 [gd_resource type="Resource" script_class="CardDefinition" format=3 uid="uid://c72nufntll1jq"]
 
 [ext_resource type="Script" uid="uid://b3jrljltourar" path="res://scripts/cards/card_definition.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://d28gdncrhuipi" path="res://art/cards.png" id="art"]
+
+[sub_resource type="AtlasTexture" id="CardArt"]
+atlas = ExtResource("art")
+region = Rect2(88, 31, 22, 31)
+filter_clip = true
 
 [sub_resource type="Curve" id="Spread"]
 _limits = [0.0, 20.0, 0.0, 1.0]
@@ -10,9 +16,10 @@ point_count = 2
 [resource]
 script = ExtResource("1")
 id = &"rewind"
-display_name = "Rewind Ball"
-description = "Return to the latest safe position, clear velocity, then launch."
+display_name = "Reverse"
+description = "Return to your last safe spot, then launch a new shot."
 cost = 5
 power = 155.0
 spread_curve = SubResource("Spread")
 effect = 9
+artwork = SubResource("CardArt")

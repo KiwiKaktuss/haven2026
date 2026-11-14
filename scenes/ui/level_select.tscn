@@ -37,7 +37,7 @@ theme_override_constants/separation = 14
 
 [node name="Title" type="Label" parent="Center/Content"]
 text = "Choose a course"
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 32
 mouse_filter = 2
 
 

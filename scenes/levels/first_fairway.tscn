@@ -278,6 +278,7 @@ polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 14, 1, 14, 1, 15, 2, 15,
 [node name="Decorations" type="Node2D" parent="." unique_id=2008772544]
 
 [node name="Hints" type="Node2D" parent="." unique_id=1562602125]
+visible = false
 
 [node name="CourseHint" type="Label" parent="Hints" unique_id=1476298305]
 offset_left = 8.0
