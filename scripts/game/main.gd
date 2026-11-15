@@ -11,6 +11,7 @@ extends Node2D
 @export var game_host: Node2D
 @export var cards: CardCatalog
 @export var courses: CourseCatalog
+@export var course_transition: Control
 var save: SaveStore = SaveStore.new()
 var session: GameSession
 var course_index: int = 0
@@ -22,6 +23,7 @@ var _journey_tween: Tween
 var _journey_progress: float = 0.0
 var _journey_moving: bool = false
 var _background_scroll_time: float = 0.0
+var _course_entering: bool = false
 
 func _ready() -> void:
     save.read_save(cards, courses)
@@ -71,7 +73,7 @@ func _screen(packed: PackedScene) -> Control:
     return screen
 
 func _show_menu() -> void:
-    if _journey_moving:
+    if _journey_moving or _course_entering:
         return
     get_node("/root/GameAudio").play_menu_music()
     if is_instance_valid(_menu_screen):
@@ -92,7 +94,7 @@ func _show_menu() -> void:
     _layout_menu_journey()
 
 func _show_levels() -> void:
-    if _journey_moving:
+    if _journey_moving or _course_entering:
         return
     _clear_games()
     if not is_instance_valid(_menu_screen):
@@ -101,13 +103,13 @@ func _show_levels() -> void:
         _levels_screen = level_select_scene.instantiate() as Control
         _levels_screen.clip_contents = true
         screen_host.add_child(_levels_screen)
-        _levels_screen.course_requested.connect(_start_course)
+        _levels_screen.course_requested.connect(_enter_course)
         _levels_screen.back_requested.connect(_show_menu)
     _levels_screen.show_records(save.records)
     _travel_to_menu_depth(-1.0)
 
 func _show_deck() -> void:
-    if _journey_moving:
+    if _journey_moving or _course_entering:
         return
     if not is_instance_valid(_menu_screen):
         _show_menu()
@@ -199,7 +201,32 @@ func _start_course(index: int) -> void:
     session.attempt_finished.connect(_result)
     game_host.add_child(session)
 
+func _enter_course(index: int) -> void:
+    if _course_entering or _journey_moving:
+        return
+    _course_entering = true
+    var target: int = clampi(index, 0, courses.courses.size() - 1)
+    for room: Node in screen_host.get_children():
+        room.process_mode = Node.PROCESS_MODE_DISABLED
+    if is_instance_valid(session):
+        session.pause_attempt()
+    var focused: Control = get_viewport().gui_get_focus_owner()
+    if focused != null:
+        focused.release_focus()
+    var source: Control = _levels_screen.grid.get_child(target) if is_instance_valid(_levels_screen) else null
+    await course_transition.cover(source)
+    _start_course(target)
+    session.pause_attempt()
+    session.ball.hide()
+    session.hud.modulate.a = 0.0
+    session.camera_controller.camera.force_update_scroll()
+    await course_transition.reveal(session)
+    session.resume_attempt()
+    _course_entering = false
+
 func _restart() -> void:
+    if _course_entering:
+        return
     if session is TutorialSession:
         _clear_screens()
         session.resume_attempt()
@@ -208,6 +235,8 @@ func _restart() -> void:
     _start_course(course_index)
 
 func _start_tutorial() -> void:
+    if _course_entering:
+        return
     _clear_screens()
     _clear_games()
     session = preload("res://scenes/tutorial/tutorial_session.tscn").instantiate()
@@ -217,7 +246,7 @@ func _start_tutorial() -> void:
     game_host.add_child(session)
 
 func _pause() -> void:
-    if not is_instance_valid(session) or not session.pause_attempt():
+    if _course_entering or not is_instance_valid(session) or not session.pause_attempt():
         return
     var screen: Control = _screen(pause_menu_scene)
     screen.resume_requested.connect(_resume)

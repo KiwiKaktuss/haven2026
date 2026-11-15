@@ -80,7 +80,9 @@ func run() -> void:
     check(audio.music.stream == audio.menu_music and audio.music.get_playback_position() >= 3.0, "Menu navigation preserves music position")
     audio.click.stop()
     click_button(main._levels_screen.get_node("Center/Content/Grid/Course0"))
-    check(audio.click.playing and is_instance_valid(main.session), "Click survives removal of the launching button")
+    check(audio.click.playing and main._course_entering, "Level activation plays click as the transition starts")
+    while main._course_entering:
+        await process_frame
     check(audio.music.playing and audio.music.stream == audio.level_music, "Starting a course switches to level music")
     await check_loop(audio.music, "Level music really wraps at the end")
 

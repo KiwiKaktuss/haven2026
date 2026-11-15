@@ -113,6 +113,8 @@ func run() -> void:
     click("Center/Content/Play")
     await finish_menu_travel()
     click("Center/Content/Grid/Course0")
+    while main._course_entering:
+        await process_frame
     await ticks(4)
     var session: GameSession = main.session
     check(main.screen_host.get_child_count() == 0 and session.deck.equipped == main.save.equipped, "Course launch uses equipped deck")
@@ -204,7 +206,7 @@ func run() -> void:
     check(main.course_index == 1 and main.session.state == GameSession.State.READY, "Next starts following course")
     session = main.session
     session.ball.simulation_enabled = false
-    session.ball.reset_motion(Vector2(24, session.course.void_boundary.global_position.y - 1))
+    session.ball.reset_motion(Vector2(24, session.course.void_boundary.global_position.y - session.tuning.ball_radius - 1))
     session.check_course_end(0.02)
     check(session.state == GameSession.State.READY and session.try_shot(Vector2(0, 80)), "Rescue shot still allowed above void")
     session.ball.global_position.y = session.course.void_boundary.global_position.y
@@ -221,6 +223,8 @@ func run() -> void:
         main._show_levels()
         await finish_menu_travel()
         click("Center/Content/Grid/Course%s" % index)
+        while main._course_entering:
+            await process_frame
         check(main.course_index == index and main.session.course.goal_cup != null, "Selectable course has lifecycle targets")
         main.session.finish_attempt(true)
         if index == 3:

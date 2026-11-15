@@ -12,7 +12,8 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/result_screen.tscn" id="result"]
 [ext_resource type="Resource" path="res://resources/cards/catalog.tres" id="cards"]
 [ext_resource type="Resource" path="res://resources/levels/catalog.tres" id="courses"]
-[node name="Main" type="Node2D" node_paths=PackedStringArray("screen_host", "game_host")]
+[ext_resource type="PackedScene" path="res://scenes/ui/course_transition.tscn" id="transition"]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("screen_host", "game_host", "course_transition")]
 texture_filter = 1
 script = ExtResource("1")
 level_select_scene = ExtResource("levels")
@@ -27,6 +28,10 @@ card_lab_scene = ExtResource("card_lab")
 physics_lab_scene = ExtResource("4")
 screen_host = NodePath("ScreenHost")
 game_host = NodePath("GameHost")
+course_transition = NodePath("TransitionLayer/CourseTransition")
 [node name="ScreenHost" type="CanvasLayer" parent="."]
 layer = 10
 [node name="GameHost" type="Node2D" parent="."]
+[node name="TransitionLayer" type="CanvasLayer" parent="."]
+layer = 30
+[node name="CourseTransition" parent="TransitionLayer" instance=ExtResource("transition")]
