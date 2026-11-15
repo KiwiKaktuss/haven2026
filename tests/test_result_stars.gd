@@ -26,7 +26,7 @@ func run() -> void:
         check(stars.get_parent().visible, "Earned stars are visible")
     screen.configure(true, 13.8, 1, 13.8, true, true)
     check(stats.text == "0:13.80  ·  1 shot  ·  New best 0:13.80", "All three stats share one line, preserving new records and singular shots")
-    check(screen.get_node("Center/Content/Next").text == "Choose a course", "Final course navigation remains available")
+    check(not screen.get_node("Center/Content/Next").visible, "Final level hides next-level navigation")
     screen._star_tween.custom_step(1.0)
     var initial_y: float = stars.position.y
     screen._star_tween.custom_step(1.8)
@@ -39,7 +39,9 @@ func run() -> void:
             await process_frame
         var panel: Rect2 = screen.get_node("Center/MenuPanel").get_global_rect().grow(-24.0)
         for path: String in ["StarSpace", "Title", "Stats", "Next", "Restart", "Menu"]:
-            check(panel.encloses(screen.get_node("Center/Content/" + path).get_global_rect()), "%s fits inside the result panel at %s" % [path, viewport_size])
+            var control: Control = screen.get_node("Center/Content/" + path)
+            if control.visible:
+                check(panel.encloses(control.get_global_rect()), "%s fits inside the result panel at %s" % [path, viewport_size])
     if "--capture" in OS.get_cmdline_user_args():
         root.size = Vector2i(960, 640)
         screen.configure(true, 32.89, 7, 13.8, false, false)
@@ -47,6 +49,7 @@ func run() -> void:
         await RenderingServer.frame_post_draw
         root.get_texture().get_image().save_png("res://screenshots/result_stars.png")
     screen.configure(true, 70.0, 7, 13.8, false, false)
+    check(screen.get_node("Center/Content/Next").visible and screen.get_node("Center/Content/Next").text == "Next level", "Earlier levels offer Next level")
     check(not stars.get_parent().visible, "70 seconds earns no stars")
     screen.configure(false, 10.0, 2, 13.8, false, false)
     check(not stars.get_parent().visible and not screen.get_node("Center/Content/Next").visible, "Defeat never awards stars or offers Next")

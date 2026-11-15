@@ -23,8 +23,8 @@ func configure(won: bool, elapsed: float, shots: int, best: float, new_record: b
     if best > 0:
         stats += "  ·  %s %s" % ["New best" if new_record else "Best", GameHUD.format_time(best)]
     $Center/Content/Stats.text = stats
-    $Center/Content/Next.visible = won
-    $Center/Content/Next.text = "Choose a course" if last_course else "Next course"
+    $Center/Content/Next.visible = won and not last_course
+    $Center/Content/Next.text = "Next level"
     var stars: int = stars_for_time(elapsed) if won else 0
     $Center/Content/StarSpace.visible = stars > 0
     $Center/MenuPanel.custom_minimum_size.y = 478.0 if stars > 0 else 380.0
