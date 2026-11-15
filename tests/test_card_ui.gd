@@ -19,6 +19,7 @@ func run() -> void:
         var card: CardDefinition = catalog.cards[index]
         check(card.id == order[index], "Collection follows the supplied sprite order")
         var art: AtlasTexture = card.artwork as AtlasTexture
+        check(art != null and art.atlas.resource_path == "res://art/cards2.png", "Cards use the new artwork sheet")
         check(art != null and art.region == Rect2((index % 5) * 22, (index / 5) * 31, 22, 31), "Correct 22 × 31 art for " + String(card.id))
     var editor: Control = load("res://scenes/ui/deck_editor.tscn").instantiate()
     root.add_child(editor)

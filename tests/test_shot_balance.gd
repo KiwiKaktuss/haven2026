@@ -28,7 +28,7 @@ func flight(card: CardDefinition, direction: Vector2, strength: float = 1.0) -> 
         ball.step_motion(dt)
         if step + 1 < predicted.size():
             error = maxf(error, ball.global_position.distance_to(predicted[step + 1]))
-        if ball.global_position.y >= 0.0 and ball.velocity.y > 0.0:
+        if ball.global_position.y * signf(card.gravity_multiplier) >= 0.0 and ball.velocity.y * signf(card.gravity_multiplier) > 0.0:
             var fraction: float = -previous.y / (ball.global_position.y - previous.y)
             check(error < 0.02, "Long-flight preview matches live motion: " + str(card.id))
             check(step + 1 < predicted.size(), "Preview includes the full flight: " + str(card.id))
@@ -46,11 +46,13 @@ func run() -> void:
     root.add_child(preview)
     var flights: Dictionary = {}
     for card: CardDefinition in catalog.cards:
-        var full: Dictionary = flight(card, Vector2(1, -1))
+        # Gravity has the same launch control with a vertically mirrored arc.
+        var up: float = -signf(card.gravity_multiplier)
+        var full: Dictionary = flight(card, Vector2(1, up))
         flights[card.id] = full
-        var gentle: Dictionary = flight(card, Vector2(1, -1), 0.3)
+        var gentle: Dictionary = flight(card, Vector2(1, up), 0.3)
         check(gentle.distance > 10.0 and gentle.distance < full.distance * 0.1, "Short drags retain landing control: " + str(card.id))
-        flight(card, Vector2.UP)
+        flight(card, Vector2(0, up))
         print("%s: %.1f px range, %.2f s flight" % [card.display_name, full.distance, full.seconds])
     var normal: float = flights[&"classic"].distance
     check(normal >= 300.0 and normal <= 350.0, "Normal clears a useful medium gap")

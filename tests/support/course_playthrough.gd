@@ -115,7 +115,7 @@ func support() -> TerrainObject:
 func slots_by_preference() -> Array[int]:
     var slots: Array[int] = [0, 1, 2]
     var order: Array[int] = [CardDefinition.Effect.GLUE, CardDefinition.Effect.SNIPER,
-        CardDefinition.Effect.CLASSIC, CardDefinition.Effect.DASH, CardDefinition.Effect.REWIND,
+        CardDefinition.Effect.CLASSIC, CardDefinition.Effect.DASH, CardDefinition.Effect.GRAVITY,
         CardDefinition.Effect.FIRE, CardDefinition.Effect.SLOW, CardDefinition.Effect.HEAVY,
         CardDefinition.Effect.BOUNCE, CardDefinition.Effect.GHOST]
     slots.sort_custom(func(a: int, b: int) -> bool:
@@ -213,7 +213,7 @@ func finish_hop(target: TerrainObject, cup: bool, flight_time: float, correction
             corrected = true
             for slot: int in slots_by_preference():
                 var card: CardDefinition = session.deck.hand[slot]
-                if card.effect in [CardDefinition.Effect.GHOST, CardDefinition.Effect.BOUNCE, CardDefinition.Effect.REWIND] or session.elixir < card.cost:
+                if card.effect in [CardDefinition.Effect.GHOST, CardDefinition.Effect.BOUNCE, CardDefinition.Effect.GRAVITY] or session.elixir < card.cost:
                     continue
                 var remaining: float = maxf(0.16, flight_time - frame * DT)
                 var center_x: float = target.global_position.x + (32.0 if cup else target.get_node('Tiles').get_used_rect().size.x * 4.0)
@@ -249,8 +249,7 @@ func cycle_or_position(target: TerrainObject, attempt: int) -> bool:
     var direction: float = signf(target.global_position.x + 24.0 - session.ball.global_position.x)
     for slot: int in slots_by_preference():
         var card: CardDefinition = session.deck.hand[slot]
-        # Rewind can step back; Ghost can be safely replaced in flight, but is
-        # deliberately reserved while another legal cycling play is available.
+        # Reserve Ghost while another legal cycling play is available.
         if card.effect == CardDefinition.Effect.GHOST:
             continue
         for offset: float in [direction * 16.0, direction * 32.0, 0.0]:

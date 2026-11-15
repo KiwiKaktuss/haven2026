@@ -135,10 +135,11 @@ func run() -> void:
         check(ball.velocity == expected, "Momentum rule: " + str(card.id))
         check(ball.active_effect == card.effect, "Effect applied: " + str(card.id))
         check(ball.gravity_multiplier == card.gravity_multiplier, "Gravity: " + str(card.id))
-        if card.effect == CardDefinition.Effect.REWIND:
-            check(ball.global_position == safe and ball.safe_position == safe, "Rewind origin preserves safe point")
+        if card.effect == CardDefinition.Effect.GRAVITY:
+            check(ball.global_position == Vector2(-300, -300) and ball.safe_position == safe, "Gravity preserves current origin and safe point")
         ball.step_motion(1.0 / 60)
-        check(ball.velocity.y > expected.y, "Slow/Rewind clear only once: " + str(card.id))
+        check(signf(ball.velocity.y - expected.y) == signf(card.gravity_multiplier), "Shot accelerates with its gravity: " + str(card.id))
+    gravity_cases()
     ball.set_card_effect(catalog.find_card(&"heavy"))
     ball.velocity = Vector2.ZERO
     ball.apply_knockback(Vector2(40, 0))
@@ -174,6 +175,13 @@ func physics_cases() -> void:
         demo.simulation_enabled = false
     ball.simulation_enabled = true
     await ticks(2)
+    place(Vector2(48, 105))
+    ball.play_card(catalog.find_card(&"rewind"), Vector2.ZERO)
+    await ticks(90)
+    check(ball.support_body == lab.get_node("Terrain/Normal") and ball.contact_normal == Vector2.DOWN and ball.velocity == Vector2.ZERO, "Gravity settles against an ordinary ceiling")
+    ball.play_card(catalog.find_card(&"classic"), Vector2.ZERO)
+    await ticks(6)
+    check(ball.support_body == null and ball.velocity.y > 0 and ball.global_position.y > 90.5, "Next shot releases reversed-gravity ceiling support")
     place(Vector2(392, 70), Vector2(0, 100))
     ball.set_card_effect(catalog.find_card(&"glue"))
     await ticks(8)
@@ -208,8 +216,10 @@ func physics_cases() -> void:
     ball.safe_position = saved
     await ticks(50)
     check(ball.safe_position == saved, "Moving attachment cannot replace safe point")
+    var origin: Vector2 = ball.global_position
+    var carried: Vector2 = ball.world_velocity()
     ball.play_card(catalog.find_card(&"rewind"), Vector2(0, -60))
-    check(ball.global_position == saved and ball.velocity == Vector2(0, -60), "Rewind from moving attachment clears carry")
+    check(ball.global_position == origin and ball.velocity == carried + Vector2(0, -60) and ball.attached_body == null, "Gravity releases moving attachment and retains carry")
     place(Vector2(280, 60), Vector2(0, 60))
     ball.set_card_effect(catalog.find_card(&"ghost"))
     var passing: bool = false
@@ -297,3 +307,25 @@ func lab_routes() -> void:
     await ticks(1)
     check(main.game_host.get_child_count() == 0 and main.screen_host.get_child_count() == 1, "Lab returns to launcher")
     main.free()
+
+func gravity_cases() -> void:
+    place(Vector2(-300, -300))
+    var gravity: CardDefinition = catalog.find_card(&"rewind")
+    check(gravity.display_name == "Gravity" and gravity.gravity_multiplier == -1.0, "Gravity replaces the saved Rewind card")
+    ball.play_card(gravity, Vector2(30, 0))
+    for tick: int in 60:
+        ball.step_motion(1.0 / 60)
+    check(ball.global_position.y < -400 and ball.velocity.y < -250 and ball.active_effect == CardDefinition.Effect.GRAVITY, "Upward pull persists during flight")
+    choose(&"classic")
+    check(ball.gravity_multiplier == -1.0, "Selecting next card retains upward pull")
+    session.elixir = 0
+    var before: Array = snapshot()
+    check(not session.try_shot(Vector2(0, 80)) and snapshot() == before, "Rejected next shot retains Gravity")
+    session.elixir = 10
+    check(session.try_shot(Vector2(0, 80)) and ball.gravity_multiplier == 1.0, "Next committed shot replaces upward gravity")
+    var previous_y: float = ball.velocity.y
+    ball.step_motion(1.0 / 60)
+    check(ball.velocity.y > previous_y, "Downward acceleration resumes on next shot")
+    ball.play_card(gravity, Vector2.ZERO)
+    ball.reset_motion(Vector2(-300, -300))
+    check(ball.gravity_multiplier == 1.0 and ball.active_effect == CardDefinition.Effect.CLASSIC, "Reset clears upward gravity")

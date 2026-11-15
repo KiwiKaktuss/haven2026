@@ -70,7 +70,7 @@ func predict(ball: GolfBall, card: CardDefinition, drag: Vector2, angular_offset
 		probe.add_collision_exception_with(passing)
 	var dt: float = 1.0 / Engine.physics_ticks_per_second
 	# Low-gravity shots need a longer horizon to show their full slow flight.
-	var flight_horizon: float = horizon_seconds / sqrt(minf(gravity_multiplier, 1.0))
+	var flight_horizon: float = horizon_seconds / sqrt(clampf(absf(gravity_multiplier), 0.01, 1.0))
 	var steps: int = ceili(flight_horizon / dt)
 	if max_steps >= 0:
 		steps = mini(steps, max_steps)

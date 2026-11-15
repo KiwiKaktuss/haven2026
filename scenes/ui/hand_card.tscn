@@ -1,6 +1,6 @@
 [gd_scene format=3]
 [ext_resource type="PackedScene" path="res://scenes/ui/card_view.tscn" id="card"]
-[ext_resource type="Texture2D" path="res://art/cards.png" id="cards"]
+[ext_resource type="Texture2D" path="res://art/cards2.png" id="cards"]
 [sub_resource type="AtlasTexture" id="preview"]
 atlas = ExtResource("cards")
 region = Rect2(44, 0, 22, 31)

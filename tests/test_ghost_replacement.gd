@@ -42,7 +42,7 @@ func run() -> void:
     ball.simulation_enabled = true
     await ticks(2)
     for body: TerrainObject in [lab.get_node('Terrain/Normal'), lab.get_node('Terrain/Sticky')]:
-        for id: StringName in [&'classic', &'heavy', &'slow', &'glue', &'ghost']:
+        for id: StringName in [&'classic', &'heavy', &'slow', &'glue', &'ghost', &'rewind']:
             await enter(body)
             var card: CardDefinition = catalog.find_card(id)
             var drag: Vector2 = Vector2(0, 160)
@@ -75,13 +75,6 @@ func run() -> void:
                 var point_index: int = steps + extra + 1
                 if point_index < prediction.points.size() and (prediction.hit_step < 0 or point_index <= prediction.hit_step):
                     check(ball.global_position.distance_to(prediction.points[point_index]) < 0.08, 'Preview retains replacement physics after the inherited passage exits')
-        await enter(body)
-        ball.safe_position = body.to_global(Vector2(32, -24))
-        var rewind: CardDefinition = catalog.find_card(&'rewind')
-        var rewind_path: Dictionary = preview.predict(ball, rewind, Vector2(0, 80))
-        check(rewind_path.ghost_points.is_empty() and rewind_path.collider == body, 'Rewind preview outside the old object restores its collision')
-        ball.play_card(rewind, Vector2(0, -80))
-        check(ball.ghost_state == GolfBall.GhostState.INACTIVE and ball.get_collision_exceptions().is_empty(), 'Rewind outside the object immediately restores its collision')
         await enter(body)
         ball.reset_motion(Vector2(-400, -400))
         check(ball.ghost_state == GolfBall.GhostState.INACTIVE and ball.get_collision_exceptions().is_empty(), 'Reset clears an unfinished passage')

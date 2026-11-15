@@ -70,7 +70,7 @@ item_count = 2
 selected = 0
 popup/item_0/text = "Default five cards"
 popup/item_0/id = 0
-popup/item_1/text = "Alternate five (Heavy / Dash / Ghost / Rewind / Glue)"
+popup/item_1/text = "Alternate five (Heavy / Dash / Ghost / Gravity / Glue)"
 popup/item_1/id = 1
 [node name="Hand" type="HBoxContainer" parent="CanvasLayer/CardControls"]
 mouse_filter = 2

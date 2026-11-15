@@ -66,10 +66,6 @@ func set_card_effect(card: CardDefinition, notify: bool = true) -> void:
 
 func play_card(card: CardDefinition, impulse: Vector2, notify: bool = true) -> void:
     var from_position: Vector2 = global_position
-    if card.effect == CardDefinition.Effect.REWIND:
-        # Preserve the qualified return point; teleport only the shot origin.
-        global_position = safe_position
-        reset_physics_interpolation()
     set_card_effect(card, false)
     launch(impulse, ShotCalculation.clears_velocity(card))
     launched.emit(card, impulse, from_position)
@@ -215,7 +211,7 @@ func step_motion(delta: float) -> void:
             _track_safe(delta)
             return
         relative = BallMotion.impact(relative, normal, body.surface, tuning, bounce_retention)
-        var supports_gravity: bool = normal.dot(Vector2.UP) > tuning.minimum_support_dot
+        var supports_gravity: bool = normal.dot(Vector2.DOWN if gravity_multiplier < 0.0 else Vector2.UP) > tuning.minimum_support_dot
         var resting_contact: bool = supports_gravity and relative.dot(normal) < tuning.rest_speed
         if resting_contact:
             relative = relative.slide(normal)

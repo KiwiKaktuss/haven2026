@@ -44,11 +44,9 @@ func _burst(at: Vector2, color: Color, direction: Vector2, intensity: float) -> 
     ball.get_parent().add_child(burst)
     burst.play(at, color, direction, intensity)
 
-func _launch(card: CardDefinition, impulse: Vector2, from_position: Vector2) -> void:
+func _launch(card: CardDefinition, impulse: Vector2, _from_position: Vector2) -> void:
     _effect_changed(card.effect)
     _burst(ball.global_position, effect_colors[card.effect], -impulse.normalized(), 0.8 + impulse.length() / 700.0)
-    if card.effect == CardDefinition.Effect.REWIND:
-        _burst(from_position, effect_colors[card.effect], Vector2.UP, 0.85)
     ball.sprite.rotation = impulse.angle()
     ball.effect_animation.stop()
     ball.effect_animation.play(&"launch")

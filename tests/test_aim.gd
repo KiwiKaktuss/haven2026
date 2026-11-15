@@ -89,7 +89,7 @@ func run() -> void:
     aim.begin(Vector2(200, 200))
     aim.move_pointer(Vector2(200, 280))
     aim.update_preview()
-    check(preview.central.points[0] == ball.safe_position, "Rewind preview uses saved origin")
+    check(preview.central.points[0] == ball.global_position, "Gravity preview uses current origin")
     var old_drag: Vector2 = aim.drag_vector()
     session.deck.select_slot((session.deck.selected_slot + 1) % 3)
     aim.update_preview()
