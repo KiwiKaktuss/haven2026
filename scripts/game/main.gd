@@ -32,6 +32,12 @@ func _process(delta: float) -> void:
     _background_scroll_time += delta
     _synchronize_menu_backgrounds()
 
+func _unhandled_input(event: InputEvent) -> void:
+    if event.is_action_pressed(&"restart_run") and not event.is_echo():
+        if is_instance_valid(session) and not session.inspection_mode:
+            get_viewport().set_input_as_handled()
+            _restart()
+
 func _synchronize_menu_backgrounds() -> void:
     for room: Control in [_menu_screen, _levels_screen]:
         if is_instance_valid(room):

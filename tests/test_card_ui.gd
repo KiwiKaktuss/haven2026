@@ -108,7 +108,14 @@ func run() -> void:
     var hand: CardView = session.hud.get_node("Bottom/Stack/Hand/Card0")
     check(not hand.affordable and hand.get_node("Artwork").self_modulate.a < 1.0, "Unaffordable cards fade without changing source textures")
     hand._show_information()
-    check(not hand.get_node("Information").visible, "Gameplay hand stays graphics only on hover")
+    for frame: int in range(4):
+        await process_frame
+    var hand_popup: Control = hand.get_node("Information")
+    check(hand_popup.visible and hand_popup.get_node("Margin/Content/Title").text == hand.definition.display_name, "Gameplay hover shows the card name")
+    check(not hand_popup.get_node("Margin/Content/Description").visible and hand_popup.size.x < 200, "Gameplay name box stays compact")
+    check(hand_popup.get_global_rect().end.y < hand.get_global_rect().position.y, "Gameplay name box appears above the card")
+    hand._hide_information()
+    check(not hand_popup.visible, "Leaving the gameplay card hides its name")
     session.elixir = 10
     session.hud.refresh()
     check(hand.affordable, "Affordability updates after regeneration")

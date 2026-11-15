@@ -3,6 +3,7 @@ extends Button
 ## Pixel tiles in the selector, sprite-only cards in the gameplay hand.
 @export var decorated: bool = true
 @export var show_information: bool = true
+@export var name_only_information: bool = false
 @export var selected_lift: float = 6.0
 @export var hover_lift: float = 3.0
 @export_range(1.0, 1.15, 0.005) var selected_scale: float = 1.05
@@ -30,6 +31,8 @@ func set_deal_pending(value: bool) -> void:
         $ReadyMark.visible = selected and not value
     if value and has_node("SelectionShadow"):
         $SelectionShadow.hide()
+    if value:
+        _hide_information()
 
 func _process(delta: float) -> void:
     if not decorated:
@@ -67,6 +70,10 @@ func _ready() -> void:
     $Information.resized.connect(_position_information)
     $Information.minimum_size_changed.connect(_queue_information_fit)
     $Artwork.resized.connect(_update_artwork_pivot)
+    if name_only_information:
+        $Information.custom_minimum_size = Vector2.ZERO
+        $Information/Margin/Content/Description.hide()
+        $Information/Margin/Content/Title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     _update_artwork_pivot()
 
 func _update_artwork_pivot() -> void:
@@ -122,7 +129,7 @@ func _refresh_visuals() -> void:
 func _show_information() -> void:
     _hovered = true
     _refresh_visuals()
-    if show_information and definition != null:
+    if show_information and definition != null and not deal_pending:
         _update_information()
         $Information.show()
 
@@ -136,7 +143,7 @@ func _visibility_changed() -> void:
         _hide_information()
 
 func _update_information() -> void:
-    $Information/Margin/Content/Title.text = "%s · %s elixir" % [definition.display_name, definition.cost]
+    $Information/Margin/Content/Title.text = definition.display_name if name_only_information else "%s · %s elixir" % [definition.display_name, definition.cost]
     $Information/Margin/Content/Description.text = definition.description
     _queue_information_fit()
 
