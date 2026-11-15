@@ -28,13 +28,15 @@ func _ready() -> void:
 	_power_bar.z_index = 20
 	_power_bar.visible = false
 	var background := StyleBoxFlat.new()
-	background.bg_color = Color(0.06, 0.09, 0.12, 0.9)
-	background.border_color = Color(0.92, 0.96, 1.0, 0.8)
+	background.bg_color = Color("302d40")
+	background.border_color = Color("302d40")
 	background.set_border_width_all(1)
-	background.set_corner_radius_all(3)
+	background.set_corner_radius_all(1)
 	var fill := StyleBoxFlat.new()
 	fill.bg_color = Color(0.3, 0.85, 0.65)
-	fill.set_corner_radius_all(2)
+	fill.set_corner_radius_all(1)
+	fill.set_border_width_all(1)
+	fill.border_color = Color("302d40")
 	_power_bar.add_theme_stylebox_override("background", background)
 	_power_bar.add_theme_stylebox_override("fill", fill)
 	_power_fill = fill
@@ -131,8 +133,8 @@ func update_preview() -> void:
 		_power_bar.visible = aiming and card != null
 		var strength: float = ShotCalculation.strength(drag_vector(), session.tuning)
 		_power_bar.value = strength * 100.0
-		var warm: Color = Color(1.0, 0.73, 0.15)
-		_power_fill.bg_color = Color(0.3, 0.85, 0.65).lerp(warm, strength * 2.0) if strength < 0.5 else warm.lerp(Color(1.0, 0.08, 0.03), (strength - 0.5) * 2.0)
+		var warm: Color = Color("f6c56b")
+		_power_fill.bg_color = Color(0.3, 0.85, 0.65).lerp(warm, strength * 2.0) if strength < 0.5 else warm.lerp(Color("c65b3f"), (strength - 0.5) * 2.0)
 		_power_flames.visible = _power_bar.visible and strength >= 1.0
 		# Keep the meter compact and legible at every camera zoom.
 		var canvas_scale: Vector2 = get_canvas_transform().get_scale().abs()
