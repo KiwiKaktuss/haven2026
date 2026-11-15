@@ -17,17 +17,18 @@
 - [x] Remove moving-platform tutorial content and the completion-screen guide.
 - [x] Keep the polished connected terrain and nine hole-based practical tasks.
 - [x] Use only the standard II pause button, with restart/menu inside pause.
-- [x] Move lesson explanations into the top box; remove floating/lower labels,
+- [x] Show title and step count together, followed by one changing description;
+      remove the information box and floating/lower labels,
       the yellow hole marker and the first-step gesture circle.
 - [x] Restore the normal 18px cup attraction radius in every room and builder.
 - [x] Frame each challenge from its actual geometry, centered in the play area.
 - [x] Verify pause/restart, real hover input, Continue and Begin playing.
 - [x] Replay all ten steps with legal inputs using the normal cup radius.
-- [x] Inspect small/large layouts and the final screenshots/result/30/ proof.
+- [x] Inspect small/large layouts and the final screenshots/result/31/ proof.
 
 Current checks: 189 tutorial/flow checks, all ten steps completed on engine ticks
 (nine physical holes, ten legal releases). Native tile artwork/collision remains
 unchanged. Original user aim/power-flame edits remain intact.
 
-Final proof: screenshots/result/30/video.mp4, 750 original frames, 25s at 30fps.
+Final proof: screenshots/result/31/video.mp4, 750 original frames, 25s at 30fps.
 Cards appear at frame 340; completion at frame 686.

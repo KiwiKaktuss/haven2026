@@ -37,8 +37,8 @@ Focused checks:
   The attraction radius matches the normal game (18px); a small capture-shape
   tolerance still handles 60Hz contact rounding.
 - `tutorial_overlay.tscn` owns the consistent lesson/count/instruction layout,
-  II pause button, completion and Begin playing. Explanations stay in the top
-  panel; passive route/material patterns remain in the field. Camera framing
+  II pause button, completion and Begin playing. The header contains only a
+  title with step count and a single changing description, without a box; passive route/material patterns remain in the field. Camera framing
   centers the saved collision bounds between the header and the hand.
 - `card_lesson.tscn` is the in-place sixth lesson. Its ten compact `lesson_card`
   instances reveal catalog descriptions/costs on hover, focus or click in one

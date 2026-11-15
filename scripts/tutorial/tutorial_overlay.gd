@@ -1,22 +1,10 @@
 extends Control
 const TITLES: Array[String] = ["Aiming and shooting", "Shot power", "Selecting a card", "Card replacement", "Elixir", "Card abilities", "Normal walls", "Sticky walls", "Ice", "Bouncy surfaces"]
-const INSTRUCTIONS: Array[String] = [
-    "Drag back, then release to shoot into the nearby hole.",
-    "Drag farther for more power. Reach the distant hole.",
-    "Select the middle card, then shoot into the hole.",
-    "Shoot once, watch its replacement arrive, then reach the hole.",
-    "Wait for 2 elixir, then spend it on a shot to the hole.",
-    "Hover over a card to discover what it does.",
-    "Bounce off the right wall and return to the hole.",
-    "Shoot onto the sticky wall, then shoot away into the hole.",
-    "Slide across the ice with a gentle shot to the hole.",
-    "Hit the spring below, then land at the elevated hole."
-]
 var session: TutorialSession
 var time: float = 0.0
 const INK := Color(0.20, 0.24, 0.30)
 const GOLD := Color(0.89, 0.56, 0.19)
-@onready var explanation: Label = $Lesson/Content/Explanation
+@onready var description: Label = $Lesson/Description
 
 func configure(value: TutorialSession) -> void:
     session = value
@@ -31,9 +19,8 @@ func configure(value: TutorialSession) -> void:
 func refresh() -> void:
     if session == null:
         return
-    $Lesson/Content/Count.text = "%d / 10" % (session.step_index + 1)
-    $Lesson/Content/Title.text = TITLES[session.step_index]
-    $Lesson/Content/Instruction.text = INSTRUCTIONS[session.step_index]
+    $Lesson/Title.text = "%s  %d / 10" % [TITLES[session.step_index], session.step_index + 1]
+    description.text = _description()
     var showing_cards: bool = session.step_index == TutorialSession.CARD_STEP
     $CardLesson.visible = showing_cards
     if showing_cards:
@@ -48,25 +35,46 @@ func _process(delta: float) -> void:
     time += delta
     if session == null:
         return
-    explanation.text = ""
-    if session.transitioning:
-        explanation.text = "✓  Hole reached!"
-    else:
-        match session.step_index:
-            0: explanation.text = "Pull opposite the direction you want the ball to travel."
-            1: explanation.text = "Watch the power bar above the ball as you drag."
-            2: explanation.text = "Selected ≠ played. The card changes your shot only when you release." if not session.used_other else "Card played! Now reach the hole."
-            3:
-                explanation.text = "Played cards leave the hand. A new card fills the same slot."
-                if session.replaced_slot >= 0:
-                    explanation.text = "Replacement arrived! Finish at the hole." if session.replacement_seen else "Watch the empty slot — your replacement is on its way."
-            4: explanation.text = "ELIXIR  ·  %.1f / 2 needed. It refills automatically." % session.elixir if session.elixir < 2.0 and session.shots == 0 else "Each Snipe card costs 2 elixir. Shooting spends it; it refills."
-            6: explanation.text = "Ordinary walls redirect the ball." if not session.touched_surface else "Wall bounce done! Finish at the hole."
-            7: explanation.text = "The + pattern marks sticky terrain. Stay attached until your next shot." if session.stuck_once else "Aim at the wall with the + pattern."
-            8: explanation.text = "The slashed surface has low friction. A short drag keeps you sliding."
-            9: explanation.text = "The chevron surface launches the ball upward."
-    explanation.visible = not explanation.text.is_empty()
+    description.text = _description()
     queue_redraw()
+
+func _description() -> String:
+    if session.transitioning:
+        return "Hole reached!"
+    match session.step_index:
+        0:
+            return "Pull opposite the shot direction, then release." if session.aim.aiming else "Drag back, then release to shoot into the hole."
+        1:
+            return "Watch the power bar as you drag farther." if session.aim.aiming else "Drag farther for a stronger shot to the distant hole."
+        2:
+            if session.used_other:
+                return "Card played! Now reach the hole."
+            if session.selected_other and session.deck.selected_slot == 1:
+                return "Selection only readies a card; shoot to use it."
+            return "Select the middle card, then shoot to use it."
+        3:
+            if session.replaced_slot < 0:
+                return "Play a card, then watch its replacement arrive."
+            return "Replacement ready! Now reach the hole." if session.replacement_seen else "Played cards leave the hand. Watch the empty slot refill."
+        4:
+            if session.shots > 0:
+                return "Playing cards spends elixir; it refills automatically."
+            if session.elixir < 2.0:
+                return "Elixir refills automatically. Wait for 2 to shoot (%.1f / 2)." % session.elixir
+            return "You have enough elixir. Shoot into the hole for 2 elixir."
+        5:
+            return "Hover over a card to see its ability and elixir cost."
+        6:
+            return "Wall bounce done! Finish at the hole." if session.touched_surface else "Bounce off the right wall to reach the hole."
+        7:
+            if session.left_sticky:
+                return "Shoot away from the sticky wall into the hole."
+            return "You stay attached until you shoot again. Aim for the hole." if session.stuck_once else "Shoot onto the wall marked + to stick to it."
+        8:
+            return "Use a gentle shot; ice keeps the ball sliding toward the hole."
+        9:
+            return "Bounce onto the upper platform and reach the hole." if session.touched_surface else "Hit the chevron surface to bounce up toward the hole."
+    return ""
 
 func world(at: Vector2) -> Vector2:
     return session.get_canvas_transform() * at

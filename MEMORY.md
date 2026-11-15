@@ -107,3 +107,12 @@
   centering and normal hole radius in all ten steps. All practical holes replay.
 - Fresh proof: screenshots/result/30/video.mp4, 750 PNGs, 25s at 30fps. Cards at
   frame 340; full tutorial completes at frame 686.
+
+# Compact tutorial header
+
+- Header is two unboxed centered lines: title plus x/10, then one short
+  description. No separate count, instruction, explanation or panel background.
+- Description changes with aiming, card selection/play, replacement arrival,
+  elixir refill, terrain contact and hole completion. Keep it one line at 800px.
+- Verified all 189 tutorial checks and minimum/large window screenshots.
+- Current proof is screenshots/result/31/, 750 frames at 30fps (25 seconds).

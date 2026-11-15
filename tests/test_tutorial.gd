@@ -44,7 +44,7 @@ func run() -> void:
         check(session.deck.hand.size() == 3, "Fixed hand")
         check(session.hud.get_node("Top").visible == false, "No timer")
         check(not session.objective_met(), "No automatic lesson completion")
-        check(session.lesson_ui.get_node("Lesson/Content/Count").text == "%d / 10" % (step+1), "Counter")
+        check(session.lesson_ui.get_node("Lesson/Title").text.ends_with("%d / 10" % (step+1)), "Title includes the step counter")
         for body: TerrainObject in session.course.get_node("Terrain").get_children():
             check(not body is MovingPlatform, "No moving-platform tutorial remains")
             if step < 6:

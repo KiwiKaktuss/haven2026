@@ -20,44 +20,27 @@ tooltip_text = "Pause (Esc)"
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 24
 text = "II"
-[node name="Lesson" type="PanelContainer" parent="."]
+[node name="Lesson" type="VBoxContainer" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -288.0
-offset_top = 14.0
-offset_right = 288.0
-offset_bottom = 150.0
+offset_left = -328.0
+offset_top = 20.0
+offset_right = 328.0
+offset_bottom = 84.0
 mouse_filter = 2
-[node name="Content" type="VBoxContainer" parent="Lesson"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 2
-[node name="Count" type="Label" parent="Lesson/Content"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_font_sizes/font_size = 18
-text = "1 / 10"
-horizontal_alignment = 1
-[node name="Title" type="Label" parent="Lesson/Content"]
+theme_override_constants/separation = 6
+[node name="Title" type="Label" parent="Lesson"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_font_sizes/font_size = 24
-text = "Aiming and shooting"
+text = "Aiming and shooting  1 / 10"
 horizontal_alignment = 1
-[node name="Instruction" type="Label" parent="Lesson/Content"]
+[node name="Description" type="Label" parent="Lesson"]
 layout_mode = 2
 mouse_filter = 2
-text = "Drag back, then release to shoot into the nearby hole."
+theme_override_font_sizes/font_size = 16
+text = "Drag back, then release to shoot into the hole."
 horizontal_alignment = 1
-autowrap_mode = 2
-[node name="Explanation" type="Label" parent="Lesson/Content"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_colors/font_color = Color(0.30, 0.34, 0.39, 1)
-theme_override_font_sizes/font_size = 15
-text = "Pull opposite the direction you want the ball to travel."
-horizontal_alignment = 1
-autowrap_mode = 2
 [node name="CardLesson" parent="." instance=ExtResource("cards")]
 visible = false
 [node name="Complete" type="Control" parent="."]
