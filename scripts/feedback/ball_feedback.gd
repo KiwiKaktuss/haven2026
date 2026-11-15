@@ -5,6 +5,11 @@ extends Node2D
 @export var burst_scene: PackedScene
 @export var trail_seconds: float = 0.22
 @export var impact_cooldown: float = 0.07
+@export_group("Ball locator")
+@export var locator_idle_seconds: float = 10.0
+@export var locator_movement_tolerance: float = 0.25
+@export var locator_gap: float = 3.0
+@export_group("")
 @export var effect_colors: PackedColorArray = PackedColorArray([
     Color(0.48, 0.67, 0.64), Color(0.2, 0.67, 0.76), Color(0.55, 0.59, 0.85),
     Color(0.43, 0.49, 0.62), Color(0.89, 0.52, 0.23), Color(0.29, 0.73, 0.49),
@@ -14,16 +19,37 @@ var _clock: float = 0.0
 var _last_impact: float = -1.0
 var _effect: int = 0
 var _last_position: Vector2
+var _locator_anchor: Vector2
+var _locator_idle_elapsed: float = 0.0
 
 func _ready() -> void:
     ball.effect_changed.connect(_effect_changed)
     ball.launched.connect(_launch)
     ball.struck.connect(_impact)
     ball.ghost_entered.connect(func() -> void: _burst(ball.global_position, effect_colors[CardDefinition.Effect.GHOST], Vector2.UP, 0.8))
+    ball.motion_reset.connect(_reset_locator)
     $WorldTrail.set_as_top_level(true)
     $WorldTrail.global_position = Vector2.ZERO
     _last_position = ball.global_position
     _effect_changed(ball.active_effect)
+    _reset_locator()
+
+func _reset_locator() -> void:
+    _locator_anchor = ball.global_position
+    _locator_idle_elapsed = 0.0
+    $Locator.show()
+
+func _physics_process(delta: float) -> void:
+    # Compare with an anchor, not the previous frame, so slow movement still
+    # counts while sub-pixel contact jitter does not continually reset the timer.
+    if ball.global_position.distance_to(_locator_anchor) > locator_movement_tolerance:
+        _locator_anchor = ball.global_position
+        _locator_idle_elapsed = 0.0
+        $Locator.hide()
+    else:
+        _locator_idle_elapsed += delta
+        if _locator_idle_elapsed >= locator_idle_seconds:
+            $Locator.show()
 
 func _effect_changed(effect: CardDefinition.Effect) -> void:
     var was_ghost: bool = _effect == CardDefinition.Effect.GHOST
@@ -41,6 +67,8 @@ func _burst(at: Vector2, color: Color, direction: Vector2, intensity: float) -> 
     burst.play(at, color, direction, intensity)
 
 func _launch(card: CardDefinition, impulse: Vector2, _from_position: Vector2) -> void:
+    _locator_idle_elapsed = 0.0
+    $Locator.hide()
     _effect_changed(card.effect)
     _burst(ball.global_position, effect_colors[card.effect], -impulse.normalized(), 0.8 + impulse.length() / 700.0)
     ball.sprite.rotation = impulse.angle()
@@ -65,6 +93,7 @@ func _impact(body: TerrainObject, normal: Vector2, speed: float) -> void:
 func _process(delta: float) -> void:
     _clock += delta
     var zoom: float = maxf(get_canvas_transform().get_scale().x, 0.01)
+    $Locator.position.y = -ball.tuning.ball_radius - locator_gap
     $Tether.visible = is_instance_valid(ball.attached_body)
     if $Tether.visible:
         $Tether.points = PackedVector2Array([Vector2.ZERO, -ball.contact_normal * 4.0])

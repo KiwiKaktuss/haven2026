@@ -5,6 +5,7 @@ signal contacted(body: TerrainObject, normal: Vector2)
 signal launched(card: CardDefinition, impulse: Vector2, from_position: Vector2)
 signal struck(body: TerrainObject, normal: Vector2, speed: float)
 signal ghost_entered
+signal motion_reset
 @export var tuning: GameTuning
 @export var sprite: Sprite2D
 @export var collision_shape: CollisionShape2D
@@ -147,6 +148,7 @@ func reset_motion(at_position: Vector2) -> void:
     safe_position = at_position
     safe_contact_elapsed = 0.0
     reset_physics_interpolation()
+    motion_reset.emit()
 
 func _physics_process(delta: float) -> void:
     if simulation_enabled:

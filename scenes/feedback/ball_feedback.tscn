@@ -1,12 +1,19 @@
 [gd_scene format=3]
 [ext_resource type="Script" path="res://scripts/feedback/ball_feedback.gd" id="script"]
 [ext_resource type="PackedScene" path="res://scenes/feedback/feedback_burst.tscn" id="burst"]
+[ext_resource type="Texture2D" path="res://art/red.png" id="locator_arrow"]
 [sub_resource type="Gradient" id="fade"]
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.75)
 [node name="Feedback" type="Node2D"]
 z_index = 4
 script = ExtResource("script")
 burst_scene = ExtResource("burst")
+[node name="Locator" type="Node2D" parent="."]
+position = Vector2(0, -5)
+z_index = 1
+[node name="Arrow" type="Sprite2D" parent="Locator"]
+position = Vector2(0, -8)
+texture = ExtResource("locator_arrow")
 [node name="WorldTrail" type="Line2D" parent="."]
 width = 0.65
 gradient = SubResource("fade")
