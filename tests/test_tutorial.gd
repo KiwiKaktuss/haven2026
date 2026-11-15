@@ -162,6 +162,19 @@ func run() -> void:
     click(cards.next_button)
     check(session.step_index == 4 and session.course.has_node("Terrain/BankWall"), "Card lesson continues directly to walls")
     check(session.aim.enabled and session.ball.simulation_enabled and session.hud.visible, "World controls return after cards")
+    session.step_index = 6
+    session.retry_step()
+    session.set_physics_process(false)
+    session.ball.simulation_enabled = false
+    check(session.try_shot(Vector2(-60,60)), "Ice lesson accepts a real shot")
+    check(not session.touched_surface, "Ice lesson has no ice contact")
+    session.ball.reset_motion(session.course.goal_cup.capture_shape.global_position)
+    session.check_course_end(session.tuning.capture_dwell_seconds * 0.5)
+    check(not session.transitioning, "Ice hole still requires capture dwell")
+    session.check_course_end(session.tuning.capture_dwell_seconds)
+    check(session.transitioning, "Ice hole accepts capture without ice contact")
+    session.check_course_end(1.0)
+    check(session.step_index == 7, "Ice lesson advances without ice contact")
     session.step_index = 7
     session.retry_step()
     check(session.course.has_node("Terrain/Spring") and not session.course.has_node("Terrain/Ride"), "Bouncy surfaces finish the tutorial")

@@ -13,8 +13,6 @@ var stuck_once: bool = false
 var left_sticky: bool = false
 const CARD_STEP: int = 3
 var card_explored: bool = false
-var _miss_elapsed: float = 0.0
-var _objective_miss_elapsed: float = 0.0
 var _transition_left: float = 0.0
 var _checkpoint: Vector2 = Vector2.INF
 @onready var lesson_ui: Control = $CanvasLayer/TutorialOverlay
@@ -37,8 +35,6 @@ func _prepare_lesson() -> void:
     stuck_once = false
     left_sticky = false
     card_explored = false
-    _miss_elapsed = 0.0
-    _objective_miss_elapsed = 0.0
     _checkpoint = Vector2.INF
     state = State.READY
     shots = 0
@@ -120,15 +116,18 @@ func try_shot(drag: Vector2, at: Vector2 = Vector2.INF) -> bool:
         return false
     var slot: int = deck.selected_slot
     var other: bool = slot == 1
+    var card: CardDefinition = deck.selected_card()
     var from_sticky: bool = is_instance_valid(ball.attached_body) and ball.attached_body.name == "StickyWall"
     # Reserve a known ordinary replacement; super still owns the atomic cycle.
     if deck.draw_pile.is_empty():
         deck.draw_pile.append(deck.catalog.find_card(&"classic"))
     var committed: bool = super.try_shot(drag, at)
     if committed:
+        if step_index == 2 and not used_other and card.id != &"sniper":
+            retry_step()
+            return true
         used_other = used_other or (selected_other and other)
         left_sticky = left_sticky or (stuck_once and from_sticky)
-        _miss_elapsed = 0.0
         lesson_changed.emit()
     return committed
 
@@ -149,7 +148,7 @@ func objective_met() -> bool:
         return false
     match step_index:
         2: return used_other
-        4, 6: return touched_surface
+        4: return touched_surface
         5: return stuck_once and left_sticky
     return true
 
@@ -176,16 +175,7 @@ func check_course_end(delta: float) -> void:
     if ball.global_position.y >= course.void_boundary.global_position.y or ball.global_position.x < -72.0 or ball.global_position.x > 370.0:
         _reset_miss()
         return
-    # These lessons allow follow-up shots from wherever the ball lands.
-    var allow_follow_up_shots: bool = step_index in [0, 1, 4, 5, 6, 7]
-    var speed: float = ball.world_velocity().length()
-    if not allow_follow_up_shots and shots > 0 and speed < 0.8 and ball.global_position.distance_to(course.goal_cup.to_global(Vector2(32, 0))) > course.goal_cup.pull_radius + 2.0 and ball.attached_body == null:
-        _miss_elapsed += delta
-        if _miss_elapsed > 1.4:
-            _reset_miss()
-            return
-    else:
-        _miss_elapsed = 0.0
+    # Every shooting lesson allows follow-up shots from wherever the ball lands.
     if objective_met():
         if course.goal_cup.advance_capture(ball, tuning, delta):
             aim.cancel()
@@ -194,13 +184,6 @@ func check_course_end(delta: float) -> void:
             lesson_changed.emit()
     else:
         course.goal_cup.reset_capture()
-        # Follow-up shots can still demonstrate the mechanic after reaching the hole.
-        if not allow_follow_up_shots and course.goal_cup.capture_shape.global_position.distance_to(ball.global_position) < 6.0 and speed < tuning.capture_speed:
-            _objective_miss_elapsed += delta
-            if _objective_miss_elapsed > 1.4:
-                _reset_miss()
-        else:
-            _objective_miss_elapsed = 0.0
 
 func _reset_miss() -> void:
     # Sticky departure keeps the successful attachment as a local checkpoint.
@@ -212,7 +195,6 @@ func _reset_miss() -> void:
         ball.local_anchor = wall.to_local(_checkpoint)
         left_sticky = false
         elixir = float(tuning.maximum_elixir)
-        _miss_elapsed = 0.0
         lesson_changed.emit()
     else:
         retry_step()
