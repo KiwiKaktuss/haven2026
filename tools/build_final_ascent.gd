@@ -101,27 +101,9 @@ func decorations() -> void:
             sea.set_cell(Vector2i(x,y),0,uv)
     # Garden -> ice harbour -> workshop -> summit. Details never add collision.
     detail("TeeFlowers",Vector2(-152,168),Vector2i(3,0))
-    detail("ForkSign",Vector2(-32,168),Vector2i(5,0))
-    detail("WestGardenFlowers",Vector2(-224,96),Vector2i(3,0))
-    detail("WestGardenPine",Vector2(-184,24),Vector2i(0,0),1,frost_tiles)
-    detail("WestVine",Vector2(-128,64),Vector2i(12,0),1,coast_tiles)
-    detail("IceGlint",Vector2(200,151),Vector2i(4,0),2,frost_tiles)
     detail("IceIcicles",Vector2(192,176),Vector2i(2,0),1,frost_tiles)
-    detail("CatchCrystals",Vector2(248,136),Vector2i(1,0),1,frost_tiles)
-    detail("SpringSign",Vector2(48,48),Vector2i(4,0))
-    detail("LaunchDockFlowers",Vector2(112,48),Vector2i(3,0))
-    detail("EastGalleryCrate",Vector2(440,64),Vector2i(6,0))
-    detail("EastGalleryVine",Vector2(352,128),Vector2i(12,0),1,coast_tiles)
-    detail("ReturnSign",Vector2(224,-8),Vector2i(5,0))
-    detail("ReturnFlowers",Vector2(304,-8),Vector2i(3,0))
-    detail("UpperGarden",Vector2(-16,-72),Vector2i(3,0))
-    detail("CrownSnow",Vector2(280,-144),Vector2i(3,0),1,frost_tiles)
     detail("CrownPine",Vector2(176,-144),Vector2i(0,0),1,frost_tiles)
     detail("CupFlowers",Vector2(96,-208),Vector2i(3,0))
-    detail("CupPennant",Vector2(-32,-208),Vector2i(2,0))
-    detail("BeachReeds",Vector2(360,200),Vector2i(11,0),1,coast_tiles)
-    detail("RecoveryCrate",Vector2(32,224),Vector2i(6,0))
-    detail("WestShore",Vector2(-216,224),Vector2i(13,0),1,coast_tiles)
     # Rails pass through platform centers; pulleys clear both ends of the full sweep.
     var guide := layer(group,"LiftGuide",works_tiles,-1)
     guide.position = Vector2(420,-48)
@@ -135,19 +117,12 @@ func decorations() -> void:
         track.set_cell(Vector2i(x,0),0,Vector2i(1,1))
     detail("ShuttleWestPulley",Vector2(-200,-132),Vector2i(0,0),-1)
     detail("ShuttleEastPulley",Vector2(-16,-132),Vector2i(0,0),-1)
-    # A small beacon gives the summit a recognizable silhouette.
-    var beacon_tiles: TileSet = load("res://resources/terrain/final_ascent_scenery.tres")
-    var beacon := layer(group,"SummitBeacon",beacon_tiles,-1)
-    beacon.position = Vector2(264,-176)
-    for y: int in 3:
-        for x: int in 2:
-            beacon.set_cell(Vector2i(x,y),0,Vector2i(x,y))
-    var distant := layer(group,"DistantSeaStacks",coast_tiles,-4)
-    for cell: Vector2i in [Vector2i(-11,-12),Vector2i(24,-13)]:
-        distant.set_cell(cell,0,Vector2i(11,2))
+
     detail("HighCloud",Vector2(80,-248),Vector2i(11,2),-4,coast_tiles)
-    detail("WestCloud",Vector2(-176,-208),Vector2i(11,2),-4,coast_tiles)
-    detail("EastCloud",Vector2(384,-192),Vector2i(11,2),-4,coast_tiles)
+    detail("BeachReeds",Vector2(360,200),Vector2i(11,0),1,coast_tiles)
+    detail("SpringSign",Vector2(48,48),Vector2i(4,0))
+    detail("WestGardenPine",Vector2(-184,24),Vector2i(0,0),1,frost_tiles)
+    detail("UpperGarden",Vector2(-16,-72),Vector2i(3,0))
 
 func route(title: String, stops: Array[String]) -> void:
     var path := Node2D.new()

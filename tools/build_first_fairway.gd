@@ -79,26 +79,12 @@ func decorations() -> void:
         for x: int in range(-40, 48):
             var band: int = 0 if y == 11 else mini(5, 2 + (y - 12) / 2)
             sea.set_cell(Vector2i(x, y), 0, Vector2i(0, posmod(x / 3, 2)) if y == 11 else Vector2i(posmod(x * 7 + y * 3, 8), band))
-    var grass := layer(group, "GrassFlowersAndSigns", coast_tiles, 2)
-    for cell: Vector2i in [Vector2i(-6,7),Vector2i(9,6),Vector2i(20,3),Vector2i(2,-4),Vector2i(-8,3)]:
+    var grass := layer(group, "GrassAndFlowers", coast_tiles, 2)
+    for cell: Vector2i in [Vector2i(-6,7),Vector2i(20,3),Vector2i(2,-4)]:
         grass.set_cell(cell,0,Vector2i(8,0))
     grass.set_cell(Vector2i(6,-4),0,Vector2i(9,0))
-    grass.set_cell(Vector2i(-5,7),0,Vector2i(14,0))
-    grass.set_cell(Vector2i(17,3),0,Vector2i(15,0))
-    var half_grass := layer(group, "GrassOnHalfTileLedges", coast_tiles, 2)
-    half_grass.position.y = 8
-    half_grass.set_cell(Vector2i(14,-1),0,Vector2i(8,0))
     var vines := layer(group, "HangingVines", coast_tiles, 1)
     vines.set_cell(Vector2i(10,2),0,Vector2i(12,0))
-    var half_vines := layer(group, "VinesOnHalfTileLedges", coast_tiles, 1)
-    half_vines.position.y = 8
-    half_vines.set_cell(Vector2i(18,6),0,Vector2i(12,0))
-    var shore := layer(group, "ShoreReedsAndShells", coast_tiles, 1)
-    shore.set_cell(Vector2i(-9,10),0,Vector2i(11,0))
-    shore.set_cell(Vector2i(22,10),0,Vector2i(13,0))
-    var distant := layer(group, "DistantSeaStacks", coast_tiles, -4)
-    for cell: Vector2i in [Vector2i(-7,-6),Vector2i(19,-5)]:
-        distant.set_cell(cell,0,Vector2i(11,2))
 
 func route(title: String, stops: Array[String]) -> void:
     var path := Node2D.new()

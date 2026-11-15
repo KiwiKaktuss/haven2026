@@ -511,123 +511,11 @@ tile_map_data = PackedByteArray("AAAAAAAAAAADAAAAAAA=")
 tile_set = ExtResource("12_0wexd")
 collision_enabled = false
 
-[node name="ForkSign" type="TileMapLayer" parent="Decorations" unique_id=242474449]
-z_index = 1
-texture_filter = 1
-position = Vector2(-32, 168)
-tile_map_data = PackedByteArray("AAAAAAAAAAAFAAAAAAA=")
-tile_set = ExtResource("12_0wexd")
-collision_enabled = false
-
-[node name="WestGardenFlowers" type="TileMapLayer" parent="Decorations" unique_id=22166876]
-z_index = 1
-texture_filter = 1
-position = Vector2(-224, 96)
-tile_map_data = PackedByteArray("AAAAAAAAAAADAAAAAAA=")
-tile_set = ExtResource("12_0wexd")
-collision_enabled = false
-
-[node name="WestGardenPine" type="TileMapLayer" parent="Decorations" unique_id=901546585]
-z_index = 1
-texture_filter = 1
-position = Vector2(-184, 24)
-tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
-tile_set = ExtResource("13_08qsg")
-collision_enabled = false
-
-[node name="WestVine" type="TileMapLayer" parent="Decorations" unique_id=1635133760]
-z_index = 1
-texture_filter = 1
-position = Vector2(-128, 64)
-tile_map_data = PackedByteArray("AAAAAAAAAAAMAAAAAAA=")
-tile_set = ExtResource("11_de70m")
-collision_enabled = false
-
-[node name="IceGlint" type="TileMapLayer" parent="Decorations" unique_id=101963717]
-z_index = 2
-texture_filter = 1
-position = Vector2(200, 151)
-tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAA=")
-tile_set = ExtResource("13_08qsg")
-collision_enabled = false
-
 [node name="IceIcicles" type="TileMapLayer" parent="Decorations" unique_id=1067970337]
 z_index = 1
 texture_filter = 1
 position = Vector2(192, 176)
 tile_map_data = PackedByteArray("AAAAAAAAAAACAAAAAAA=")
-tile_set = ExtResource("13_08qsg")
-collision_enabled = false
-
-[node name="CatchCrystals" type="TileMapLayer" parent="Decorations" unique_id=72963391]
-z_index = 1
-texture_filter = 1
-position = Vector2(248, 136)
-tile_map_data = PackedByteArray("AAAAAAAAAAABAAAAAAA=")
-tile_set = ExtResource("13_08qsg")
-collision_enabled = false
-
-[node name="SpringSign" type="TileMapLayer" parent="Decorations" unique_id=1666921046]
-z_index = 1
-texture_filter = 1
-position = Vector2(48, 48)
-tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAA=")
-tile_set = ExtResource("12_0wexd")
-collision_enabled = false
-
-[node name="LaunchDockFlowers" type="TileMapLayer" parent="Decorations" unique_id=20612465]
-z_index = 1
-texture_filter = 1
-position = Vector2(112, 48)
-tile_map_data = PackedByteArray("AAAAAAAAAAADAAAAAAA=")
-tile_set = ExtResource("12_0wexd")
-collision_enabled = false
-
-[node name="EastGalleryCrate" type="TileMapLayer" parent="Decorations" unique_id=1629260745]
-z_index = 1
-texture_filter = 1
-position = Vector2(440, 72)
-tile_map_data = PackedByteArray("AAAAAAAAAAAGAAAAAAA=")
-tile_set = ExtResource("12_0wexd")
-collision_enabled = false
-
-[node name="EastGalleryVine" type="TileMapLayer" parent="Decorations" unique_id=577852179]
-z_index = 1
-texture_filter = 1
-position = Vector2(352, 128)
-tile_map_data = PackedByteArray("AAAAAAAAAAAMAAAAAAA=")
-tile_set = ExtResource("11_de70m")
-collision_enabled = false
-
-[node name="ReturnSign" type="TileMapLayer" parent="Decorations" unique_id=547469275]
-z_index = 1
-texture_filter = 1
-position = Vector2(224, 0)
-tile_map_data = PackedByteArray("AAAAAAAAAAAFAAAAAAA=")
-tile_set = ExtResource("12_0wexd")
-collision_enabled = false
-
-[node name="ReturnFlowers" type="TileMapLayer" parent="Decorations" unique_id=86312742]
-z_index = 1
-texture_filter = 1
-position = Vector2(304, 0)
-tile_map_data = PackedByteArray("AAAAAAAAAAADAAAAAAA=")
-tile_set = ExtResource("12_0wexd")
-collision_enabled = false
-
-[node name="UpperGarden" type="TileMapLayer" parent="Decorations" unique_id=410556625]
-z_index = 1
-texture_filter = 1
-position = Vector2(-16, -72)
-tile_map_data = PackedByteArray("AAAAAAAAAAADAAAAAAA=")
-tile_set = ExtResource("12_0wexd")
-collision_enabled = false
-
-[node name="CrownSnow" type="TileMapLayer" parent="Decorations" unique_id=239897502]
-z_index = 1
-texture_filter = 1
-position = Vector2(280, -144)
-tile_map_data = PackedByteArray("AAAAAAAAAAADAAAAAAA=")
 tile_set = ExtResource("13_08qsg")
 collision_enabled = false
 
@@ -645,38 +533,6 @@ texture_filter = 1
 position = Vector2(96, -208)
 tile_map_data = PackedByteArray("AAAAAAAAAAADAAAAAAA=")
 tile_set = ExtResource("12_0wexd")
-collision_enabled = false
-
-[node name="CupPennant" type="TileMapLayer" parent="Decorations" unique_id=1401175806]
-z_index = 1
-texture_filter = 1
-position = Vector2(-32, -208)
-tile_map_data = PackedByteArray("AAAAAAAAAAACAAAAAAA=")
-tile_set = ExtResource("12_0wexd")
-collision_enabled = false
-
-[node name="BeachReeds" type="TileMapLayer" parent="Decorations" unique_id=1204292678]
-z_index = 1
-texture_filter = 1
-position = Vector2(360, 200)
-tile_map_data = PackedByteArray("AAAAAAAAAAALAAAAAAA=")
-tile_set = ExtResource("11_de70m")
-collision_enabled = false
-
-[node name="RecoveryCrate" type="TileMapLayer" parent="Decorations" unique_id=1880575062]
-z_index = 1
-texture_filter = 1
-position = Vector2(32, 224)
-tile_map_data = PackedByteArray("AAAAAAAAAAAGAAAAAAA=")
-tile_set = ExtResource("12_0wexd")
-collision_enabled = false
-
-[node name="WestShore" type="TileMapLayer" parent="Decorations" unique_id=375574095]
-z_index = 1
-texture_filter = 1
-position = Vector2(-216, 224)
-tile_map_data = PackedByteArray("AAAAAAAAAAANAAAAAAA=")
-tile_set = ExtResource("11_de70m")
 collision_enabled = false
 
 [node name="LiftGuide" type="TileMapLayer" parent="Decorations" unique_id=1578356089]
@@ -727,21 +583,6 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
 tile_set = ExtResource("12_0wexd")
 collision_enabled = false
 
-[node name="SummitBeacon" type="TileMapLayer" parent="Decorations" unique_id=410423561]
-z_index = -1
-texture_filter = 1
-position = Vector2(264, -176)
-tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAABAAAAAAABAAAAAAAAAAEAAAAAAAEAAAABAAEAAAABAAEAAAAAAAIAAAAAAAIAAAABAAIAAAABAAIAAAA=")
-tile_set = ExtResource("14_ajk6g")
-collision_enabled = false
-
-[node name="DistantSeaStacks" type="TileMapLayer" parent="Decorations" unique_id=2117692270]
-z_index = -4
-texture_filter = 1
-tile_map_data = PackedByteArray("AAD1//T/AAALAAIAAAAYAPP/AAALAAIAAAA=")
-tile_set = ExtResource("11_de70m")
-collision_enabled = false
-
 [node name="HighCloud" type="TileMapLayer" parent="Decorations" unique_id=1602510810]
 z_index = -4
 texture_filter = 1
@@ -750,20 +591,36 @@ tile_map_data = PackedByteArray("AAAAAAAAAAALAAIAAAA=")
 tile_set = ExtResource("11_de70m")
 collision_enabled = false
 
-[node name="WestCloud" type="TileMapLayer" parent="Decorations" unique_id=1691166653]
-z_index = -4
+[node name="BeachReeds" type="TileMapLayer" parent="Decorations" unique_id=1204292678]
+z_index = 1
 texture_filter = 1
-position = Vector2(-176, -208)
-tile_map_data = PackedByteArray("AAAAAAAAAAALAAIAAAA=")
+position = Vector2(360, 200)
+tile_map_data = PackedByteArray("AAAAAAAAAAALAAAAAAA=")
 tile_set = ExtResource("11_de70m")
 collision_enabled = false
 
-[node name="EastCloud" type="TileMapLayer" parent="Decorations" unique_id=138764152]
-z_index = -4
+[node name="SpringSign" type="TileMapLayer" parent="Decorations" unique_id=1666921046]
+z_index = 1
 texture_filter = 1
-position = Vector2(384, -192)
-tile_map_data = PackedByteArray("AAAAAAAAAAALAAIAAAA=")
-tile_set = ExtResource("11_de70m")
+position = Vector2(48, 48)
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAA=")
+tile_set = ExtResource("12_0wexd")
+collision_enabled = false
+
+[node name="WestGardenPine" type="TileMapLayer" parent="Decorations" unique_id=901546585]
+z_index = 1
+texture_filter = 1
+position = Vector2(-184, 24)
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
+tile_set = ExtResource("13_08qsg")
+collision_enabled = false
+
+[node name="UpperGarden" type="TileMapLayer" parent="Decorations" unique_id=410556625]
+z_index = 1
+texture_filter = 1
+position = Vector2(-16, -72)
+tile_map_data = PackedByteArray("AAAAAAAAAAADAAAAAAA=")
+tile_set = ExtResource("12_0wexd")
 collision_enabled = false
 
 [node name="Hints" type="Node2D" parent="." unique_id=172190612]

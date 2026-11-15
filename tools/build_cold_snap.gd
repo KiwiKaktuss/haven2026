@@ -96,27 +96,18 @@ func decorations() -> void:
             sea.set_cell(Vector2i(x, y), 0, uv)
     # Sparse scenery leaves every landing and material transition legible.
     detail(group, "StartPine", frost_tiles, Vector2(-136,128), Vector2i(0,0))
-    detail(group, "ForkSign", frost_tiles, Vector2(-48,128), Vector2i(5,0))
-    detail(group, "WestPine", frost_tiles, Vector2(-184,56), Vector2i(0,0))
     detail(group, "CaveCrystals", frost_tiles, Vector2(-112,-8), Vector2i(1,0))
     detail(group, "SummitPine", frost_tiles, Vector2(24,-72), Vector2i(0,0))
-    detail(group, "SummitSign", frost_tiles, Vector2(96,-72), Vector2i(5,0))
-    detail(group, "EastCrystals", frost_tiles, Vector2(368,48), Vector2i(1,0))
-    detail(group, "CatchBankSnow", frost_tiles, Vector2(248,112), Vector2i(3,0))
-    detail(group, "UpperCatchSnow", frost_tiles, Vector2(128,-16), Vector2i(7,0))
-    detail(group, "BeachRock", frost_tiles, Vector2(40,168), Vector2i(7,0))
-    detail(group, "CupSnow", frost_tiles, Vector2(280,-128), Vector2i(3,0))
-    for x: int in [96, 160, 192]:
+    for x: int in [160]:
         detail(group, "RunwayIcicle%d" % x, frost_tiles, Vector2(x,152), Vector2i(2,0))
-    for x: int in [192, 240, 288]:
+    for x: int in [240]:
         detail(group, "UpperIcicle%d" % x, frost_tiles, Vector2(x,24), Vector2i(2,0))
-    for x: int in [112, 176]:
+    for x: int in [112]:
         detail(group, "IceGlint%d" % x, frost_tiles, Vector2(x,127), Vector2i(4,0), 2)
-    for x: int in [200, 264]:
-        detail(group, "ReturnGlint%d" % x, frost_tiles, Vector2(x,-1), Vector2i(4,0), 2)
-    var distant := layer(group, "DistantFrostStacks", frost_tiles, -4)
-    for cell: Vector2i in [Vector2i(-10,-8),Vector2i(1,-11),Vector2i(23,-7)]:
-        distant.set_cell(cell, 0, Vector2i(2,1))
+
+    detail(group, "CupSnow", frost_tiles, Vector2(280,-128), Vector2i(3,0))
+    detail(group, "EastCrystals", frost_tiles, Vector2(368,48), Vector2i(1,0))
+    detail(group, "ReturnGlint200", frost_tiles, Vector2(200,-1), Vector2i(4,0), 2)
     var clouds := layer(group, "Clouds", coast_tiles, -4)
     for cell: Vector2i in [Vector2i(-5,-9),Vector2i(17,-10)]:
         clouds.set_cell(cell, 0, Vector2i(11,2))

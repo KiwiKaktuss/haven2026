@@ -397,22 +397,6 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
 tile_set = ExtResource("9_dwvj3")
 collision_enabled = false
 
-[node name="ForkSign" type="TileMapLayer" parent="Decorations" unique_id=285416630]
-z_index = 1
-texture_filter = 1
-position = Vector2(-48, 128)
-tile_map_data = PackedByteArray("AAAAAAAAAAAFAAAAAAA=")
-tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
-[node name="WestPine" type="TileMapLayer" parent="Decorations" unique_id=629794010]
-z_index = 1
-texture_filter = 1
-position = Vector2(-184, 56)
-tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
-tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
 [node name="CaveCrystals" type="TileMapLayer" parent="Decorations" unique_id=842457992]
 z_index = 1
 texture_filter = 1
@@ -429,82 +413,10 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
 tile_set = ExtResource("9_dwvj3")
 collision_enabled = false
 
-[node name="SummitSign" type="TileMapLayer" parent="Decorations" unique_id=2114997950]
-z_index = 1
-texture_filter = 1
-position = Vector2(96, -72)
-tile_map_data = PackedByteArray("AAAAAAAAAAAFAAAAAAA=")
-tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
-[node name="EastCrystals" type="TileMapLayer" parent="Decorations" unique_id=1660698379]
-z_index = 1
-texture_filter = 1
-position = Vector2(368, 48)
-tile_map_data = PackedByteArray("AAAAAAAAAAABAAAAAAA=")
-tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
-[node name="CatchBankSnow" type="TileMapLayer" parent="Decorations" unique_id=1947695600]
-z_index = 1
-texture_filter = 1
-position = Vector2(248, 112)
-tile_map_data = PackedByteArray("AAAAAAAAAAADAAAAAAA=")
-tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
-[node name="UpperCatchSnow" type="TileMapLayer" parent="Decorations" unique_id=1628730394]
-z_index = 1
-texture_filter = 1
-position = Vector2(128, -16)
-tile_map_data = PackedByteArray("AAAAAAAAAAAHAAAAAAA=")
-tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
-[node name="BeachRock" type="TileMapLayer" parent="Decorations" unique_id=1093614834]
-z_index = 1
-texture_filter = 1
-position = Vector2(40, 168)
-tile_map_data = PackedByteArray("AAAAAAAAAAAHAAAAAAA=")
-tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
-[node name="CupSnow" type="TileMapLayer" parent="Decorations" unique_id=715796204]
-z_index = 1
-texture_filter = 1
-position = Vector2(280, -128)
-tile_map_data = PackedByteArray("AAAAAAAAAAADAAAAAAA=")
-tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
-[node name="RunwayIcicle96" type="TileMapLayer" parent="Decorations" unique_id=1225000703]
-z_index = 1
-texture_filter = 1
-position = Vector2(96, 152)
-tile_map_data = PackedByteArray("AAAAAAAAAAACAAAAAAA=")
-tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
 [node name="RunwayIcicle160" type="TileMapLayer" parent="Decorations" unique_id=1685549847]
 z_index = 1
 texture_filter = 1
 position = Vector2(160, 152)
-tile_map_data = PackedByteArray("AAAAAAAAAAACAAAAAAA=")
-tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
-[node name="RunwayIcicle192" type="TileMapLayer" parent="Decorations" unique_id=1195451050]
-z_index = 1
-texture_filter = 1
-position = Vector2(192, 152)
-tile_map_data = PackedByteArray("AAAAAAAAAAACAAAAAAA=")
-tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
-[node name="UpperIcicle192" type="TileMapLayer" parent="Decorations" unique_id=1903761590]
-z_index = 1
-texture_filter = 1
-position = Vector2(192, 24)
 tile_map_data = PackedByteArray("AAAAAAAAAAACAAAAAAA=")
 tile_set = ExtResource("9_dwvj3")
 collision_enabled = false
@@ -517,14 +429,6 @@ tile_map_data = PackedByteArray("AAAAAAAAAAACAAAAAAA=")
 tile_set = ExtResource("9_dwvj3")
 collision_enabled = false
 
-[node name="UpperIcicle288" type="TileMapLayer" parent="Decorations" unique_id=2002871806]
-z_index = 1
-texture_filter = 1
-position = Vector2(288, 24)
-tile_map_data = PackedByteArray("AAAAAAAAAAACAAAAAAA=")
-tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
 [node name="IceGlint112" type="TileMapLayer" parent="Decorations" unique_id=89571163]
 z_index = 2
 texture_filter = 1
@@ -533,11 +437,18 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAA=")
 tile_set = ExtResource("9_dwvj3")
 collision_enabled = false
 
-[node name="IceGlint176" type="TileMapLayer" parent="Decorations" unique_id=801173925]
-z_index = 2
+[node name="Clouds" type="TileMapLayer" parent="Decorations" unique_id=498296405]
+z_index = -4
 texture_filter = 1
-position = Vector2(176, 127)
-tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAA=")
+tile_map_data = PackedByteArray("AAD7//f/AAALAAIAAAARAPb/AAALAAIAAAA=")
+tile_set = ExtResource("8_rghpn")
+collision_enabled = false
+
+[node name="CupSnow" type="TileMapLayer" parent="Decorations" unique_id=715796204]
+z_index = 1
+texture_filter = 1
+position = Vector2(280, -128)
+tile_map_data = PackedByteArray("AAAAAAAAAAADAAAAAAA=")
 tile_set = ExtResource("9_dwvj3")
 collision_enabled = false
 
@@ -549,26 +460,12 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAA=")
 tile_set = ExtResource("9_dwvj3")
 collision_enabled = false
 
-[node name="ReturnGlint264" type="TileMapLayer" parent="Decorations" unique_id=1693232851]
-z_index = 2
+[node name="EastCrystals" type="TileMapLayer" parent="Decorations" unique_id=1660698379]
+z_index = 1
 texture_filter = 1
-position = Vector2(264, -1)
-tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAA=")
+position = Vector2(368, 48)
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAAAAAA=")
 tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
-[node name="DistantFrostStacks" type="TileMapLayer" parent="Decorations" unique_id=744685573]
-z_index = -4
-texture_filter = 1
-tile_map_data = PackedByteArray("AAD2//j/AAACAAEAAAABAPX/AAACAAEAAAAXAPn/AAACAAEAAAA=")
-tile_set = ExtResource("9_dwvj3")
-collision_enabled = false
-
-[node name="Clouds" type="TileMapLayer" parent="Decorations" unique_id=498296405]
-z_index = -4
-texture_filter = 1
-tile_map_data = PackedByteArray("AAD7//f/AAALAAIAAAARAPb/AAALAAIAAAA=")
-tile_set = ExtResource("8_rghpn")
 collision_enabled = false
 
 [node name="Hints" type="Node2D" parent="." unique_id=53668449]

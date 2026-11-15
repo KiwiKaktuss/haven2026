@@ -404,18 +404,10 @@ tile_map_data = PackedByteArray("AADY/wsAAAAAAAEAAADZ/wsAAAAAAAEAAADa/wsAAAAAAAA
 tile_set = SubResource("TileSet_8hops")
 collision_enabled = false
 
-[node name="GrassFlowersAndSigns" type="TileMapLayer" parent="Decorations" unique_id=1385307721]
+[node name="GrassAndFlowers" type="TileMapLayer" parent="Decorations" unique_id=1385307721]
 z_index = 2
 texture_filter = 1
-tile_map_data = PackedByteArray("AAD6/wcAAAAIAAAAAAAJAAYAAAAIAAAAAAAUAAMAAAAIAAAAAAACAPz/AAAIAAAAAAD4/wMAAAAIAAAAAAAGAPz/AAAJAAAAAAD7/wcAAAAOAAAAAAARAAMAAAAPAAAAAAA=")
-tile_set = SubResource("TileSet_8hops")
-collision_enabled = false
-
-[node name="GrassOnHalfTileLedges" type="TileMapLayer" parent="Decorations" unique_id=1643475452]
-z_index = 2
-texture_filter = 1
-position = Vector2(0, 8)
-tile_map_data = PackedByteArray("AAAOAP//AAAIAAAAAAA=")
+tile_map_data = PackedByteArray("AAD6/wcAAAAIAAAAAAAUAAMAAAAIAAAAAAACAPz/AAAIAAAAAAAGAPz/AAAJAAAAAAA=")
 tile_set = SubResource("TileSet_8hops")
 collision_enabled = false
 
@@ -423,28 +415,6 @@ collision_enabled = false
 z_index = 1
 texture_filter = 1
 tile_map_data = PackedByteArray("AAAKAAIAAAAMAAAAAAA=")
-tile_set = SubResource("TileSet_8hops")
-collision_enabled = false
-
-[node name="VinesOnHalfTileLedges" type="TileMapLayer" parent="Decorations" unique_id=1311750445]
-z_index = 1
-texture_filter = 1
-position = Vector2(0, 8)
-tile_map_data = PackedByteArray("AAASAAYAAAAMAAAAAAA=")
-tile_set = SubResource("TileSet_8hops")
-collision_enabled = false
-
-[node name="ShoreReedsAndShells" type="TileMapLayer" parent="Decorations" unique_id=1186677352]
-z_index = 1
-texture_filter = 1
-tile_map_data = PackedByteArray("AAD3/woAAAALAAAAAAAWAAoAAAANAAAAAAA=")
-tile_set = SubResource("TileSet_8hops")
-collision_enabled = false
-
-[node name="DistantSeaStacks" type="TileMapLayer" parent="Decorations" unique_id=1341782584]
-z_index = -4
-texture_filter = 1
-tile_map_data = PackedByteArray("AAD5//r/AAALAAIAAAATAPv/AAALAAIAAAA=")
 tile_set = SubResource("TileSet_8hops")
 collision_enabled = false
 
