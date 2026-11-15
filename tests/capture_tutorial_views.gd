@@ -33,6 +33,10 @@ func run() -> void:
     session.retry_step()
     session._advance_step()
     await capture("complete")
+    for viewport_size: Vector2i in [Vector2i(800,640), Vector2i(1440,900)]:
+        root.size = viewport_size
+        await capture("complete_%d" % viewport_size.x)
+    root.size = Vector2i(960,640)
     session.free()
     var main: Node = load("res://main.tscn").instantiate()
     root.add_child(main)

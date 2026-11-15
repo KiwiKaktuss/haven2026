@@ -149,7 +149,7 @@ func objective_met() -> bool:
         return false
     match step_index:
         2: return used_other
-        4, 6, 7: return touched_surface
+        4, 6: return touched_surface
         5: return stuck_once and left_sticky
     return true
 

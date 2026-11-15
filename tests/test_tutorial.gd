@@ -165,11 +165,24 @@ func run() -> void:
     session.step_index = 7
     session.retry_step()
     check(session.course.has_node("Terrain/Spring") and not session.course.has_node("Terrain/Ride"), "Bouncy surfaces finish the tutorial")
-    session._advance_step()
+    session.set_physics_process(false)
+    session.ball.simulation_enabled = false
+    check(session.try_shot(Vector2(-60,60)), "Final lesson accepts a real shot")
+    check(not session.touched_surface, "Final lesson has no spring contact")
+    session.ball.reset_motion(session.course.goal_cup.capture_shape.global_position)
+    session.check_course_end(session.tuning.capture_dwell_seconds * 0.5)
+    check(not session.transitioning and not session.lesson_done, "Final hole still requires capture dwell")
+    session.check_course_end(session.tuning.capture_dwell_seconds)
+    check(session.transitioning, "Final hole accepts capture without spring contact")
+    session.check_course_end(1.0)
+    check(session.lesson_done, "Final hole completes the tutorial without spring contact")
+    check(session.lesson_ui.get_node("Complete/Center/Panel").is_visible_in_tree(), "Completion box is visible after final capture")
     check(not session.lesson_ui.get_node("ZoomHint").visible, "Completion hides the zoom hint")
     check(not session.camera_controller.enabled, "Completion stops world camera controls")
     check(session.lesson_ui.get_node("Complete/Center/Panel/Content/MainMenu").text == "Main Menu", "Completion shows Main Menu")
-    session.lesson_ui.get_node("Complete/Center/Panel/Content/MainMenu").pressed.emit()
+    await process_frame
+    await process_frame
+    click(session.lesson_ui.get_node("Complete/Center/Panel/Content/MainMenu"))
     await process_frame
     check(main.game_host.get_child_count() == 0 and is_instance_valid(main._menu_screen), "Main Menu returns to the menu after completion")
     main.free()

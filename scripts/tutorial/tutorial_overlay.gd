@@ -126,7 +126,6 @@ func _on_zoom_used() -> void:
 func show_complete() -> void:
     $Lesson.hide()
     $ZoomHint.hide()
-    $Complete/Center/Panel/Content/Count.text = "%d / %d   ·   ALL LESSONS COMPLETE" % [TITLES.size(), TITLES.size()]
     $PauseButton.hide()
     $Complete.show()
     $Complete/Center/Panel/Content/MainMenu.grab_focus()
