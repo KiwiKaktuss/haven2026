@@ -1,7 +1,8 @@
 extends Control
-const TITLES: Array[String] = ["Aiming and shooting", "Shot power", "Selecting a card", "Card replacement", "Elixir", "Card abilities", "Normal walls", "Sticky walls", "Ice", "Bouncy surfaces"]
+const TITLES: Array[String] = ["Aiming and shooting", "Shot power", "Selecting a card", "Card abilities", "Normal walls", "Sticky walls", "Ice", "Bouncy surfaces"]
 var session: TutorialSession
 var time: float = 0.0
+var zoom_learned: bool = false
 const INK := Color(0.20, 0.24, 0.30)
 const GOLD := Color(0.89, 0.56, 0.19)
 @onready var description: Label = $Lesson/Content/Description
@@ -9,7 +10,8 @@ const GOLD := Color(0.89, 0.56, 0.19)
 func configure(value: TutorialSession) -> void:
     session = value
     $PauseButton.pressed.connect(func() -> void: session.pause_requested.emit())
-    $Complete/Center/Panel/Content/Begin.pressed.connect(func() -> void: session.begin_playing.emit())
+    $Complete/Center/Panel/Content/MainMenu.pressed.connect(func() -> void: session.menu_requested.emit())
+    session.camera_controller.zoom_used.connect(_on_zoom_used)
     $CardLesson.card_inspected.connect(session.inspect_card)
     $CardLesson.continue_requested.connect(session.complete_card_lesson)
     $CardLesson.configure(session.deck.catalog)
@@ -19,10 +21,11 @@ func configure(value: TutorialSession) -> void:
 func refresh() -> void:
     if session == null:
         return
-    $Lesson/Content/Title.text = "%s  %d / 10" % [TITLES[session.step_index], session.step_index + 1]
+    $Lesson/Content/Title.text = "%s  %d / %d" % [TITLES[session.step_index], session.step_index + 1, TITLES.size()]
     description.text = _description()
     var showing_cards: bool = session.step_index == TutorialSession.CARD_STEP
     $CardLesson.visible = showing_cards
+    $ZoomHint.visible = not zoom_learned and not showing_cards and not session.lesson_done
     if showing_cards:
         $CardLesson.reset_lesson()
 
@@ -53,26 +56,16 @@ func _description() -> String:
                 return "Selection only readies a card; shoot to use it."
             return "Select the middle card, then shoot to use it."
         3:
-            if session.replaced_slot < 0:
-                return "Play a card, then watch its replacement arrive."
-            return "Replacement ready! Now reach the hole." if session.replacement_seen else "Played cards leave the hand. Watch the empty slot refill."
-        4:
-            if session.shots > 0:
-                return "Playing cards spends elixir; it refills automatically."
-            if session.elixir < 2.0:
-                return "Elixir refills automatically. Wait for 2 to shoot (%.1f / 2)." % session.elixir
-            return "You have enough elixir. Shoot into the hole for 2 elixir."
-        5:
             return "Hover over a card for its ability and cost above it."
-        6:
+        4:
             return "Wall bounce done! Finish at the hole." if session.touched_surface else "Bounce off the right wall to reach the hole."
-        7:
+        5:
             if session.left_sticky:
                 return "Shoot away from the sticky wall into the hole."
             return "You stay attached until you shoot again. Aim for the hole." if session.stuck_once else "Shoot onto the wall marked + to stick to it."
-        8:
+        6:
             return "Use a gentle shot; ice keeps the ball sliding toward the hole."
-        9:
+        7:
             return "Bounce onto the upper platform and reach the hole." if session.touched_surface else "Hit the chevron surface to bounce up toward the hole."
     return ""
 
@@ -101,20 +94,14 @@ func _draw() -> void:
     if session.step_index == 1 and session.aim.aiming:
         var meter: Control = session.aim.get_node("BallPowerBar")
         highlight(Rect2(world(meter.global_position), meter.size))
-    if session.step_index in [2, 3]:
-        var slot: int = 1 if session.step_index == 2 else maxi(session.replaced_slot, 0)
-        var view: Control = session.hud.get_node("Bottom/Stack/Hand/Card%d" % slot)
+    if session.step_index == 2:
+        var view: Control = session.hud.get_node("Bottom/Stack/Hand/Card1")
         highlight(view.get_global_rect())
-    if session.step_index == 4:
-        highlight(session.hud.get_node("Bottom/Stack/Elixir").get_global_rect())
-        var card: Control = session.hud.get_node("Bottom/Stack/Hand/Card0")
-        var rect: Rect2 = card.get_global_rect()
-        highlight(Rect2(rect.position, Vector2(rect.size.x, 24)))
     match session.step_index:
-        6:
+        4:
             if not session.touched_surface:
                 route(PackedVector2Array([Vector2(0, 70), Vector2(48, -12), Vector2(132, -22), Vector2(180, 8), Vector2(150, 48), hole]))
-        7:
+        5:
             # A second non-colour cue on the wall itself.
             for y: int in range(-16, 72, 16):
                 var at: Vector2 = world(Vector2(192, y))
@@ -122,18 +109,24 @@ func _draw() -> void:
                 draw_line(at - Vector2(0, 4), at + Vector2(0, 4), INK, 2)
             if not session.stuck_once:
                 route(PackedVector2Array([Vector2(0, 70), Vector2(80, 10), Vector2(180, 24)]))
-        8:
+        6:
             for x: int in range(32, 160, 16):
                 draw_line(world(Vector2(x, 78)), world(Vector2(x + 5, 82)), INK, 1)
-        9:
+        7:
             for x: int in range(56, 160, 16):
                 var at: Vector2 = world(Vector2(x, 92))
                 draw_polyline(PackedVector2Array([at + Vector2(-4, 4), at, at + Vector2(4, 4)]), INK, 2)
             if not session.touched_surface:
                 route(PackedVector2Array([Vector2(0, 22), Vector2(72, 84), Vector2(144, -4), hole]))
 
+func _on_zoom_used() -> void:
+    zoom_learned = true
+    $ZoomHint.hide()
+
 func show_complete() -> void:
     $Lesson.hide()
+    $ZoomHint.hide()
+    $Complete/Center/Panel/Content/Count.text = "%d / %d   ·   ALL LESSONS COMPLETE" % [TITLES.size(), TITLES.size()]
     $PauseButton.hide()
     $Complete.show()
-    $Complete/Center/Panel/Content/Begin.grab_focus()
+    $Complete/Center/Panel/Content/MainMenu.grab_focus()

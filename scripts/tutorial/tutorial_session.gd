@@ -3,18 +3,15 @@ extends GameSession
 ## Uses production shots, card transactions, cup capture and surface physics.
 signal lesson_changed
 signal menu_requested
-signal begin_playing
 var step_index: int = 0
 var lesson_done: bool = false
 var transitioning: bool = false
 var selected_other: bool = false
 var used_other: bool = false
-var replaced_slot: int = -1
-var replacement_seen: bool = false
 var touched_surface: bool = false
 var stuck_once: bool = false
 var left_sticky: bool = false
-const CARD_STEP: int = 5
+const CARD_STEP: int = 3
 var card_explored: bool = false
 var _miss_elapsed: float = 0.0
 var _objective_miss_elapsed: float = 0.0
@@ -36,8 +33,6 @@ func _prepare_lesson() -> void:
     transitioning = false
     selected_other = false
     used_other = false
-    replaced_slot = -1
-    replacement_seen = false
     touched_surface = false
     stuck_once = false
     left_sticky = false
@@ -58,9 +53,9 @@ func _prepare_lesson() -> void:
     deck.discard_pile.clear()
     deck.replacement_remaining.fill(0.0)
     for slot: int in 3:
-        deck.hand.append(deck.catalog.find_card(&"sniper" if step_index == 4 or (step_index == 2 and slot == 1) else &"classic"))
+        deck.hand.append(deck.catalog.find_card(&"sniper" if step_index == 2 and slot == 1 else &"classic"))
     deck.selected_slot = 0
-    elixir = 1.2 if step_index == 4 else float(tuning.maximum_elixir)
+    elixir = float(tuning.maximum_elixir)
     random.seed = 2468
     deck.hand_changed.emit()
     elixir_changed.emit(elixir)
@@ -75,8 +70,9 @@ func _prepare_lesson() -> void:
     for slot: int in 3:
         var view: CardView = hud.get_node("Bottom/Stack/Hand/Card%d" % slot)
         view.show_information = false
-    # Keep the whole practical task visible instead of requiring camera controls.
-    camera_controller.enabled = false
+    # Start with the whole task visible, while allowing the player to zoom and pan.
+    camera_controller.enabled = not is_card_lesson
+    camera_controller.follow_ball = false
     _frame_room()
     lesson_changed.emit()
 
@@ -109,6 +105,10 @@ func _frame_room() -> void:
     var screen_center := Vector2(viewport.x * 0.5, (top + bottom) * 0.5)
     camera.global_position = bounds.get_center() - (screen_center - viewport * 0.5) / camera.zoom
     camera.offset = Vector2.ZERO
+    # Give zoom-out room around the framed task without the normal course crop.
+    camera_controller.minimum_zoom = 0.6
+    var overview_size: Vector2 = viewport / camera_controller.minimum_zoom
+    camera_controller.bounds = Rect2(camera.global_position - overview_size * 0.5, overview_size)
     camera.reset_physics_interpolation()
 
 func _selection_changed() -> void:
@@ -123,12 +123,10 @@ func try_shot(drag: Vector2, at: Vector2 = Vector2.INF) -> bool:
     var from_sticky: bool = is_instance_valid(ball.attached_body) and ball.attached_body.name == "StickyWall"
     # Reserve a known ordinary replacement; super still owns the atomic cycle.
     if deck.draw_pile.is_empty():
-        deck.draw_pile.append(deck.catalog.find_card(&"sniper" if step_index in [3, 4] else &"classic"))
+        deck.draw_pile.append(deck.catalog.find_card(&"classic"))
     var committed: bool = super.try_shot(drag, at)
     if committed:
         used_other = used_other or (selected_other and other)
-        replaced_slot = slot
-        replacement_seen = false
         left_sticky = left_sticky or (stuck_once and from_sticky)
         _miss_elapsed = 0.0
         lesson_changed.emit()
@@ -137,11 +135,11 @@ func try_shot(drag: Vector2, at: Vector2 = Vector2.INF) -> bool:
 func _contact(body: TerrainObject, normal: Vector2) -> void:
     if shots == 0:
         return
-    if step_index == 6 and body.name == "BankWall" and absf(normal.x) > 0.7:
+    if step_index == 4 and body.name == "BankWall" and absf(normal.x) > 0.7:
         touched_surface = true
-    elif step_index == 8 and body.name == "Ice":
+    elif step_index == 6 and body.name == "Ice":
         touched_surface = true
-    elif step_index == 9 and body.name == "Spring":
+    elif step_index == 7 and body.name == "Spring":
         touched_surface = true
 
 func objective_met() -> bool:
@@ -151,9 +149,8 @@ func objective_met() -> bool:
         return false
     match step_index:
         2: return used_other
-        3: return replacement_seen
-        6, 8, 9: return touched_surface
-        7: return stuck_once and left_sticky
+        4, 6, 7: return touched_surface
+        5: return stuck_once and left_sticky
     return true
 
 func advance_clock(delta: float) -> void:
@@ -173,16 +170,14 @@ func check_course_end(delta: float) -> void:
         return
     if state not in [State.READY, State.PLAYING]:
         return
-    if replaced_slot >= 0 and deck.slot_ready(replaced_slot):
-        replacement_seen = true
-    if step_index == 7 and is_instance_valid(ball.attached_body) and ball.attached_body.name == "StickyWall":
+    if step_index == 5 and is_instance_valid(ball.attached_body) and ball.attached_body.name == "StickyWall":
         stuck_once = true
         _checkpoint = ball.global_position
     if ball.global_position.y >= course.void_boundary.global_position.y or ball.global_position.x < -72.0 or ball.global_position.x > 370.0:
         _reset_miss()
         return
     # These lessons allow follow-up shots from wherever the ball lands.
-    var allow_follow_up_shots: bool = step_index in [0, 1, 4, 6, 7, 8, 9]
+    var allow_follow_up_shots: bool = step_index in [0, 1, 4, 5, 6, 7]
     var speed: float = ball.world_velocity().length()
     if not allow_follow_up_shots and shots > 0 and speed < 0.8 and ball.global_position.distance_to(course.goal_cup.to_global(Vector2(32, 0))) > course.goal_cup.pull_radius + 2.0 and ball.attached_body == null:
         _miss_elapsed += delta
@@ -209,7 +204,7 @@ func check_course_end(delta: float) -> void:
 
 func _reset_miss() -> void:
     # Sticky departure keeps the successful attachment as a local checkpoint.
-    if step_index == 7 and _checkpoint.is_finite():
+    if step_index == 5 and _checkpoint.is_finite():
         aim.cancel()
         ball.reset_motion(_checkpoint)
         var wall: TerrainObject = course.get_node("Terrain/StickyWall")
@@ -233,10 +228,11 @@ func retry_step() -> void:
     _prepare_lesson()
 
 func _advance_step() -> void:
-    if step_index == 9:
+    if step_index == courses.courses.size() - 1:
         transitioning = false
         lesson_done = true
         aim.enabled = false
+        camera_controller.enabled = false
         ball.simulation_enabled = false
         hud.hide()
         lesson_ui.show_complete()

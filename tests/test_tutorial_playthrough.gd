@@ -30,7 +30,7 @@ func run() -> void:
     session = load("res://scenes/tutorial/tutorial_session.tscn").instantiate()
     root.add_child(session)
     var discovered: Array = JSON.parse_string(FileAccess.get_file_as_string("res://tests/support/tutorial_routes.json"))
-    for index: int in 10:
+    for index: int in session.courses.courses.size():
         if session.step_index != index:
             push_error("Expected lesson %d, got %d" % [index+1,session.step_index+1])
             failures += 1
@@ -40,8 +40,6 @@ func run() -> void:
         await wait_ticks(12)
         if index == 2:
             session.hud._select(1)
-        if index == 4:
-            await wait_ticks(150)
         if index == TutorialSession.CARD_STEP:
             var cards: Control = session.lesson_ui.get_node("CardLesson")
             for card_index: int in session.deck.catalog.cards.size():
@@ -50,10 +48,10 @@ func run() -> void:
                 if description.text != session.deck.catalog.cards[card_index].description:
                     failures += 1
             cards.next_button.pressed.emit()
-            rows.append({"step":index,"actions":[],"ticks":step_tick,"completed":session.step_index == 6})
-            print("ENGINE LESSON 6 completed=",session.step_index == 6," card overview")
+            rows.append({"step":index,"actions":[],"ticks":step_tick,"completed":session.step_index == 4})
+            print("ENGINE LESSON 4 completed=",session.step_index == 4," card overview")
             continue
-        if index == 7:
+        if index == 5:
             var angle: float = 45.0
             var length: float = 160.0
             shoot(-Vector2.from_angle(deg_to_rad(-angle))*length)
@@ -91,7 +89,7 @@ func run() -> void:
             break
     if not session.lesson_done:
         failures += 1
-        push_error("Tutorial must finish all ten lessons")
+        push_error("Tutorial must finish all eight lessons")
     var file := FileAccess.open("res://screenshots/tutorial/engine_routes.json",FileAccess.WRITE)
     file.store_string(JSON.stringify(rows,"  "))
     print("Tutorial engine playthrough: ", "PASS" if failures == 0 else "FAIL", " (",failures," failures)")

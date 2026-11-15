@@ -1,5 +1,5 @@
 extends SceneTree
-## Offline authoring only: ten small, saved, editor-paintable practice rooms.
+## Offline authoring only: eight small, saved, editor-paintable practice rooms.
 const EditableTiles = preload("res://scripts/terrain/editable_terrain_tiles.gd")
 var scene: Node2D
 var tiles: TileSet = preload("res://resources/terrain/terrain_tileset.tres")
@@ -172,7 +172,7 @@ func _initialize() -> void:
         build_cup()
     var catalog := CourseCatalog.new()
     var titles: Array[String] = ["Aiming and shooting", "Shot power", "Selecting a card", "Card replacement", "Elixir", "Card abilities", "Normal walls", "Sticky walls", "Ice", "Bouncy surfaces"]
-    for index: int in 10:
+    for index: int in [0, 1, 2, 5, 6, 7, 8, 9]:
         if not lesson_filter.is_empty() and not lesson_filter.has(index):
             continue
         scene = GolfCourse.new()
@@ -235,5 +235,5 @@ func _initialize() -> void:
         scene.free()
     if lesson_filter.is_empty():
         assert(ResourceSaver.save(catalog, "res://resources/tutorial/courses.tres") == OK)
-    print("Saved tutorial rooms: ", "all ten" if lesson_filter.is_empty() else str(lesson_filter))
+    print("Saved tutorial rooms: ", "all eight" if lesson_filter.is_empty() else str(lesson_filter))
     quit()

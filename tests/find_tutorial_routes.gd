@@ -12,7 +12,7 @@ func run() -> void:
     session.hud.set_process(false)
     session.lesson_ui.set_process(false)
     var report: Array = []
-    for index: int in [0,1,2,3,4,6,8,9]:
+    for index: int in [0,1,2,4,6,7]:
         session.step_index = index
         session.retry_step()
         await physics_frame
@@ -23,8 +23,6 @@ func run() -> void:
                 session._prepare_lesson()
                 if index == 2:
                     session.deck.select_slot(1)
-                if index == 4:
-                    session.advance_clock(2.5)
                 for tick: int in 12:
                     session.ball.step_motion(1.0/60)
                 var drag := -Vector2.from_angle(deg_to_rad(-angle)) * power_int * 16.0
@@ -33,8 +31,6 @@ func run() -> void:
                 for tick: int in 720:
                     session.advance_clock(1.0/60)
                     session.ball.step_motion(1.0/60)
-                    if session.replaced_slot >= 0 and session.deck.slot_ready(session.replaced_slot):
-                        session.replacement_seen = true
                     if session.objective_met() and session.course.goal_cup.advance_capture(session.ball,session.tuning,1.0/60):
                         found = true
                         report.append({"step":index,"drag":[drag.x,drag.y],"ticks":tick+1})

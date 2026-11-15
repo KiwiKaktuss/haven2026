@@ -1,5 +1,5 @@
 extends SceneTree
-## Full ten-lesson proof at 2x: 120 physics ticks/s * time_scale 2 = the
+## Full eight-lesson proof at 2x: 120 physics ticks/s * time_scale 2 = the
 ## same 1/60 simulation step as acceptance, with four ticks per movie frame.
 var main: Node
 var session: TutorialSession
@@ -74,6 +74,6 @@ func _process(_delta: float) -> bool:
             all_complete = true
             print("CAPTURE COMPLETE frame=",frame)
     if frame == 749:
-        assert(all_complete, "All ten lessons must finish")
-        print("ASSERT PASS: menu, nine real holes, in-place hoverable card lesson, terrain and completion.")
+        assert(all_complete, "All eight lessons must finish")
+        print("ASSERT PASS: menu, seven real holes, in-place hoverable card lesson, terrain and completion.")
     return false

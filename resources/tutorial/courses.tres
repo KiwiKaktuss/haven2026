@@ -4,8 +4,6 @@
 [ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_01.tscn" id="2_8vfv4"]
 [ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_02.tscn" id="3_q8d2m"]
 [ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_03.tscn" id="4_55v7b"]
-[ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_04.tscn" id="5_qklmu"]
-[ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_05.tscn" id="6_fkwif"]
 [ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_06.tscn" id="7_qhpjs"]
 [ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_07.tscn" id="8_c1btl"]
 [ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_08.tscn" id="9_hm7pw"]
@@ -30,18 +28,6 @@ script = ExtResource("1_ri737")
 id = &"tutorial_3"
 title = "Selecting a card"
 scene = ExtResource("4_55v7b")
-
-[sub_resource type="Resource" id="Resource_u6v04"]
-script = ExtResource("1_ri737")
-id = &"tutorial_4"
-title = "Card replacement"
-scene = ExtResource("5_qklmu")
-
-[sub_resource type="Resource" id="Resource_mjc88"]
-script = ExtResource("1_ri737")
-id = &"tutorial_5"
-title = "Elixir"
-scene = ExtResource("6_fkwif")
 
 [sub_resource type="Resource" id="Resource_q16ft"]
 script = ExtResource("1_ri737")
@@ -75,4 +61,4 @@ scene = ExtResource("11_keufp")
 
 [resource]
 script = ExtResource("12_mvxhp")
-courses = Array[ExtResource("1_ri737")]([SubResource("Resource_cr61q"), SubResource("Resource_idsm0"), SubResource("Resource_hyfks"), SubResource("Resource_u6v04"), SubResource("Resource_mjc88"), SubResource("Resource_q16ft"), SubResource("Resource_xosus"), SubResource("Resource_2vujd"), SubResource("Resource_bib2y"), SubResource("Resource_v8xy4")])
+courses = Array[ExtResource("1_ri737")]([SubResource("Resource_cr61q"), SubResource("Resource_idsm0"), SubResource("Resource_hyfks"), SubResource("Resource_q16ft"), SubResource("Resource_xosus"), SubResource("Resource_2vujd"), SubResource("Resource_bib2y"), SubResource("Resource_v8xy4")])

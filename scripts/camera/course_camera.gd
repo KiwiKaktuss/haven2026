@@ -1,5 +1,6 @@
 class_name CourseCamera
 extends Node2D
+signal zoom_used
 @export var camera: Camera2D
 @export var ball: GolfBall
 @export var session: GameSession
@@ -13,6 +14,7 @@ extends Node2D
 @export var follow_offset: Vector2 = Vector2.ZERO
 @export var enabled: bool = true
 var following: bool = true
+var follow_ball: bool = true
 @export_group("Feedback")
 @export_range(0.0, 4.0) var maximum_kick_pixels: float = 2.0
 @export_range(1.0, 30.0) var kick_decay: float = 16.0
@@ -69,6 +71,7 @@ func pan(direction: Vector2, delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not enabled or session.state not in [GameSession.State.READY, GameSession.State.PLAYING]:
 		return
+	var previous_zoom: float = camera.zoom.x
 	if event.is_action_pressed(&"zoom_in"):
 		set_zoom(camera.zoom.x * wheel_factor)
 		get_viewport().set_input_as_handled()
@@ -79,11 +82,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		recenter()
 		get_viewport().set_input_as_handled()
 
+	if not is_equal_approx(previous_zoom, camera.zoom.x):
+		zoom_used.emit()
+
 func _process(delta: float) -> void:
 	if not enabled or session.state not in [GameSession.State.READY, GameSession.State.PLAYING]:
 		return
 	pan(Input.get_vector(&"pan_left", &"pan_right", &"pan_up", &"pan_down"), delta)
-	if following:
+	if following and follow_ball:
 		camera.global_position = camera.global_position.lerp(clamped(ball.global_position + follow_offset / camera.zoom), 1.0 - exp(-smoothing * delta))
 	_kick = _kick.lerp(Vector2.ZERO, 1.0 - exp(-kick_decay * delta))
 	camera.offset = _kick / camera.zoom

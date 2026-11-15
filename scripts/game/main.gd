@@ -245,7 +245,6 @@ func _start_tutorial() -> void:
     session = preload("res://scenes/tutorial/tutorial_session.tscn").instantiate()
     session.pause_requested.connect(_pause)
     session.menu_requested.connect(_show_menu)
-    session.begin_playing.connect(func() -> void: _start_course(0))
     game_host.add_child(session)
 
 func _pause() -> void:

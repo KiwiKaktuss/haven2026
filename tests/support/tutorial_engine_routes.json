@@ -45,39 +45,9 @@
     "ticks": 189
   },
   {
-    "actions": [
-      {
-        "drag": [
-          -111.573806762695,
-          9.76144218444824
-        ],
-        "slot": 0,
-        "tick": 12
-      }
-    ],
-    "completed": true,
-    "step": 3,
-    "ticks": 234
-  },
-  {
-    "actions": [
-      {
-        "drag": [
-          -127.512924194336,
-          11.1559343338013
-        ],
-        "slot": 0,
-        "tick": 162
-      }
-    ],
-    "completed": true,
-    "step": 4,
-    "ticks": 339
-  },
-  {
     "actions": [],
     "completed": true,
-    "step": 5,
+    "step": 3,
     "ticks": 12
   },
   {
@@ -92,7 +62,7 @@
       }
     ],
     "completed": true,
-    "step": 6,
+    "step": 4,
     "ticks": 288
   },
   {
@@ -115,7 +85,7 @@
       }
     ],
     "completed": true,
-    "step": 7,
+    "step": 5,
     "ticks": 261
   },
   {
@@ -130,7 +100,7 @@
       }
     ],
     "completed": true,
-    "step": 8,
+    "step": 6,
     "ticks": 237
   },
   {
@@ -145,7 +115,7 @@
       }
     ],
     "completed": true,
-    "step": 9,
+    "step": 7,
     "ticks": 272
   }
 ]

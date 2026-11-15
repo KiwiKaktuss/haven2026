@@ -29,56 +29,70 @@ func run() -> void:
     root.add_child(session)
     session.set_physics_process(false)
     session.ball.simulation_enabled = false
-    for step: int in 10:
+    check(session.courses.courses.size() == 8, "Tutorial contains eight lessons")
+    for definition: CourseDefinition in session.courses.courses:
+        check(definition.title not in ["Card replacement", "Elixir"], "Removed lessons are absent from the catalog")
+    check(session.lesson_ui.get_node("ZoomHint").visible, "Zoom hint starts visible")
+    session.retry_step()
+    check(session.lesson_ui.get_node("ZoomHint").visible, "Retry preserves an unlearned zoom hint")
+    for step: int in session.courses.courses.size():
         session.step_index = step
         session.retry_step()
         await physics_frame
         await process_frame
         check(session.course != null, "Room %d loads" % step)
-        var marked_walls: Dictionary = {1:"EndWall",6:"GateWall",7:"ApproachWall",9:"BounceGuideWall"}
+        var marked_walls: Dictionary = {1:"EndWall",4:"GateWall",5:"ApproachWall",7:"BounceGuideWall"}
         if marked_walls.has(step):
             check(session.course.has_node("Terrain/" + marked_walls[step]), "Marked lesson wall is saved")
         check(session.course.goal_cup.pull_radius == 18.0, "Normal game hole attraction radius")
         var center: Vector2 = session.get_canvas_transform() * session.challenge_bounds().get_center()
         check(absf(center.x - session.get_viewport_rect().size.x * 0.5) < 1.0, "Challenge is centered horizontally")
         check(absf(center.y - (176.0 + session.get_viewport_rect().size.y - 171.0) * 0.5) < 1.0, "Challenge is centered in the playable area")
-        check(not session.lesson_ui.has_node("Hint") and not session.lesson_ui.has_node("Menu") and not session.lesson_ui.has_node("Retry"), "Clean tutorial controls and no lower label")
+        check(not session.lesson_ui.has_node("Hint") and not session.lesson_ui.has_node("Menu") and not session.lesson_ui.has_node("Retry"), "Clean tutorial controls")
         check(session.lesson_ui.get_node("PauseButton").text == "II", "Standard pause button")
         check(session.deck.hand.size() == 3, "Fixed hand")
         check(session.hud.get_node("Top").visible == false, "No timer")
         check(not session.objective_met(), "No automatic lesson completion")
-        check(session.lesson_ui.get_node("Lesson/Content/Title").text.ends_with("%d / 10" % (step+1)), "Title includes the step counter")
+        check(session.lesson_ui.get_node("Lesson/Content/Title").text.ends_with("%d / 8" % (step+1)), "Title includes the step counter")
         for body: TerrainObject in session.course.get_node("Terrain").get_children():
             check(not body is MovingPlatform, "No moving-platform tutorial remains")
-            if step < 6:
+            if step < 4:
                 check(body.surface.material == SurfaceDefinition.SurfaceMaterial.NORMAL, "Early lessons have ordinary terrain only")
         session.ball.reset_motion(session.course.goal_cup.capture_shape.global_position)
         session.check_course_end(1.0)
         check(not session.transitioning, "Arriving without a shot cannot skip a lesson")
-    session.step_index = 4
+    session.step_index = 0
     session.retry_step()
-    check(not session.try_shot(Vector2(-60,60)), "Elixir lesson starts below cost")
-    check(session.shots == 0, "Rejected shot does not consume a card")
-    session.advance_clock(2.5)
-    check(session.elixir >= 2.0, "Elixir refills")
-    check(session.try_shot(Vector2(-60,60)), "Affordable shot succeeds")
-    check(session.elixir < 1.0, "Shot spends elixir")
+    var camera: Camera2D = session.camera_controller.camera
+    var initial_zoom: float = camera.zoom.x
+    var initial_position: Vector2 = camera.global_position
+    session.camera_controller.set_zoom(initial_zoom * 1.1)
+    check(session.lesson_ui.get_node("ZoomHint").visible, "Programmatic zoom does not dismiss the learning hint")
+    session.camera_controller.set_zoom(initial_zoom)
+    for button_index: int in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
+        var previous_zoom: float = camera.zoom.x
+        var scroll := InputEventMouseButton.new()
+        scroll.position = Vector2(400, 200)
+        scroll.button_index = button_index
+        scroll.pressed = true
+        root.push_input(scroll, true)
+        check(camera.zoom.x > previous_zoom if button_index == MOUSE_BUTTON_WHEEL_UP else camera.zoom.x < previous_zoom, "Mouse wheel zoom works in both directions")
+    check(not session.lesson_ui.get_node("ZoomHint").visible, "Using zoom dismisses the hint")
+    await process_frame
+    check(camera.global_position.distance_to(initial_position) < 0.1, "Zoom keeps the initial tutorial framing centered")
+    session.retry_step()
+    check(not session.lesson_ui.get_node("ZoomHint").visible, "Retry keeps the learned zoom hint hidden")
+    session.step_index = 1
+    session.retry_step()
+    check(not session.lesson_ui.get_node("ZoomHint").visible, "Later lessons keep the learned zoom hint hidden")
     session.step_index = 2
     session.retry_step()
     check(session.deck.select_slot(1), "Different card can be selected")
     check(session.ball.active_effect == CardDefinition.Effect.CLASSIC, "Selection does not play effect")
     check(session.try_shot(Vector2(-60,60)), "Selected card can be played")
     check(session.used_other and session.ball.active_effect == CardDefinition.Effect.SNIPER, "Shot activates selected card")
-    session.step_index = 3
-    session.retry_step()
-    check(session.try_shot(Vector2(-60,60)), "Cycle shot")
-    check(not session.deck.slot_ready(0), "Played slot has real deal delay")
-    check(session.deck.hand[0].id == &"sniper", "Deterministic replacement")
-    session.advance_clock(1.7)
-    session.check_course_end(1.0/60)
-    check(session.replacement_seen, "Replacement arrival observed")
-    session.retry_step()
-    check(session.step_index == 3 and session.shots == 0, "Retry only current lesson")
+    session._advance_step()
+    check(session.step_index == TutorialSession.CARD_STEP, "Selection continues directly to card abilities")
     session.free()
     await process_frame
     var main: Node = load("res://main.tscn").instantiate()
@@ -90,18 +104,18 @@ func run() -> void:
     click(main._menu_screen.get_node("Center/Content/Tutorial"))
     check(main.session is TutorialSession, "Real menu click opens tutorial")
     session = main.session
-    session.step_index = 4
+    session.step_index = 1
     session.retry_step()
     click(session.lesson_ui.get_node("PauseButton"))
     check(session.state == GameSession.State.PAUSED, "Pause button opens the normal pause menu")
     main._restart()
-    check(main.session == session and session.step_index == 4 and session.state == GameSession.State.READY, "Pause restart retries current tutorial lesson")
+    check(main.session == session and session.step_index == 1 and session.state == GameSession.State.READY, "Pause restart retries current tutorial lesson")
     await process_frame
     click(session.lesson_ui.get_node("PauseButton"))
     await process_frame
     await process_frame
     click(main.screen_host.get_child(0).get_node("Center/Content/Restart"))
-    check(session.step_index == 4 and session.elixir < 2.0 and session.shots == 0, "Pause restart resets lesson resources")
+    check(session.step_index == 1 and session.elixir == session.tuning.maximum_elixir and session.shots == 0, "Pause restart resets lesson resources")
     await process_frame
     var equipped: Array[StringName] = main.save.equipped.duplicate()
     session.step_index = TutorialSession.CARD_STEP
@@ -110,10 +124,11 @@ func run() -> void:
     await process_frame
     var cards: Control = session.lesson_ui.get_node("CardLesson")
     check(cards.visible and not session.hud.visible and not session.course.visible, "Card lesson uses its own in-place layout")
+    check(not session.lesson_ui.get_node("ZoomHint").visible and not session.camera_controller.enabled, "Card overview hides the zoom hint and world camera controls")
     check(not session.aim.enabled and not session.ball.simulation_enabled, "Card overview does not accept shots")
     check(cards.next_button.disabled, "Explore a card before continuing")
     session.complete_card_lesson()
-    check(session.step_index == 5, "Continue cannot skip unexplored cards")
+    check(session.step_index == 3, "Continue cannot skip unexplored cards")
     for index: int in session.deck.catalog.cards.size():
         var hover := InputEventMouseMotion.new()
         hover.position = cards.grid.get_child(index).get_global_rect().get_center()
@@ -130,7 +145,7 @@ func run() -> void:
     await process_frame
     await process_frame
     click(main.screen_host.get_child(0).get_node("Center/Content/Restart"))
-    check(not session.card_explored and cards.next_button.disabled and session.step_index == 5, "Pause restart resets only the card overview")
+    check(not session.card_explored and cards.next_button.disabled and session.step_index == 3, "Pause restart resets only the card overview")
     cards.grid.get_child(1).grab_focus()
     check(session.card_explored and cards.grid.get_child(1).get_node("Information/Margin/Content/Title").text.begins_with("Snipe"), "Keyboard focus also explains a card")
     var pause_key := InputEventKey.new()
@@ -145,14 +160,18 @@ func run() -> void:
     main._resume()
     check(not session.hud.visible and cards.visible, "Resume preserves the card overview")
     click(cards.next_button)
-    check(session.step_index == 6 and session.course.has_node("Terrain/BankWall"), "Card lesson continues directly to walls")
+    check(session.step_index == 4 and session.course.has_node("Terrain/BankWall"), "Card lesson continues directly to walls")
     check(session.aim.enabled and session.ball.simulation_enabled and session.hud.visible, "World controls return after cards")
-    session.step_index = 9
+    session.step_index = 7
     session.retry_step()
     check(session.course.has_node("Terrain/Spring") and not session.course.has_node("Terrain/Ride"), "Bouncy surfaces finish the tutorial")
     session._advance_step()
-    session.lesson_ui.get_node("Complete/Center/Panel/Content/Begin").pressed.emit()
-    check(main.session is GameSession and not main.session is TutorialSession and main.course_index == 0, "Begin playing launches first course")
+    check(not session.lesson_ui.get_node("ZoomHint").visible, "Completion hides the zoom hint")
+    check(not session.camera_controller.enabled, "Completion stops world camera controls")
+    check(session.lesson_ui.get_node("Complete/Center/Panel/Content/MainMenu").text == "Main Menu", "Completion shows Main Menu")
+    session.lesson_ui.get_node("Complete/Center/Panel/Content/MainMenu").pressed.emit()
+    await process_frame
+    check(main.game_host.get_child_count() == 0 and is_instance_valid(main._menu_screen), "Main Menu returns to the menu after completion")
     main.free()
     await process_frame
     print("Tutorial: %d / %d checks passed" % [checks-failures,checks])
