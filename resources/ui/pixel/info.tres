@@ -1,6 +1,6 @@
 [gd_resource type="StyleBoxTexture" format=3 uid="uid://dyll1jrt8i3ys"]
 
-[ext_resource type="Texture2D" uid="uid://bdsenhda68gj6" path="res://art/ui/info.svg" id="image"]
+[ext_resource type="Texture2D" uid="uid://baiu65q2y0tke" path="res://art/ui/normal.svg" id="image"]
 
 [sub_resource type="CanvasTexture" id="texture"]
 diffuse_texture = ExtResource("image")
@@ -10,7 +10,7 @@ texture_filter = 1
 content_margin_left = 12.0
 content_margin_top = 9.0
 content_margin_right = 12.0
-content_margin_bottom = 12.0
+content_margin_bottom = 9.0
 texture = SubResource("texture")
 texture_margin_left = 12.0
 texture_margin_top = 12.0
