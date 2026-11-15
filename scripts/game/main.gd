@@ -201,7 +201,7 @@ func _start_course(index: int) -> void:
     session.attempt_finished.connect(_result)
     game_host.add_child(session)
 
-func _enter_course(index: int) -> void:
+func _enter_course(index: int, press_position: Vector2 = Vector2.INF) -> void:
     if _course_entering or _journey_moving:
         return
     _course_entering = true
@@ -214,7 +214,10 @@ func _enter_course(index: int) -> void:
     if focused != null:
         focused.release_focus()
     var source: Control = _levels_screen.grid.get_child(target) if is_instance_valid(_levels_screen) else null
-    await course_transition.cover(source)
+    var origin: Vector2 = press_position
+    if not origin.is_finite():
+        origin = source.get_global_rect().get_center() if source != null else get_viewport_rect().size * 0.5
+    await course_transition.cover(origin)
     _start_course(target)
     session.pause_attempt()
     session.ball.hide()

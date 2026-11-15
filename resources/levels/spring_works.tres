@@ -1,6 +1,8 @@
-[gd_resource type="Resource" script_class="CourseDefinition" load_steps=3 format=3]
-[ext_resource type="Script" path="res://scripts/levels/course_definition.gd" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/levels/spring_works.tscn" id="2"]
+[gd_resource type="Resource" script_class="CourseDefinition" format=3 uid="uid://dpvm765dqu8qa"]
+
+[ext_resource type="Script" uid="uid://d3go7tc4gqq3c" path="res://scripts/levels/course_definition.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://wjf4a20wt2vh" path="res://scenes/levels/spring_works.tscn" id="2"]
+
 [resource]
 script = ExtResource("1")
 id = &"spring_works"

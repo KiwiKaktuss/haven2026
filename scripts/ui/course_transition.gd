@@ -1,10 +1,9 @@
 extends Control
-## A closing iris at the selected button, then an opening iris at the tee.
+## A closing iris at the click position, then an opening iris at the tee.
 const COVER_SECONDS: float = 0.6
 const HOLD_SECONDS: float = 1.6
 const REVEAL_SECONDS: float = 0.85
 var _tween: Tween
-var _source: Control
 var _spawn_ball: GolfBall
 var _spawn_camera: Camera2D
 var _radius_fraction: float = 1.0
@@ -17,11 +16,10 @@ func _input(_event: InputEvent) -> void:
     if visible:
         get_viewport().set_input_as_handled()
 
-func cover(source: Control) -> void:
-    _source = source
+func cover(press_position: Vector2) -> void:
     _spawn_ball = null
     _spawn_camera = null
-    _center = size * 0.5
+    _center = get_global_transform_with_canvas().affine_inverse() * press_position
     _radius_fraction = 1.0
     show()
     set_process(true)
@@ -31,7 +29,6 @@ func cover(source: Control) -> void:
     await _tween.finished
 
 func reveal(attempt: GameSession) -> void:
-    _source = null
     _spawn_ball = attempt.ball
     _spawn_camera = attempt.camera_controller.camera
     # The ball stays exactly on its physical start point beneath the solid veil.
@@ -52,7 +49,7 @@ func reveal(attempt: GameSession) -> void:
     hide()
 
 func _process(_delta: float) -> void:
-    # Reproject the real origins so resizing never stretches or shifts the iris.
+    # Reproject the ball so resizing never stretches or shifts the reveal.
     _update_mask()
 
 func _set_radius_fraction(fraction: float) -> void:
@@ -61,9 +58,7 @@ func _set_radius_fraction(fraction: float) -> void:
 
 func _update_mask() -> void:
     var to_local: Transform2D = get_global_transform_with_canvas().affine_inverse()
-    if is_instance_valid(_source):
-        _center = to_local * _source.get_global_rect().get_center()
-    elif is_instance_valid(_spawn_ball):
+    if is_instance_valid(_spawn_ball):
         _spawn_camera.force_update_scroll()
         _center = to_local * _spawn_ball.get_global_transform_with_canvas().origin
     var extent: Vector2 = _center.abs().max((size - _center).abs())

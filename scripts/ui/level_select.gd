@@ -1,7 +1,8 @@
 extends Control
-signal course_requested(index: int)
+signal course_requested(index: int, press_position: Vector2)
 signal back_requested
 @export var courses: CourseCatalog = preload("res://resources/levels/catalog.tres")
+var _press_position: Vector2 = Vector2.INF
 
 @onready var grid: GridContainer = $Center/Content/Grid
 @onready var content: VBoxContainer = $Center/Content
@@ -12,7 +13,9 @@ func _ready() -> void:
     for index: int in range(courses.courses.size()):
         var button: Button = grid.get_child(index)
         button.configure(courses.courses[index], index, 0.0)
-        button.pressed.connect(func() -> void: course_requested.emit(index))
+        button.pressed.connect(func() -> void:
+            var origin: Vector2 = _press_position if _press_position.is_finite() else button.get_global_rect().get_center()
+            course_requested.emit(index, origin))
         # Follow the visual rows with arrows, keeping Back reachable below them.
         button.focus_neighbor_left = button.get_path_to(grid.get_child(index - 1 if index % 2 else index))
         button.focus_neighbor_right = button.get_path_to(grid.get_child(index + 1 if index % 2 == 0 else index))
@@ -21,6 +24,12 @@ func _ready() -> void:
     $Center/Content/Back.focus_neighbor_top = $Center/Content/Back.get_path_to(grid.get_child(2))
     resized.connect(_layout_cards)
     _layout_cards()
+
+func _input(event: InputEvent) -> void:
+    if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+        _press_position = event.position
+    elif event is InputEventKey or event is InputEventJoypadButton:
+        _press_position = Vector2.INF
 
 func _layout_cards() -> void:
     # Landscape cards give the illustration most of the space, even at 800 x 640.

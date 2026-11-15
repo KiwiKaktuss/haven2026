@@ -1,6 +1,8 @@
-[gd_resource type="Resource" script_class="CourseDefinition" load_steps=3 format=3]
-[ext_resource type="Script" path="res://scripts/levels/course_definition.gd" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/levels/first_fairway.tscn" id="2"]
+[gd_resource type="Resource" script_class="CourseDefinition" format=3 uid="uid://cms2ph7af0xtb"]
+
+[ext_resource type="Script" uid="uid://d3go7tc4gqq3c" path="res://scripts/levels/course_definition.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://qmmrsvikpdbn" path="res://scenes/levels/first_fairway.tscn" id="2"]
+
 [resource]
 script = ExtResource("1")
 id = &"first_fairway"

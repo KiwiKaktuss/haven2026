@@ -1,10 +1,9 @@
-[gd_resource type="TileSet" load_steps=3 format=3]
+[gd_resource type="TileSet" format=3 uid="uid://cvbiocnrogiqg"]
 
-[ext_resource type="Texture2D" path="res://art/final_ascent_scenery.svg" id="1"]
+[ext_resource type="Texture2D" uid="uid://n0m1uuraos1d" path="res://art/final_ascent_scenery.svg" id="1"]
 
 [sub_resource type="TileSetAtlasSource" id="Atlas"]
 texture = ExtResource("1")
-texture_region_size = Vector2i(16,16)
 0:0/0 = 0
 1:0/0 = 0
 0:1/0 = 0
@@ -13,5 +12,4 @@ texture_region_size = Vector2i(16,16)
 1:2/0 = 0
 
 [resource]
-tile_size = Vector2i(16,16)
 sources/0 = SubResource("Atlas")

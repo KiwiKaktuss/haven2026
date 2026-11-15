@@ -1,6 +1,6 @@
-[gd_resource type="TileSet" format=3]
+[gd_resource type="TileSet" format=3 uid="uid://6lk4gp50ee5p"]
 
-[ext_resource type="Texture2D" path="res://art/spring_works_scenery.svg" id="1_0q3a0"]
+[ext_resource type="Texture2D" uid="uid://cnxafosmya3oi" path="res://art/spring_works_scenery.svg" id="1_0q3a0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_de2fk"]
 texture = ExtResource("1_0q3a0")

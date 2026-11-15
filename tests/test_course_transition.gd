@@ -15,8 +15,8 @@ func check(ok: bool, message: String) -> void:
         failures += 1
         push_error(message)
 
-func click(button: Button) -> void:
-    var at: Vector2 = button.get_global_rect().get_center()
+func click(button: Button, offset: Vector2 = Vector2.ZERO) -> void:
+    var at: Vector2 = button.get_global_rect().get_center() + offset
     var motion := InputEventMouseMotion.new()
     motion.position = at
     root.push_input(motion, true)
@@ -46,10 +46,14 @@ func run() -> void:
             await process_frame
         await process_frame
         var source: Button = main._levels_screen.get_node("Center/Content/Grid/Course%d" % index)
-        var selected_center: Vector2 = source.get_global_rect().get_center()
-        click(source)
+        var click_offset: Vector2 = Vector2(-72, 35) if index % 2 == 0 else Vector2(64, -28)
+        var pressed_at: Vector2 = source.get_global_rect().get_center() + click_offset
+        click(source, click_offset)
         check(main._course_entering and main.course_transition.visible, "Real course click starts the transition")
-        check(main.course_transition._center.is_equal_approx(selected_center), "Closing iris targets the selected button")
+        check(main.course_transition._center.is_equal_approx(pressed_at), "Closing iris targets the exact off-center mouse press")
+        var move := InputEventMouseMotion.new()
+        move.position = Vector2(10, 10)
+        root.push_input(move, true)
         check(not main._levels_screen.can_process() and not is_instance_valid(main.session), "Selector freezes before the course is created")
         main._enter_course((index + 1) % 4)
         main._show_menu()
@@ -60,6 +64,7 @@ func run() -> void:
         key.pressed = true
         root.push_input(key, true)
         await create_timer(0.28).timeout
+        check(main.course_transition._center.is_equal_approx(pressed_at), "Closing origin stays at the press after the cursor moves")
         check(main.course_transition._radius_fraction > 0.0 and main.course_transition._radius_fraction < 1.0, "Circle closes progressively from every edge")
         await capture("%d_closing" % index)
         while not is_instance_valid(main.session):

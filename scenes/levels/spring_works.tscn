@@ -1,17 +1,16 @@
-[gd_scene format=4]
+[gd_scene format=4 uid="uid://wjf4a20wt2vh"]
 
-[ext_resource type="Script" path="res://scripts/levels/course.gd" id="1_eatsi"]
-[ext_resource type="Script" path="res://scripts/terrain/terrain_object.gd" id="2_ab050"]
+[ext_resource type="Script" uid="uid://dpw3h6qyuxeld" path="res://scripts/levels/course.gd" id="1_eatsi"]
+[ext_resource type="Script" uid="uid://rn60opm7d2af" path="res://scripts/terrain/terrain_object.gd" id="2_ab050"]
 [ext_resource type="Resource" path="res://resources/terrain/normal.tres" id="3_kened"]
-[ext_resource type="TileSet" path="res://resources/terrain/terrain_tileset.tres" id="4_6ui6l"]
-[ext_resource type="Script" path="res://scripts/terrain/editable_terrain_tiles.gd" id="5_gfef5"]
+[ext_resource type="TileSet" uid="uid://dwxkqwc1cnw23" path="res://resources/terrain/terrain_tileset.tres" id="4_6ui6l"]
+[ext_resource type="Script" uid="uid://dr0uhgqafho4r" path="res://scripts/terrain/editable_terrain_tiles.gd" id="5_gfef5"]
 [ext_resource type="Resource" path="res://resources/terrain/launch_spring.tres" id="6_dmut4"]
 [ext_resource type="Resource" path="res://resources/terrain/bouncy.tres" id="7_i4k3b"]
-[ext_resource type="Script" path="res://scripts/terrain/moving_platform.gd" id="8_4hwm4"]
-[ext_resource type="TileSet" path="res://resources/terrain/coast_tileset.tres" id="9_ufyil"]
-[ext_resource type="TileSet" path="res://resources/terrain/spring_works_scenery.tres" id="10_w22e1"]
+[ext_resource type="Script" uid="uid://b5bipumwn8c05" path="res://scripts/terrain/moving_platform.gd" id="8_4hwm4"]
+[ext_resource type="TileSet" uid="uid://byq1ft6yty1ju" path="res://resources/terrain/coast_tileset.tres" id="9_ufyil"]
+[ext_resource type="TileSet" uid="uid://6lk4gp50ee5p" path="res://resources/terrain/spring_works_scenery.tres" id="10_w22e1"]
 [ext_resource type="PackedScene" path="res://scenes/levels/spring_works_goal_cup.tscn" id="11_ni45o"]
-[ext_resource type="Script" path="res://scripts/levels/goal_cup.gd" id="12_qsy1e"]
 
 [node name="Course" type="Node2D" unique_id=1606660457 node_paths=PackedStringArray("start_marker", "goal_cup", "void_boundary")]
 script = ExtResource("1_eatsi")
@@ -312,8 +311,6 @@ script = ExtResource("5_gfef5")
 [node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/EastCaveBack" unique_id=569283618]
 polygon = PackedVector2Array(0, 78, 1, 78, 1, 79, 2, 79, 2, 80, 16, 80, 16, 0, 0, 0)
 
-
-
 [node name="WestWall" type="StaticBody2D" parent="Terrain" unique_id=110072929]
 position = Vector2(-232, -208)
 collision_mask = 0
@@ -505,7 +502,6 @@ tile_map_data = PackedByteArray("AAAAAAAAAAADAAAAAAA=")
 tile_set = ExtResource("10_w22e1")
 collision_enabled = false
 
-
 [node name="LaunchArrows" type="TileMapLayer" parent="Decorations" unique_id=1235898474]
 z_index = 1
 texture_filter = 1
@@ -673,11 +669,8 @@ metadata/support = "GoalCup"
 [node name="StartMarker" type="Marker2D" parent="." unique_id=13569331]
 position = Vector2(-72, 149.9)
 
-[node name="GoalCup" type="Node2D" parent="." unique_id=1830033378 node_paths=PackedStringArray("capture_area", "capture_shape") instance=ExtResource("11_ni45o")]
+[node name="GoalCup" parent="." unique_id=1830033378 instance=ExtResource("11_ni45o")]
 position = Vector2(184, -144)
-script = ExtResource("12_qsy1e")
-capture_area = NodePath("CaptureArea")
-capture_shape = NodePath("CaptureArea/Shape")
 
 [node name="VoidBoundary" type="Marker2D" parent="." unique_id=2043504079]
 position = Vector2(0, 243)
