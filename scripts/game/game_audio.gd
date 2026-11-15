@@ -10,6 +10,13 @@ extends Node
 @onready var wallhit: AudioStreamPlayer = $WallHit
 var _last_impacts: Dictionary[int, int] = {}
 var _hover_queued: bool = false
+var menu_intro_seen: bool = false
+
+func menu_music_time() -> float:
+    if music.stream != menu_music or not music.playing:
+        return 0.0
+    # Follow the audible sample position, rather than accumulating frame time.
+    return maxf(0.0, music.get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency())
 
 func _ready() -> void:
     get_tree().node_added.connect(_watch_node)

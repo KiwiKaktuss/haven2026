@@ -50,6 +50,12 @@ func run() -> void:
     root.add_child(main)
     await frames()
     var original_menu: Control = main._menu_screen
+    # Dismiss the startup presentation before testing navigation.
+    var skip := InputEventKey.new()
+    skip.keycode = KEY_SPACE
+    skip.pressed = true
+    root.push_input(skip, true)
+    check(not original_menu._intro, "Startup intro can be skipped")
     var background: Control = original_menu.get_node("Background")
     var sky: Texture2D = background.sky_texture
     check(sky != null and sky.resource_path == "res://art/background2.png", "Menu has its saved sky texture")

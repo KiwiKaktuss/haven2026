@@ -15,23 +15,23 @@ menu_music = ExtResource("menu")
 level_music = ExtResource("level")
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
-volume_db = -12.0
+volume_db = -24.0
 bus = &"Music"
 
 [node name="Click" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("click")
-volume_db = -4.0
+volume_db = 0.0
 max_polyphony = 4
 bus = &"SFX"
 
 [node name="Hover" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("hover")
-volume_db = -10.0
+volume_db = -1.0
 bus = &"SFX"
 
 [node name="GolfballHit" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("ball")
-volume_db = -4.0
+volume_db = -10.0
 max_polyphony = 4
 bus = &"SFX"
 
