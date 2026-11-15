@@ -1,20 +1,19 @@
 extends Control
-const TITLES: Array[String] = ["Aiming and shooting", "Shot power", "Selecting a card", "Card replacement", "Elixir", "Normal walls", "Sticky walls", "Ice", "Bouncy surfaces", "Moving platforms"]
+const TITLES: Array[String] = ["Aiming and shooting", "Shot power", "Selecting a card", "Card replacement", "Elixir", "Card abilities", "Normal walls", "Sticky walls", "Ice", "Bouncy surfaces"]
 const INSTRUCTIONS: Array[String] = [
     "Drag back, then release to shoot into the nearby hole.",
     "Drag farther for more power. Reach the distant hole.",
     "Select the middle card, then shoot into the hole.",
     "Shoot once, watch its replacement arrive, then reach the hole.",
     "Wait for 2 elixir, then spend it on a shot to the hole.",
+    "Hover over a card to discover what it does.",
     "Bounce off the right wall and return to the hole.",
     "Shoot onto the sticky wall, then shoot away into the hole.",
     "Slide across the ice with a gentle shot to the hole.",
-    "Hit the spring below, then land at the elevated hole.",
-    "Land on the platform, ride closer, then shoot to the hole."
+    "Hit the spring below, then land at the elevated hole."
 ]
 var session: TutorialSession
 var time: float = 0.0
-var preview: Control
 const INK := Color(0.20, 0.24, 0.30)
 const GOLD := Color(0.89, 0.56, 0.19)
 @onready var status: Label = $Hint
@@ -24,7 +23,9 @@ func configure(value: TutorialSession) -> void:
     $Retry.pressed.connect(session.retry_step)
     $Menu.pressed.connect(func() -> void: session.menu_requested.emit())
     $Complete/Center/Panel/Content/Begin.pressed.connect(func() -> void: session.begin_playing.emit())
-    $Complete/Center/Panel/Content/Cards.pressed.connect(_show_cards)
+    $CardLesson.card_inspected.connect(session.inspect_card)
+    $CardLesson.continue_requested.connect(session.complete_card_lesson)
+    $CardLesson.configure(session.deck.catalog)
     session.lesson_changed.connect(refresh)
     refresh()
 
@@ -34,6 +35,16 @@ func refresh() -> void:
     $Lesson/Content/Count.text = "%d / 10" % (session.step_index + 1)
     $Lesson/Content/Title.text = TITLES[session.step_index]
     $Lesson/Content/Instruction.text = INSTRUCTIONS[session.step_index]
+    var showing_cards: bool = session.step_index == TutorialSession.CARD_STEP
+    $CardLesson.visible = showing_cards
+    $Hint.visible = not showing_cards
+    if showing_cards:
+        $CardLesson.reset_lesson()
+
+func _unhandled_input(event: InputEvent) -> void:
+    if session != null and session.step_index == TutorialSession.CARD_STEP and event.is_action_pressed(&"pause") and not event.is_echo():
+        get_viewport().set_input_as_handled()
+        session.pause_requested.emit()
 
 func _process(delta: float) -> void:
     time += delta
@@ -51,16 +62,10 @@ func _process(delta: float) -> void:
                 if session.replaced_slot >= 0:
                     status.text = "Replacement arrived! Finish at the hole." if session.replacement_seen else "Watch the empty slot — your replacement is on its way."
             4: status.text = "ELIXIR  ·  %.1f / 2 needed. It refills automatically." % session.elixir if session.elixir < 2.0 and session.shots == 0 else "Each Snipe card costs 2 elixir. Shooting spends it; it refills."
-            5: status.text = "WALL  ↔  Ordinary walls redirect the ball." if not session.touched_surface else "Wall bounce done! Finish at the hole."
-            6: status.text = "STICKY  +  The ball stays attached until your next shot." if session.stuck_once else "Aim at the wall with the + pattern."
-            7: status.text = "ICE  ≋  Low friction keeps the ball sliding. Try a short drag."
-            8: status.text = "BOUNCY  ^  The chevron surface launches the ball upward."
-            9:
-                status.text = "MOVING  ↔  Land on the wide platform."
-                if session.riding:
-                    status.text = "Ride closer… the platform carries you." if session.ride_distance < 24.0 else "Close enough! Shoot onto safe ground at the hole."
-                if session.launched_from_ride:
-                    status.text = "Ride complete! Land safely at the hole."
+            6: status.text = "WALL  ↔  Ordinary walls redirect the ball." if not session.touched_surface else "Wall bounce done! Finish at the hole."
+            7: status.text = "STICKY  +  The ball stays attached until your next shot." if session.stuck_once else "Aim at the wall with the + pattern."
+            8: status.text = "ICE  ≋  Low friction keeps the ball sliding. Try a short drag."
+            9: status.text = "BOUNCY  ^  The chevron surface launches the ball upward."
     queue_redraw()
 
 func world(at: Vector2) -> Vector2:
@@ -88,7 +93,7 @@ func route(points: PackedVector2Array) -> void:
             draw_circle(start.lerp(end, dot * 12.0 / maxf(length, 1)), 2.0, Color(INK, 0.38))
 
 func _draw() -> void:
-    if session == null or session.lesson_done:
+    if session == null or session.lesson_done or session.step_index == TutorialSession.CARD_STEP:
         return
     var ball_at: Vector2 = world(session.ball.global_position)
     var hole: Vector2 = session.course.goal_cup.to_global(Vector2(32, 0))
@@ -119,11 +124,11 @@ func _draw() -> void:
         highlight(Rect2(rect.position, Vector2(rect.size.x, 24)))
         draw_string(get_theme_default_font(), Vector2(24, size.y - 96), "Card cost: 2 elixir", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, INK)
     match session.step_index:
-        5:
+        6:
             tag(Vector2(192, -46), "WALL ↔")
             if not session.touched_surface:
                 route(PackedVector2Array([Vector2(0, 70), Vector2(48, -12), Vector2(132, -22), Vector2(180, 8), Vector2(150, 48), hole]))
-        6:
+        7:
             tag(Vector2(194, -40), "STICKY +")
             # A second non-colour cue on the wall itself.
             for y: int in range(-16, 72, 16):
@@ -132,22 +137,17 @@ func _draw() -> void:
                 draw_line(at - Vector2(0, 4), at + Vector2(0, 4), INK, 2)
             if not session.stuck_once:
                 route(PackedVector2Array([Vector2(0, 70), Vector2(80, 10), Vector2(180, 24)]))
-        7:
+        8:
             tag(Vector2(96, 111), "ICE ≋")
             for x: int in range(32, 160, 16):
                 draw_line(world(Vector2(x, 78)), world(Vector2(x + 5, 82)), INK, 1)
-        8:
+        9:
             tag(Vector2(104, 112), "BOUNCY ^")
             for x: int in range(56, 160, 16):
                 var at: Vector2 = world(Vector2(x, 92))
                 draw_polyline(PackedVector2Array([at + Vector2(-4, 4), at, at + Vector2(4, 4)]), INK, 2)
             if not session.touched_surface:
                 route(PackedVector2Array([Vector2(0, 22), Vector2(72, 84), Vector2(144, -4), hole]))
-        9:
-            var mover: MovingPlatform = session.course.get_node("Terrain/Ride")
-            tag(mover.global_position + Vector2(48, 29), "MOVING ↔")
-            if not session.riding:
-                route(PackedVector2Array([Vector2(0, 70), Vector2(48, 12), mover.global_position + Vector2(40, -4)]))
 
 func show_complete() -> void:
     $Lesson.hide()
@@ -155,15 +155,3 @@ func show_complete() -> void:
     $Retry.hide()
     $Complete.show()
     $Complete/Center/Panel/Content/Begin.grab_focus()
-
-func _show_cards() -> void:
-    if preview != null:
-        return
-    preview = preload("res://scenes/tutorial/deck_preview.tscn").instantiate()
-    add_child(preview)
-    preview.configure(session.deck.catalog.default_deck)
-    preview.done_requested.connect(func(_ids: Array[StringName]) -> void:
-        remove_child(preview)
-        preview.queue_free()
-        preview = null
-        $Complete/Center/Panel/Content/Cards.grab_focus())

@@ -31,9 +31,10 @@
 
 # Tutorial notes
 
-- Keep the numbered course at ten lessons; the user's extra card-explanation
-  request is an optional deck-selector preview after completion, not an ability
-  lesson or an eleventh practical challenge.
+- Current tutorial order has ten lessons: aim, power, selection, replacement,
+  elixir, card abilities, walls, sticky, ice, bouncy. The user replaced the old
+  moving-platform lesson with the card overview before walls and removed the
+  separate post-completion deck-selector preview.
 - Tutorial uses the existing GameSession shot/deal/elixir transaction and actual
   terrain physics. Fixed Normal/Snipe hands and reserved replacements bypass
   random draws. Gameplay hand tooltips are hidden to keep abilities out of lessons.
@@ -73,3 +74,19 @@
   Updated accepted input fixtures for the native-size rim and proper corner solids.
 - Final tile-polish proof: `screenshots/result/28/video.mp4`, 900 PNGs,
   30 seconds at 30fps; all ten holes complete at frame 777.
+
+# Integrated card lesson
+
+- Step 6/10 reuses the tutorial header and pale course backdrop. Compact card
+  views occupy two rows; hover, keyboard focus or click updates a fixed detail
+  panel with the real catalog ability and cost, rather than floating popovers.
+- The Continue button enables after one inspection and opens walls (step 7).
+  No card is played, no elixir is spent and no saved loadout changes. Retry
+  resets only this lesson. Esc pause/resume preserves the gallery without HUD.
+- World/hand visibility and aim/ball simulation are restored when leaving cards.
+  The ten-step catalog ends on bouncy surfaces; tutorial mover state was removed.
+- Verification: 139 flow checks; real hover for all ten cards; nine engine-played
+  holes and ten legal releases across the ten lessons; 112,586 tile checks;
+  32 existing menu journey checks. Layout verified at 800×640 through 1440×900.
+- Final revised-flow proof: `screenshots/result/29/video.mp4` with 900 frames
+  at 30fps (30 seconds). Card lesson at 402; walls at 495; completion at 790.

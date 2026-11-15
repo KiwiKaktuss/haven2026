@@ -29,7 +29,8 @@ Focused checks:
   rooms; runtime loads these scenes through `resources/tutorial/courses.tres`.
 - `TutorialSession` inherits the production session scene and shot transaction.
   It supplies known ordinary cards, tracks lesson-specific interactions, and
-  advances only on real cup dwell. Misses/retries never touch course records.
+  advances practical lessons on real cup dwell. The card chapter uses an
+  explicit Continue button. Misses/retries never touch course records.
 - `tutorial_cup.tscn` uses the production native-size rim/flag within a 128×32
   bank built from square terrain tiles. Rooms save contextual edge joins with
   their neighbors; collision silhouettes include the tile art and physical rim.
@@ -37,16 +38,20 @@ Focused checks:
 - `tutorial_overlay.tscn` owns the consistent lesson/count/instruction layout,
   Retry, completion and Begin playing. Its script draws passive guidance and
   patterns in viewport space. Camera framing reserves space for header and hand.
-- `deck_preview.tscn` inherits the actual deck editor. `preview_mode` inspects
-  cards without changing the equipped deck or writing a save.
+- `card_lesson.tscn` is the in-place sixth lesson. Its ten compact `lesson_card`
+  instances reveal catalog descriptions/costs on hover, focus or click in one
+  stable detail panel. Continue requires one inspection and leads to walls.
+  Gameplay, ball simulation and the hand are hidden for this lesson.
+- The tutorial has nine practical holes and one card overview; bouncy surfaces
+  finish step ten. There is no moving-platform lesson or separate card preview.
 - `main.gd` owns tutorial/menu/first-course navigation and routes paused restart
   back to the current tutorial room.
 
 Verification:
 - `tests/test_tutorial.gd`: resources, transactions, lesson gates, real menu and
-  Retry clicks, pause restart, preview isolation and Begin playing.
-- `tests/test_tutorial_playthrough.gd`: ten holes through ordinary engine ticks,
-  real aim/release and actual sticky/mover boarding and departures.
+  Retry clicks, real hover for every card, Esc pause, Continue and Begin playing.
+- `tests/test_tutorial_playthrough.gd`: all ten lessons through ordinary engine ticks,
+  nine physical holes, legal releases and a real sticky attachment/departure.
 - `tests/support/tutorial_routes.json`: discovered ordinary-shot route fixtures.
 - `tests/support/tutorial_engine_routes.json`: accepted engine input trace.
 - `tests/capture_tutorial_views.gd`: screenshots of the menu, lesson HUD and guide.

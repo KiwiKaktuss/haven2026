@@ -16,20 +16,18 @@ func run() -> void:
         session.step_index = index
         session.retry_step()
         await capture("lesson_%02d" % (index+1))
-    for viewport_size: Vector2i in [Vector2i(800,640), Vector2i(1440,900)]:
+    for viewport_size: Vector2i in [Vector2i(800,640), Vector2i(960,640), Vector2i(1440,900)]:
         root.size = viewport_size
-        session.step_index = 4
+        session.step_index = 5
         session.retry_step()
-        await capture("elixir_%d" % viewport_size.x)
+        await capture("cards_%d_intro" % viewport_size.x)
+        session.lesson_ui.get_node("CardLesson").inspect(0)
+        await capture("cards_%d_hover" % viewport_size.x)
     root.size = Vector2i(960,640)
     session.step_index = 9
     session.retry_step()
     session._advance_step()
     await capture("complete")
-    session.lesson_ui._show_cards()
-    await capture("deck_preview")
-    session.lesson_ui.preview._toggle(&"fire")
-    await capture("card_explanation")
     session.free()
     var main: Node = load("res://main.tscn").instantiate()
     root.add_child(main)

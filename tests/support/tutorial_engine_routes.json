@@ -75,6 +75,12 @@
     "ticks": 444
   },
   {
+    "actions": [],
+    "completed": true,
+    "step": 5,
+    "ticks": 12
+  },
+  {
     "actions": [
       {
         "drag": [
@@ -86,7 +92,7 @@
       }
     ],
     "completed": true,
-    "step": 5,
+    "step": 6,
     "ticks": 297
   },
   {
@@ -109,7 +115,7 @@
       }
     ],
     "completed": true,
-    "step": 6,
+    "step": 7,
     "ticks": 260
   },
   {
@@ -124,7 +130,7 @@
       }
     ],
     "completed": true,
-    "step": 7,
+    "step": 8,
     "ticks": 367
   },
   {
@@ -139,30 +145,7 @@
       }
     ],
     "completed": true,
-    "step": 8,
-    "ticks": 255
-  },
-  {
-    "actions": [
-      {
-        "drag": [
-          -72.0853805541992,
-          50.4747276306152
-        ],
-        "slot": 0,
-        "tick": 12
-      },
-      {
-        "drag": [
-          -39.4082679748535,
-          73.0512084960938
-        ],
-        "slot": 0,
-        "tick": 133
-      }
-    ],
-    "completed": true,
     "step": 9,
-    "ticks": 321
+    "ticks": 255
   }
 ]

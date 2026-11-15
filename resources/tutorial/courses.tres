@@ -46,31 +46,31 @@ scene = ExtResource("6_fkwif")
 [sub_resource type="Resource" id="Resource_q16ft"]
 script = ExtResource("1_ri737")
 id = &"tutorial_6"
-title = "Normal walls"
+title = "Card abilities"
 scene = ExtResource("7_qhpjs")
 
 [sub_resource type="Resource" id="Resource_xosus"]
 script = ExtResource("1_ri737")
 id = &"tutorial_7"
-title = "Sticky walls"
+title = "Normal walls"
 scene = ExtResource("8_c1btl")
 
 [sub_resource type="Resource" id="Resource_2vujd"]
 script = ExtResource("1_ri737")
 id = &"tutorial_8"
-title = "Ice"
+title = "Sticky walls"
 scene = ExtResource("9_hm7pw")
 
 [sub_resource type="Resource" id="Resource_bib2y"]
 script = ExtResource("1_ri737")
 id = &"tutorial_9"
-title = "Bouncy surfaces"
+title = "Ice"
 scene = ExtResource("10_dimc2")
 
 [sub_resource type="Resource" id="Resource_v8xy4"]
 script = ExtResource("1_ri737")
 id = &"tutorial_10"
-title = "Moving platforms"
+title = "Bouncy surfaces"
 scene = ExtResource("11_keufp")
 
 [resource]

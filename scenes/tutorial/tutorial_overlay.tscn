@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 [ext_resource type="Script" path="res://scripts/tutorial/tutorial_overlay.gd" id="script"]
 [ext_resource type="Theme" path="res://resources/ui/default_theme.tres" id="theme"]
+[ext_resource type="PackedScene" path="res://scenes/tutorial/card_lesson.tscn" id="cards"]
 [node name="TutorialOverlay" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -67,6 +68,8 @@ text = "Pull opposite the direction you want the ball to travel."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+[node name="CardLesson" parent="." instance=ExtResource("cards")]
+visible = false
 [node name="Complete" type="Control" parent="."]
 visible = false
 layout_mode = 1
@@ -93,7 +96,7 @@ theme_override_constants/separation = 14
 alignment = 1
 [node name="Count" type="Label" parent="Complete/Center/Panel/Content"]
 layout_mode = 2
-text = "10 / 10   ·   ALL HOLES COMPLETE"
+text = "10 / 10   ·   ALL LESSONS COMPLETE"
 horizontal_alignment = 1
 [node name="Title" type="Label" parent="Complete/Center/Panel/Content"]
 layout_mode = 2
@@ -102,7 +105,7 @@ text = "Tutorial complete!"
 horizontal_alignment = 1
 [node name="Message" type="Label" parent="Complete/Center/Panel/Content"]
 layout_mode = 2
-text = "You're ready for the course.\nExplore the cards whenever you like."
+text = "You're ready for the course.\nPut your new skills into play."
 horizontal_alignment = 1
 [node name="Begin" type="Button" parent="Complete/Center/Panel/Content"]
 custom_minimum_size = Vector2(0, 46)
@@ -110,7 +113,3 @@ layout_mode = 2
 theme_type_variation = &"PrimaryButton"
 theme_override_colors/font_focus_color = Color(0.17, 0.18, 0.24, 1)
 text = "Begin playing"
-[node name="Cards" type="Button" parent="Complete/Center/Panel/Content"]
-custom_minimum_size = Vector2(0, 44)
-layout_mode = 2
-text = "Card guide · Deck selector preview"

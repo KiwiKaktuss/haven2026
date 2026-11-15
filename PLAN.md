@@ -1,40 +1,31 @@
-# Beginner tutorial — ten playable lessons
+# Ten-step tutorial with an integrated card lesson
 
-- [x] Add the Tutorial menu button using the existing menu artwork and reveal.
-- [x] Author ten saved, editable rooms with generous physical cups and fixed hands.
-- [x] Teach aiming, power, selection, replacement, elixir, walls, sticky, ice,
-      springs and moving platforms through practical tasks.
-- [x] Gate each hole on its lesson mechanic; advance only after actual cup capture.
-- [x] Add consistent top-centre instructions, gesture/route guidance, surface
-      names and patterns, current-room Retry and local miss recovery.
-- [x] Keep timers, scores, random draws and ability lessons out of gameplay.
-- [x] Add completion, Begin playing, and an optional real deck-selector preview
-      with clickable card explanations. Preview cannot change the saved deck.
-- [x] Verify ten holes on real engine ticks using legal aim-and-release inputs.
-- [x] Verify menu/pause/retry/first-course flow and existing card/menu/cup tests.
-- [x] Inspect the final 30fps proof and encode its fresh screenshots/result/27/ bundle.
+1. Aiming and shooting
+2. Shot power
+3. Selecting a card
+4. Card replacement
+5. Elixir
+6. Card abilities — hover, focus or click to inspect; Continue leads to walls.
+7. Normal walls
+8. Sticky walls
+9. Ice
+10. Bouncy surfaces
 
-Acceptance: `tests/test_tutorial.gd` (95 checks),
-`tests/test_tutorial_playthrough.gd` (all 10 holes, 12 legal releases), and a
-fresh full-course visual proof. Existing user edits to aim/power flames remain intact.
+- [x] Replace the separate deck-selector preview with an in-place card lesson.
+- [x] Show all ten cards with a stable ability/cost detail panel and native art.
+- [x] Match the tutorial's existing header, palette, pixel frames and spacing.
+- [x] Remove moving-platform tutorial content and the completion-screen guide.
+- [x] Keep the polished connected terrain and nine hole-based practical tasks.
+- [x] Verify real hover input for all cards, Continue, Retry, Esc pause/resume,
+      unchanged saved loadout and Begin playing.
+- [x] Replay every practical lesson with legal releases and complete all 10 steps.
+- [x] Inspect the card lesson at 800×640, 960×640 and 1440×900.
+- [x] Capture and inspect the fresh `screenshots/result/29/` proof.
 
-Final proof: `screenshots/result/27/video.mp4`, 900 original PNG frames,
-30 seconds at 30fps. All ten holes finish at frame 702; the remainder shows
-completion and the optional card guide. Layout inspected at 800×640,
-960×640 and 1440×900.
+Current checks: 139 tutorial/flow checks, 112,586 tile checks, all ten steps
+completed on engine ticks (nine physical holes, ten legal releases), 32 menu
+journey checks. Original user aim/power-flame edits remain intact.
 
-# Tutorial tile polish
-
-- [x] Replace repeated fill/border tiles with the normal game's connected edges.
-- [x] Rebuild the 128px cup bank from native tiles; remove horizontal scaling
-      from the cup, hole and flag. Match neighboring bank depths.
-- [x] Join touching walls and material transitions; retain independent mover edges.
-- [x] Verify every terrain pixel against the saved collision silhouette and
-      replay all ten holes with legal shots.
-- [x] Inspect and encode the fresh `screenshots/result/28/` proof.
-
-Checks: 112,992 terrain checks, 95 tutorial flow checks, all ten engine-played
-holes. Original user edits to aim/power flames remain untouched.
-
-Tile-polish proof: `screenshots/result/28/video.mp4`, 900 original frames,
-30 seconds at 30fps. All ten holes finish at frame 777.
+Final proof: `screenshots/result/29/video.mp4` with 900 original frames,
+30 seconds at 30fps. Cards appear at frame 402, walls at 495, and the full
+ten-step tutorial completes at frame 790.

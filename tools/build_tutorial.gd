@@ -14,16 +14,14 @@ func own(parent: Node, child: Node) -> void:
     parent.add_child(child)
     child.owner = scene
 
-func platform(title: String, at: Vector2, w: int, h: int, material: String = "normal", moving: bool = false) -> TerrainObject:
-    var body: PhysicsBody2D = AnimatableBody2D.new() if moving else StaticBody2D.new()
-    body.set_script(load("res://scripts/terrain/moving_platform.gd" if moving else "res://scripts/terrain/terrain_object.gd"))
+func platform(title: String, at: Vector2, w: int, h: int, material: String = "normal") -> TerrainObject:
+    var body := StaticBody2D.new()
+    body.set_script(load("res://scripts/terrain/terrain_object.gd"))
     body.name = title
     body.position = at
     body.set("object_id", StringName(title.to_snake_case()))
     body.set("surface", load("res://resources/terrain/%s.tres" % material))
     body.collision_mask = 0
-    if moving:
-        body.process_physics_priority = -100
     own(scene.get_node("Terrain"), body)
     var map := TileMapLayer.new()
     map.name = "Tiles"
@@ -105,8 +103,6 @@ func join_tiles() -> void:
         bodies.append(scene.goal_cup.get_node("Terrain"))
     var occupied: Dictionary = {}
     for body: TerrainObject in bodies:
-        if body is MovingPlatform:
-            continue
         var map: TileMapLayer = body.get_node("Tiles")
         var offset := Vector2i(body.position / 8) if body.get_parent() == scene.get_node("Terrain") else Vector2i(body.get_parent().position / 8)
         for cell: Vector2i in map.get_used_cells():
@@ -118,17 +114,12 @@ func join_tiles() -> void:
     for body: TerrainObject in bodies:
         var map: TileMapLayer = body.get_node("Tiles")
         var offset := Vector2i(body.position / 8) if body.get_parent() == scene.get_node("Terrain") else Vector2i(body.get_parent().position / 8)
-        var local_occupied: Dictionary = occupied
-        if body is MovingPlatform:
-            local_occupied = {}
-            for cell: Vector2i in map.get_used_cells():
-                local_occupied[cell + offset] = true
         for cell: Vector2i in map.get_used_cells():
             var at := cell + offset
-            var left: bool = not local_occupied.has(at + Vector2i.LEFT)
-            var right: bool = not local_occupied.has(at + Vector2i.RIGHT)
-            var top: bool = not local_occupied.has(at + Vector2i.UP)
-            var bottom: bool = not local_occupied.has(at + Vector2i.DOWN)
+            var left: bool = not occupied.has(at + Vector2i.LEFT)
+            var right: bool = not occupied.has(at + Vector2i.RIGHT)
+            var top: bool = not occupied.has(at + Vector2i.UP)
+            var bottom: bool = not occupied.has(at + Vector2i.DOWN)
             var uv := Vector2i(4, 1)
             if top:
                 uv = Vector2i(2, 2) if left else (Vector2i(3, 2) if right else Vector2i(2, 4))
@@ -174,7 +165,7 @@ func rebuild_cup_solid(body: TerrainObject) -> void:
 func _initialize() -> void:
     build_cup()
     var catalog := CourseCatalog.new()
-    var titles: Array[String] = ["Aiming and shooting", "Shot power", "Selecting a card", "Card replacement", "Elixir", "Normal walls", "Sticky walls", "Ice", "Bouncy surfaces", "Moving platforms"]
+    var titles: Array[String] = ["Aiming and shooting", "Shot power", "Selecting a card", "Card replacement", "Elixir", "Card abilities", "Normal walls", "Sticky walls", "Ice", "Bouncy surfaces"]
     for index: int in 10:
         scene = GolfCourse.new()
         scene.name = "TutorialRoom"
@@ -193,39 +184,31 @@ func _initialize() -> void:
         var target := Vector2(104, 72)
         if index == 1:
             target.x = 240
-        elif index == 7:
-            target.x = 232
         elif index == 8:
-            target = Vector2(200, 24)
+            target.x = 232
         elif index == 9:
-            target = Vector2(272, 56)
+            target = Vector2(200, 24)
         cup(target)
-        if index < 7:
+        if index < 8:
             # The cup supplies the central 128px of terrain itself.
             platform("Start", Vector2(-48, 72), int((target.x - 16) / 8), 4)
             platform("FarBank", Vector2(target.x + 64, 72), 8, 4)
         match index:
-            5:
+            6:
                 platform("BankWall", Vector2(184, -48), 2, 15)
                 platform("Overhang", Vector2(48, 16), 10, 2)
-            6:
-                platform("StickyWall", Vector2(184, -32), 2, 13, "sticky")
             7:
+                platform("StickyWall", Vector2(184, -32), 2, 13, "sticky")
+            8:
                 platform("Start", Vector2(-48, 72), 9, 4)
                 platform("Ice", Vector2(24, 72), 18, 4, "ice")
                 platform("FarBank", Vector2(target.x + 64, 72), 6, 4)
-            8:
+            9:
                 scene.start_marker.position.y = 21.9
                 platform("Start", Vector2(-48, 24), 8, 4)
                 var spring: TerrainObject = platform("Spring", Vector2(48, 88), 15, 2, "bouncy")
                 spring.surface = preload("res://resources/terrain/launch_spring.tres")
                 platform("FarBank", Vector2(target.x + 64, 24), 6, 4)
-            9:
-                platform("Start", Vector2(-48, 72), 12, 4)
-                var mover := platform("Ride", Vector2(64, 72), 12, 2, "normal", true) as MovingPlatform
-                mover.endpoint_b = Vector2(88, 0)
-                mover.period_seconds = 10.0
-                platform("FarBank", Vector2(target.x + 64, 56), 2, 4)
         join_tiles()
         var packed := PackedScene.new()
         assert(packed.pack(scene) == OK)

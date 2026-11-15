@@ -39,6 +39,7 @@ func run() -> void:
         check(not session.objective_met(), "No automatic lesson completion")
         check(session.lesson_ui.get_node("Lesson/Content/Count").text == "%d / 10" % (step+1), "Counter")
         for body: TerrainObject in session.course.get_node("Terrain").get_children():
+            check(not body is MovingPlatform, "No moving-platform tutorial remains")
             if step < 6:
                 check(body.surface.material == SurfaceDefinition.SurfaceMaterial.NORMAL, "Early lessons have ordinary terrain only")
         session.ball.reset_motion(session.course.goal_cup.capture_shape.global_position)
@@ -89,14 +90,46 @@ func run() -> void:
     click(session.lesson_ui.get_node("Retry"))
     check(session.step_index == 4 and session.elixir < 2.0 and session.shots == 0, "Real Retry resets lesson resources")
     var equipped: Array[StringName] = main.save.equipped.duplicate()
+    session.step_index = TutorialSession.CARD_STEP
+    session.retry_step()
+    await process_frame
+    await process_frame
+    var cards: Control = session.lesson_ui.get_node("CardLesson")
+    check(cards.visible and not session.hud.visible and not session.course.visible, "Card lesson uses its own in-place layout")
+    check(not session.aim.enabled and not session.ball.simulation_enabled, "Card overview does not accept shots")
+    check(cards.next_button.disabled, "Explore a card before continuing")
+    session.complete_card_lesson()
+    check(session.step_index == 5, "Continue cannot skip unexplored cards")
+    for index: int in session.deck.catalog.cards.size():
+        var hover := InputEventMouseMotion.new()
+        hover.position = cards.grid.get_child(index).get_global_rect().get_center()
+        root.push_input(hover,true)
+        await process_frame
+        check(cards.details.get_node("Text/Description").text == session.deck.catalog.cards[index].description, "Real hover explains each card")
+    check(session.card_explored and not cards.next_button.disabled, "Inspection enables Continue")
+    check(main.save.equipped == equipped, "Card overview cannot change the saved deck")
+    click(session.lesson_ui.get_node("Retry"))
+    check(not session.card_explored and cards.next_button.disabled and session.step_index == 5, "Retry resets only the card overview")
+    cards.grid.get_child(1).grab_focus()
+    check(session.card_explored and cards.details.get_node("Text/Heading/Name").text == "Snipe", "Keyboard focus also explains a card")
+    var pause_key := InputEventKey.new()
+    pause_key.physical_keycode = KEY_ESCAPE
+    pause_key.keycode = KEY_ESCAPE
+    pause_key.pressed = true
+    root.push_input(pause_key, true)
+    check(session.state == GameSession.State.PAUSED, "Esc pauses the card lesson")
+    pause_key = InputEventKey.new()
+    pause_key.physical_keycode = KEY_ESCAPE
+    root.push_input(pause_key, true)
+    main._resume()
+    check(not session.hud.visible and cards.visible, "Resume preserves the card overview")
+    click(cards.next_button)
+    check(session.step_index == 6 and session.course.has_node("Terrain/BankWall"), "Card lesson continues directly to walls")
+    check(session.aim.enabled and session.ball.simulation_enabled and session.hud.visible, "World controls return after cards")
     session.step_index = 9
     session.retry_step()
+    check(session.course.has_node("Terrain/Spring") and not session.course.has_node("Terrain/Ride"), "Bouncy surfaces finish the tutorial")
     session._advance_step()
-    session.lesson_ui._show_cards()
-    session.lesson_ui.preview._toggle(&"fire")
-    check(main.save.equipped == equipped, "Optional card preview cannot change the saved deck")
-    session.lesson_ui.preview._done()
-    check(session.lesson_ui.preview == null, "Card guide returns to completion")
     session.lesson_ui.get_node("Complete/Center/Panel/Content/Begin").pressed.emit()
     check(main.session is GameSession and not main.session is TutorialSession and main.course_index == 0, "Begin playing launches first course")
     main.free()

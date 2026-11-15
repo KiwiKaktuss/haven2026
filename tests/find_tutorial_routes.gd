@@ -12,7 +12,7 @@ func run() -> void:
     session.hud.set_process(false)
     session.lesson_ui.set_process(false)
     var report: Array = []
-    for index: int in [0,1,2,3,4,5,7,8]:
+    for index: int in [0,1,2,3,4,6,8,9]:
         session.step_index = index
         session.retry_step()
         await physics_frame

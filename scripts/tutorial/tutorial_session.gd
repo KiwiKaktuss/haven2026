@@ -14,10 +14,8 @@ var replacement_seen: bool = false
 var touched_surface: bool = false
 var stuck_once: bool = false
 var left_sticky: bool = false
-var ride_origin: float = 0.0
-var riding: bool = false
-var ride_distance: float = 0.0
-var launched_from_ride: bool = false
+const CARD_STEP: int = 5
+var card_explored: bool = false
 var _miss_elapsed: float = 0.0
 var _objective_miss_elapsed: float = 0.0
 var _transition_left: float = 0.0
@@ -43,9 +41,7 @@ func _prepare_lesson() -> void:
     touched_surface = false
     stuck_once = false
     left_sticky = false
-    riding = false
-    ride_distance = 0.0
-    launched_from_ride = false
+    card_explored = false
     _miss_elapsed = 0.0
     _objective_miss_elapsed = 0.0
     _checkpoint = Vector2.INF
@@ -68,7 +64,12 @@ func _prepare_lesson() -> void:
     random.seed = 2468
     deck.hand_changed.emit()
     elixir_changed.emit(elixir)
-    hud.show()
+    var is_card_lesson: bool = step_index == CARD_STEP
+    course.visible = not is_card_lesson
+    ball.visible = not is_card_lesson
+    ball.simulation_enabled = not is_card_lesson
+    aim.enabled = not is_card_lesson
+    hud.visible = not is_card_lesson
     hud.get_node("Top").hide()
     hud.get_node("PauseButton").hide()
     for slot: int in 3:
@@ -97,12 +98,11 @@ func _selection_changed() -> void:
         selected_other = true
 
 func try_shot(drag: Vector2, at: Vector2 = Vector2.INF) -> bool:
-    if lesson_done or transitioning:
+    if lesson_done or transitioning or step_index == CARD_STEP:
         return false
     var slot: int = deck.selected_slot
     var other: bool = slot == 1
     var from_sticky: bool = is_instance_valid(ball.attached_body) and ball.attached_body.name == "StickyWall"
-    var from_ride: bool = is_instance_valid(ball.support_body) and ball.support_body.name == "Ride"
     # Reserve a known ordinary replacement; super still owns the atomic cycle.
     if deck.draw_pile.is_empty():
         deck.draw_pile.append(deck.catalog.find_card(&"sniper" if step_index in [3, 4] else &"classic"))
@@ -112,7 +112,6 @@ func try_shot(drag: Vector2, at: Vector2 = Vector2.INF) -> bool:
         replaced_slot = slot
         replacement_seen = false
         left_sticky = left_sticky or (stuck_once and from_sticky)
-        launched_from_ride = launched_from_ride or (from_ride and ride_distance >= 24.0)
         _miss_elapsed = 0.0
         lesson_changed.emit()
     return committed
@@ -120,31 +119,34 @@ func try_shot(drag: Vector2, at: Vector2 = Vector2.INF) -> bool:
 func _contact(body: TerrainObject, normal: Vector2) -> void:
     if shots == 0:
         return
-    if step_index == 5 and body.name == "BankWall" and absf(normal.x) > 0.7:
+    if step_index == 6 and body.name == "BankWall" and absf(normal.x) > 0.7:
         touched_surface = true
-    elif step_index == 7 and body.name == "Ice":
+    elif step_index == 8 and body.name == "Ice":
         touched_surface = true
-    elif step_index == 8 and body.name == "Spring":
+    elif step_index == 9 and body.name == "Spring":
         touched_surface = true
 
 func objective_met() -> bool:
+    if step_index == CARD_STEP:
+        return card_explored
     if shots == 0:
         return false
     match step_index:
         2: return used_other
         3: return replacement_seen
-        5, 7, 8: return touched_surface
-        6: return stuck_once and left_sticky
-        9: return launched_from_ride
+        6, 8, 9: return touched_surface
+        7: return stuck_once and left_sticky
     return true
 
 func advance_clock(delta: float) -> void:
     # Leave the real meter and deal timers running; no time or score pressure.
+    if step_index == CARD_STEP:
+        return
     super.advance_clock(delta)
     elapsed_seconds = 0.0
 
 func check_course_end(delta: float) -> void:
-    if course == null or lesson_done:
+    if course == null or lesson_done or step_index == CARD_STEP:
         return
     if transitioning:
         _transition_left -= delta
@@ -155,20 +157,15 @@ func check_course_end(delta: float) -> void:
         return
     if replaced_slot >= 0 and deck.slot_ready(replaced_slot):
         replacement_seen = true
-    if step_index == 6 and is_instance_valid(ball.attached_body) and ball.attached_body.name == "StickyWall":
+    if step_index == 7 and is_instance_valid(ball.attached_body) and ball.attached_body.name == "StickyWall":
         stuck_once = true
         _checkpoint = ball.global_position
-    if step_index == 9 and is_instance_valid(ball.support_body) and ball.support_body.name == "Ride":
-        if not riding:
-            riding = true
-            ride_origin = ball.support_body.global_position.x
-        ride_distance = maxf(ride_distance, absf(ball.support_body.global_position.x - ride_origin))
     if ball.global_position.y >= course.void_boundary.global_position.y or ball.global_position.x < -72.0 or ball.global_position.x > 370.0:
         _reset_miss()
         return
     # A missed landing can be retried immediately; only this room is affected.
     var speed: float = ball.world_velocity().length()
-    if shots > 0 and speed < 0.8 and ball.global_position.distance_to(course.goal_cup.to_global(Vector2(32, 0))) > 38.0 and ball.attached_body == null and not (step_index == 9 and ball.support_body != null and ball.support_body.name == "Ride"):
+    if shots > 0 and speed < 0.8 and ball.global_position.distance_to(course.goal_cup.to_global(Vector2(32, 0))) > 38.0 and ball.attached_body == null:
         _miss_elapsed += delta
         if _miss_elapsed > 1.4:
             _reset_miss()
@@ -193,7 +190,7 @@ func check_course_end(delta: float) -> void:
 
 func _reset_miss() -> void:
     # Sticky departure keeps the successful attachment as a local checkpoint.
-    if step_index == 6 and _checkpoint.is_finite():
+    if step_index == 7 and _checkpoint.is_finite():
         aim.cancel()
         ball.reset_motion(_checkpoint)
         var wall: TerrainObject = course.get_node("Terrain/StickyWall")
@@ -232,3 +229,16 @@ func _advance_step() -> void:
 func finish_attempt(_won: bool) -> void:
     # Tutorial failures never open the scored result screen.
     _reset_miss()
+
+func inspect_card(_card: CardDefinition) -> void:
+    if step_index == CARD_STEP:
+        card_explored = true
+
+func complete_card_lesson() -> void:
+    if step_index == CARD_STEP and card_explored and state in [State.READY, State.PLAYING]:
+        _advance_step()
+
+func resume_attempt() -> void:
+    super.resume_attempt()
+    if step_index == CARD_STEP:
+        hud.hide()

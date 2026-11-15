@@ -1,7 +1,6 @@
 extends Control
 signal done_requested(ids: Array[StringName])
 @export var catalog: CardCatalog = preload("res://resources/cards/catalog.tres")
-@export var preview_mode: bool = false
 var selected: Array[StringName] = []
 var pending_swap: StringName = &""
 var _saved_selection: Array[StringName] = []
@@ -22,17 +21,9 @@ func configure(ids: Array[StringName]) -> void:
     pending_swap = &""
     _saved_selection = selected.duplicate()
     refresh()
-    if preview_mode:
-        _toggle(&"classic")
 
 func _toggle(id: StringName) -> void:
     if catalog.find_card(id) == null:
-        return
-    if preview_mode:
-        var card: CardDefinition = catalog.find_card(id)
-        $Margin/Content/CardExplanation.text = "%s · %d elixir\n%s" % [card.display_name, card.cost, card.description]
-        for index: int in catalog.cards.size():
-            get_node("Margin/Content/Grid/Card%d" % index).show_card(catalog.cards[index], catalog.cards[index].id == id)
         return
     if selected.has(id):
         selected.erase(id)
@@ -45,8 +36,6 @@ func _toggle(id: StringName) -> void:
     refresh()
 
 func _deck_slot_clicked(index: int) -> void:
-    if preview_mode:
-        return
     if index < 0 or index >= selected.size():
         return
     if not pending_swap.is_empty():
@@ -74,7 +63,7 @@ func refresh() -> void:
             view.set_pending(false)
         else:
             view.show_empty(index)
-    $Margin/Content/Header/Count.text = "OPTIONAL GUIDE" if preview_mode else "%s / %s cards" % [selected.size(), CardCatalog.DECK_SIZE]
+    $Margin/Content/Header/Count.text = "%s / %s cards" % [selected.size(), CardCatalog.DECK_SIZE]
     if not pending_swap.is_empty():
         $Margin/Content/BattleDeck/DeckContent/Summary/Tip.text = "Replace a deck card with %s, or click it again to cancel." % catalog.find_card(pending_swap).display_name
     else:

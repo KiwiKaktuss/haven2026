@@ -42,14 +42,25 @@ func run() -> void:
             session.hud._select(1)
         if index == 4:
             await wait_ticks(150)
-        if index in [6,9]:
+        if index == TutorialSession.CARD_STEP:
+            var cards: Control = session.lesson_ui.get_node("CardLesson")
+            for card_index: int in session.deck.catalog.cards.size():
+                cards.inspect(card_index)
+                var description: Label = cards.details.get_node("Text/Description")
+                if description.text != session.deck.catalog.cards[card_index].description:
+                    failures += 1
+            cards.next_button.pressed.emit()
+            rows.append({"step":index,"actions":[],"ticks":step_tick,"completed":session.step_index == 6})
+            print("ENGINE LESSON 6 completed=",session.step_index == 6," card overview")
+            continue
+        if index == 7:
             var angle: float = 35.0
-            var length: float = 160.0 if index == 6 else 88.0
+            var length: float = 160.0
             shoot(-Vector2.from_angle(deg_to_rad(-angle))*length)
             var attached: bool = false
             for i: int in 300:
                 await wait_ticks(1)
-                attached = session.stuck_once if index == 6 else session.ride_distance >= 24.0
+                attached = session.stuck_once
                 if attached and session.deck.slot_ready(0):
                     break
             if not attached:
@@ -57,7 +68,7 @@ func run() -> void:
                 push_error("Lesson %d failed its surface task, ball %s" % [index+1,session.ball.position])
                 break
             var destination: Vector2 = session.course.goal_cup.to_global(Vector2(32,-2))
-            var flight: float = 0.7 if index == 6 else 0.85
+            var flight: float = 0.7
             var wanted: Vector2 = (destination-session.ball.global_position)/flight - Vector2.DOWN*session.tuning.gravity*(flight+1.0/60)*0.5
             var impulse: Vector2 = wanted - session.ball.world_velocity()
             var card: CardDefinition = session.deck.selected_card()
@@ -80,17 +91,7 @@ func run() -> void:
             break
     if not session.lesson_done:
         failures += 1
-        push_error("Tutorial must finish all ten holes")
-    else:
-        session.lesson_ui._show_cards()
-        var preview: Control = session.lesson_ui.preview
-        var before: Array[StringName] = preview.selected.duplicate()
-        for card: CardDefinition in session.deck.catalog.cards:
-            preview._toggle(card.id)
-            if not preview.get_node("Margin/Content/CardExplanation").text.contains(card.description):
-                failures += 1
-        if preview.selected != before:
-            failures += 1
+        push_error("Tutorial must finish all ten lessons")
     var file := FileAccess.open("res://screenshots/tutorial/engine_routes.json",FileAccess.WRITE)
     file.store_string(JSON.stringify(rows,"  "))
     print("Tutorial engine playthrough: ", "PASS" if failures == 0 else "FAIL", " (",failures," failures)")

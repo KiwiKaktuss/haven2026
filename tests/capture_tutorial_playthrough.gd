@@ -1,5 +1,5 @@
 extends SceneTree
-## Full ten-hole proof at 2x: 120 physics ticks/s * time_scale 2 = the
+## Full ten-lesson proof at 2x: 120 physics ticks/s * time_scale 2 = the
 ## same 1/60 simulation step as acceptance, with four ticks per movie frame.
 var main: Node
 var session: TutorialSession
@@ -9,7 +9,6 @@ var step_tick: int = 0
 var next_action: int = 0
 var rows: Array
 var completed_frame: int = -1
-var guide_frame: int = -1
 var all_complete: bool = false
 
 func _initialize() -> void:
@@ -33,6 +32,16 @@ func _physics_process(_delta: float) -> bool:
         next_action = 0
         print("CAPTURE LESSON ",step_index+1," frame=",frame)
     step_tick += 1
+    if step_index == TutorialSession.CARD_STEP:
+        if step_tick in [12,132,252]:
+            var card_index: int = 0 if step_tick == 12 else (3 if step_tick == 132 else 9)
+            var gallery: Control = session.lesson_ui.get_node("CardLesson")
+            var hover := InputEventMouseMotion.new()
+            hover.position = gallery.grid.get_child(card_index).get_global_rect().get_center()
+            root.push_input(hover,true)
+        if step_tick == 372:
+            session.lesson_ui.get_node("CardLesson").next_button.pressed.emit()
+        return false
     var actions: Array = rows[step_index].actions
     if next_action < actions.size():
         var action: Dictionary = actions[next_action]
@@ -64,14 +73,7 @@ func _process(_delta: float) -> bool:
             completed_frame = frame
             all_complete = true
             print("CAPTURE COMPLETE frame=",frame)
-        if frame == completed_frame+45:
-            session.lesson_ui._show_cards()
-            guide_frame = frame
-    if guide_frame >= 0 and frame > guide_frame:
-        var card_index: int = mini(9, int((frame-guide_frame)/12))
-        var card: CardDefinition = session.deck.catalog.cards[card_index]
-        session.lesson_ui.preview._toggle(card.id)
     if frame == 899:
-        assert(all_complete, "All ten holes must be reached")
-        print("ASSERT PASS: menu, ten real holes, card cycle, elixir, all surfaces, completion and card guide.")
+        assert(all_complete, "All ten lessons must finish")
+        print("ASSERT PASS: menu, nine real holes, in-place hoverable card lesson, terrain and completion.")
     return false
