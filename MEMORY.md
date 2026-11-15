@@ -116,3 +116,30 @@
   elixir refill, terrain contact and hole completion. Keep it one line at 800px.
 - Verified all 189 tutorial checks and minimum/large window screenshots.
 - Current proof is screenshots/result/31/, 750 frames at 30fps (25 seconds).
+
+# Compact panel polish
+
+- User wants the box retained, but smaller: 576×84 with the existing pixel
+  frame, centered content, 22px title/counter and muted 16px single-line copy.
+  Keep the two-line hierarchy; do not restore the former four-line tall panel.
+- 189 flow checks and screenshots at 800×640, 960×640 and 1440×900 pass.
+- User explicitly requested no commits for these changes. Leave this polish
+  uncommitted and preserve that preference for follow-up work unless revoked.
+
+# Walls and native deck hover UI
+
+- User marked new ordinary walls at: step 2 x=320 y=24..72; step 7 x=48
+  y=32..72 under the overhang; step 8 x=72 y=32..72 before the cup;
+  step 10 x=72 y=−16..40 above the spring. Width is 16px throughout.
+- Join these borders with existing terrain and regenerate alpha silhouettes.
+  Wall lesson now needs the high route over the gate; accepted Normal shot is
+  55° at full strength. Sticky approach uses 45° at full strength to clear it.
+- Card lesson uses real 144×141 deck-selector CardView components and the
+  existing above-card CardInfo popovers, including normal artwork size. No
+  persistent lower detail panel; inspection never edits equipped cards.
+- Targeted builder: `-- --lessons=2,7,8,10` preserves unrelated authored scenes
+  and existing catalog/resource UID edits. No full-catalog save on filtered runs.
+- Verified 208 tutorial/hover/centering checks, 116,050 tile/collision checks,
+  and all ten lessons on live engine ticks. Keep changes uncommitted.
+- Latest proof: screenshots/result/32/video.mp4 and 750 PNGs, 25 seconds
+  at 30fps. All ten lessons complete at frame 697. No commits were made.

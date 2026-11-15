@@ -1,15 +1,5 @@
 [gd_scene load_steps=2 format=3]
 [ext_resource type="PackedScene" path="res://scenes/ui/card_view.tscn" id="base"]
 [node name="LessonCard" instance=ExtResource("base")]
-custom_minimum_size = Vector2(120, 112)
-show_information = false
-[node name="Artwork" parent="." index="0"]
-offset_left = -22.0
-offset_top = 10.0
-offset_right = 22.0
-offset_bottom = 72.0
-[node name="Caption" parent="." index="1"]
-offset_top = 77.0
-offset_bottom = 101.0
-[node name="Marker" parent="." index="2"]
-modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(144, 141)
+show_information = true

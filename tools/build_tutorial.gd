@@ -15,7 +15,7 @@ func own(parent: Node, child: Node) -> void:
     child.owner = scene
 
 func platform(title: String, at: Vector2, w: int, h: int, material: String = "normal") -> TerrainObject:
-    var body := StaticBody2D.new()
+    var body: PhysicsBody2D = StaticBody2D.new()
     body.set_script(load("res://scripts/terrain/terrain_object.gd"))
     body.name = title
     body.position = at
@@ -163,10 +163,18 @@ func rebuild_cup_solid(body: TerrainObject) -> void:
         own(body, solid)
 
 func _initialize() -> void:
-    build_cup()
+    var lesson_filter: Array[int] = []
+    for argument: String in OS.get_cmdline_user_args():
+        if argument.begins_with("--lessons="):
+            for value: String in argument.trim_prefix("--lessons=").split(","):
+                lesson_filter.append(int(value) - 1)
+    if lesson_filter.is_empty():
+        build_cup()
     var catalog := CourseCatalog.new()
     var titles: Array[String] = ["Aiming and shooting", "Shot power", "Selecting a card", "Card replacement", "Elixir", "Card abilities", "Normal walls", "Sticky walls", "Ice", "Bouncy surfaces"]
     for index: int in 10:
+        if not lesson_filter.is_empty() and not lesson_filter.has(index):
+            continue
         scene = GolfCourse.new()
         scene.name = "TutorialRoom"
         scene.camera_bounds = Rect2(-80, -104, 432, 248)
@@ -194,11 +202,15 @@ func _initialize() -> void:
             platform("Start", Vector2(-48, 72), int((target.x - 16) / 8), 4)
             platform("FarBank", Vector2(target.x + 64, 72), 8, 4)
         match index:
+            1:
+                platform("EndWall", Vector2(320, 24), 2, 6)
             6:
                 platform("BankWall", Vector2(184, -48), 2, 15)
                 platform("Overhang", Vector2(48, 16), 10, 2)
+                platform("GateWall", Vector2(48, 32), 2, 5)
             7:
                 platform("StickyWall", Vector2(184, -32), 2, 13, "sticky")
+                platform("ApproachWall", Vector2(72, 32), 2, 5)
             8:
                 platform("Start", Vector2(-48, 72), 9, 4)
                 platform("Ice", Vector2(24, 72), 18, 4, "ice")
@@ -209,6 +221,7 @@ func _initialize() -> void:
                 var spring: TerrainObject = platform("Spring", Vector2(48, 88), 15, 2, "bouncy")
                 spring.surface = preload("res://resources/terrain/launch_spring.tres")
                 platform("FarBank", Vector2(target.x + 64, 24), 6, 4)
+                platform("BounceGuideWall", Vector2(72, -16), 2, 7)
         join_tiles()
         var packed := PackedScene.new()
         assert(packed.pack(scene) == OK)
@@ -220,6 +233,7 @@ func _initialize() -> void:
         definition.scene = load(path)
         catalog.courses.append(definition)
         scene.free()
-    assert(ResourceSaver.save(catalog, "res://resources/tutorial/courses.tres") == OK)
-    print("Saved ten deterministic tutorial rooms.")
+    if lesson_filter.is_empty():
+        assert(ResourceSaver.save(catalog, "res://resources/tutorial/courses.tres") == OK)
+    print("Saved tutorial rooms: ", "all ten" if lesson_filter.is_empty() else str(lesson_filter))
     quit()

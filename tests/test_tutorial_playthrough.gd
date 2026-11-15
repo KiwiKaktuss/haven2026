@@ -46,7 +46,7 @@ func run() -> void:
             var cards: Control = session.lesson_ui.get_node("CardLesson")
             for card_index: int in session.deck.catalog.cards.size():
                 cards.inspect(card_index)
-                var description: Label = cards.details.get_node("Text/Description")
+                var description: Label = cards.grid.get_child(card_index).get_node("Information/Margin/Content/Description")
                 if description.text != session.deck.catalog.cards[card_index].description:
                     failures += 1
             cards.next_button.pressed.emit()
@@ -54,7 +54,7 @@ func run() -> void:
             print("ENGINE LESSON 6 completed=",session.step_index == 6," card overview")
             continue
         if index == 7:
-            var angle: float = 35.0
+            var angle: float = 45.0
             var length: float = 160.0
             shoot(-Vector2.from_angle(deg_to_rad(-angle))*length)
             var attached: bool = false

@@ -38,11 +38,12 @@ Focused checks:
   tolerance still handles 60Hz contact rounding.
 - `tutorial_overlay.tscn` owns the consistent lesson/count/instruction layout,
   II pause button, completion and Begin playing. The header contains only a
-  title with step count and a single changing description, without a box; passive route/material patterns remain in the field. Camera framing
+  title with step count and a single changing description in a compact pixel panel; passive route/material patterns remain in the field. Camera framing
   centers the saved collision bounds between the header and the hand.
-- `card_lesson.tscn` is the in-place sixth lesson. Its ten compact `lesson_card`
-  instances reveal catalog descriptions/costs on hover, focus or click in one
-  stable detail panel. Continue requires one inspection and leads to walls.
+- `card_lesson.tscn` is the in-place sixth lesson. Its ten `lesson_card`
+  instances use the actual deck-selector card size/artwork and native `CardInfo`
+  popovers above the hovered/focused card. Continue requires one inspection
+  and leads to walls; it cannot edit or spend the saved deck.
   Gameplay, ball simulation and the hand are hidden for this lesson.
 - The tutorial has nine practical holes and one card overview; bouncy surfaces
   finish step ten. There is no moving-platform lesson or separate card preview.
@@ -63,3 +64,6 @@ Verification:
 
 - `tests/test_tutorial_tiles.gd`: native proportions, opaque connected joins,
   and exact art/collision agreement across all ten tutorial rooms.
+
+- Tutorial authoring supports `-- --lessons=2,7,8,10` for targeted saved-room
+  updates without rewriting unrelated rooms, the shared cup, or the catalog.

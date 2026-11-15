@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="CourseCatalog" format=3]
+[gd_resource type="Resource" script_class="CourseCatalog" format=3 uid="uid://t3ke2yab2jpo"]
 
-[ext_resource type="Script" path="res://scripts/levels/course_definition.gd" id="1_ri737"]
+[ext_resource type="Script" uid="uid://d3go7tc4gqq3c" path="res://scripts/levels/course_definition.gd" id="1_ri737"]
 [ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_01.tscn" id="2_8vfv4"]
 [ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_02.tscn" id="3_q8d2m"]
 [ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_03.tscn" id="4_55v7b"]
@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_08.tscn" id="9_hm7pw"]
 [ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_09.tscn" id="10_dimc2"]
 [ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_10.tscn" id="11_keufp"]
-[ext_resource type="Script" path="res://scripts/levels/course_catalog.gd" id="12_mvxhp"]
+[ext_resource type="Script" uid="uid://crlbmpcxrkx3p" path="res://scripts/levels/course_catalog.gd" id="12_mvxhp"]
 
 [sub_resource type="Resource" id="Resource_cr61q"]
 script = ExtResource("1_ri737")

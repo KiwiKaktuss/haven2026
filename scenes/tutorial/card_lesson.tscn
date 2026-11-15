@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=3 format=3]
 [ext_resource type="Script" path="res://scripts/tutorial/card_lesson.gd" id="script"]
 [ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_card.tscn" id="card"]
-[ext_resource type="StyleBox" path="res://resources/ui/pixel/info.tres" id="info"]
 [node name="CardLesson" type="Control"]
 layout_mode = 1
 anchors_preset = 15
@@ -14,93 +13,55 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 164.0
-offset_bottom = -20.0
+offset_top = 176.0
+offset_bottom = -28.0
 mouse_filter = 2
-[node name="Panel" type="PanelContainer" parent="Center"]
-custom_minimum_size = Vector2(716, 0)
-layout_mode = 2
-[node name="Content" type="VBoxContainer" parent="Center/Panel"]
-layout_mode = 2
-theme_override_constants/separation = 12
-[node name="Grid" type="GridContainer" parent="Center/Panel/Content"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/h_separation = 12
-theme_override_constants/v_separation = 12
-columns = 5
-
-[node name="Card0" parent="Center/Panel/Content/Grid" instance=ExtResource("card")]
-layout_mode = 2
-
-[node name="Card1" parent="Center/Panel/Content/Grid" instance=ExtResource("card")]
-layout_mode = 2
-
-[node name="Card2" parent="Center/Panel/Content/Grid" instance=ExtResource("card")]
-layout_mode = 2
-
-[node name="Card3" parent="Center/Panel/Content/Grid" instance=ExtResource("card")]
-layout_mode = 2
-
-[node name="Card4" parent="Center/Panel/Content/Grid" instance=ExtResource("card")]
-layout_mode = 2
-
-[node name="Card5" parent="Center/Panel/Content/Grid" instance=ExtResource("card")]
-layout_mode = 2
-
-[node name="Card6" parent="Center/Panel/Content/Grid" instance=ExtResource("card")]
-layout_mode = 2
-
-[node name="Card7" parent="Center/Panel/Content/Grid" instance=ExtResource("card")]
-layout_mode = 2
-
-[node name="Card8" parent="Center/Panel/Content/Grid" instance=ExtResource("card")]
-layout_mode = 2
-
-[node name="Card9" parent="Center/Panel/Content/Grid" instance=ExtResource("card")]
-layout_mode = 2
-
-[node name="Details" type="PanelContainer" parent="Center/Panel/Content"]
-custom_minimum_size = Vector2(0, 104)
-layout_mode = 2
-theme_override_styles/panel = ExtResource("info")
-[node name="Row" type="HBoxContainer" parent="Center/Panel/Content/Details"]
+[node name="Content" type="VBoxContainer" parent="Center"]
+custom_minimum_size = Vector2(756, 0)
 layout_mode = 2
 theme_override_constants/separation = 18
-[node name="Artwork" type="TextureRect" parent="Center/Panel/Content/Details/Row"]
-texture_filter = 1
-custom_minimum_size = Vector2(44, 62)
+[node name="Grid" type="GridContainer" parent="Center/Content"]
 layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-expand_mode = 1
-stretch_mode = 5
-[node name="Text" type="VBoxContainer" parent="Center/Panel/Content/Details/Row"]
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 9
+theme_override_constants/v_separation = 9
+columns = 5
+
+[node name="Card0" parent="Center/Content/Grid" instance=ExtResource("card")]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-theme_override_constants/separation = 6
-[node name="Heading" type="HBoxContainer" parent="Center/Panel/Content/Details/Row/Text"]
+
+[node name="Card1" parent="Center/Content/Grid" instance=ExtResource("card")]
 layout_mode = 2
-theme_override_constants/separation = 16
-[node name="Name" type="Label" parent="Center/Panel/Content/Details/Row/Text/Heading"]
+
+[node name="Card2" parent="Center/Content/Grid" instance=ExtResource("card")]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 22
-text = "Different cards. Different abilities."
-[node name="Cost" type="Label" parent="Center/Panel/Content/Details/Row/Text/Heading"]
+
+[node name="Card3" parent="Center/Content/Grid" instance=ExtResource("card")]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.36, 0.27, 0.44, 1)
-[node name="Description" type="Label" parent="Center/Panel/Content/Details/Row/Text"]
-custom_minimum_size = Vector2(540, 44)
+
+[node name="Card4" parent="Center/Content/Grid" instance=ExtResource("card")]
 layout_mode = 2
-text = "Every card changes your shot in its own way. Hover over any card to take a closer look."
-autowrap_mode = 2
-[node name="Footer" type="HBoxContainer" parent="Center/Panel/Content"]
+
+[node name="Card5" parent="Center/Content/Grid" instance=ExtResource("card")]
 layout_mode = 2
-alignment = 2
+
+[node name="Card6" parent="Center/Content/Grid" instance=ExtResource("card")]
+layout_mode = 2
+
+[node name="Card7" parent="Center/Content/Grid" instance=ExtResource("card")]
+layout_mode = 2
+
+[node name="Card8" parent="Center/Content/Grid" instance=ExtResource("card")]
+layout_mode = 2
+
+[node name="Card9" parent="Center/Content/Grid" instance=ExtResource("card")]
+layout_mode = 2
+
+[node name="Footer" type="HBoxContainer" parent="Center/Content"]
+layout_mode = 2
+alignment = 1
 theme_override_constants/separation = 12
-[node name="Continue" type="Button" parent="Center/Panel/Content/Footer"]
+[node name="Continue" type="Button" parent="Center/Content/Footer"]
 custom_minimum_size = Vector2(220, 44)
 layout_mode = 2
 theme_type_variation = &"PrimaryButton"

@@ -20,24 +20,29 @@ tooltip_text = "Pause (Esc)"
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 24
 text = "II"
-[node name="Lesson" type="VBoxContainer" parent="."]
+[node name="Lesson" type="PanelContainer" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -328.0
-offset_top = 20.0
-offset_right = 328.0
-offset_bottom = 84.0
+offset_left = -288.0
+offset_top = 16.0
+offset_right = 288.0
+offset_bottom = 100.0
 mouse_filter = 2
-theme_override_constants/separation = 6
-[node name="Title" type="Label" parent="Lesson"]
+[node name="Content" type="VBoxContainer" parent="Lesson"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_font_sizes/font_size = 24
+alignment = 1
+theme_override_constants/separation = 4
+[node name="Title" type="Label" parent="Lesson/Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
 text = "Aiming and shooting  1 / 10"
 horizontal_alignment = 1
-[node name="Description" type="Label" parent="Lesson"]
+[node name="Description" type="Label" parent="Lesson/Content"]
 layout_mode = 2
 mouse_filter = 2
+theme_override_colors/font_color = Color(0.27, 0.30, 0.36, 1)
 theme_override_font_sizes/font_size = 16
 text = "Drag back, then release to shoot into the hole."
 horizontal_alignment = 1

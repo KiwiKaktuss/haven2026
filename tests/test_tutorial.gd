@@ -35,6 +35,9 @@ func run() -> void:
         await physics_frame
         await process_frame
         check(session.course != null, "Room %d loads" % step)
+        var marked_walls: Dictionary = {1:"EndWall",6:"GateWall",7:"ApproachWall",9:"BounceGuideWall"}
+        if marked_walls.has(step):
+            check(session.course.has_node("Terrain/" + marked_walls[step]), "Marked lesson wall is saved")
         check(session.course.goal_cup.pull_radius == 18.0, "Normal game hole attraction radius")
         var center: Vector2 = session.get_canvas_transform() * session.challenge_bounds().get_center()
         check(absf(center.x - session.get_viewport_rect().size.x * 0.5) < 1.0, "Challenge is centered horizontally")
@@ -44,7 +47,7 @@ func run() -> void:
         check(session.deck.hand.size() == 3, "Fixed hand")
         check(session.hud.get_node("Top").visible == false, "No timer")
         check(not session.objective_met(), "No automatic lesson completion")
-        check(session.lesson_ui.get_node("Lesson/Title").text.ends_with("%d / 10" % (step+1)), "Title includes the step counter")
+        check(session.lesson_ui.get_node("Lesson/Content/Title").text.ends_with("%d / 10" % (step+1)), "Title includes the step counter")
         for body: TerrainObject in session.course.get_node("Terrain").get_children():
             check(not body is MovingPlatform, "No moving-platform tutorial remains")
             if step < 6:
@@ -116,7 +119,11 @@ func run() -> void:
         hover.position = cards.grid.get_child(index).get_global_rect().get_center()
         root.push_input(hover,true)
         await process_frame
-        check(cards.details.get_node("Text/Description").text == session.deck.catalog.cards[index].description, "Real hover explains each card")
+        await process_frame
+        var view: CardView = cards.grid.get_child(index)
+        var information: Control = view.get_node("Information")
+        check(information.get_node("Margin/Content/Description").text == session.deck.catalog.cards[index].description, "Real hover explains each card")
+        check(information.visible and information.get_global_rect().end.y < view.get_global_rect().position.y, "Hover information appears above its card")
     check(session.card_explored and not cards.next_button.disabled, "Inspection enables Continue")
     check(main.save.equipped == equipped, "Card overview cannot change the saved deck")
     click(session.lesson_ui.get_node("PauseButton"))
@@ -125,7 +132,7 @@ func run() -> void:
     click(main.screen_host.get_child(0).get_node("Center/Content/Restart"))
     check(not session.card_explored and cards.next_button.disabled and session.step_index == 5, "Pause restart resets only the card overview")
     cards.grid.get_child(1).grab_focus()
-    check(session.card_explored and cards.details.get_node("Text/Heading/Name").text == "Snipe", "Keyboard focus also explains a card")
+    check(session.card_explored and cards.grid.get_child(1).get_node("Information/Margin/Content/Title").text.begins_with("Snipe"), "Keyboard focus also explains a card")
     var pause_key := InputEventKey.new()
     pause_key.physical_keycode = KEY_ESCAPE
     pause_key.keycode = KEY_ESCAPE

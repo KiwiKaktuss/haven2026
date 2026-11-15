@@ -4,7 +4,7 @@ var session: TutorialSession
 var time: float = 0.0
 const INK := Color(0.20, 0.24, 0.30)
 const GOLD := Color(0.89, 0.56, 0.19)
-@onready var description: Label = $Lesson/Description
+@onready var description: Label = $Lesson/Content/Description
 
 func configure(value: TutorialSession) -> void:
     session = value
@@ -19,7 +19,7 @@ func configure(value: TutorialSession) -> void:
 func refresh() -> void:
     if session == null:
         return
-    $Lesson/Title.text = "%s  %d / 10" % [TITLES[session.step_index], session.step_index + 1]
+    $Lesson/Content/Title.text = "%s  %d / 10" % [TITLES[session.step_index], session.step_index + 1]
     description.text = _description()
     var showing_cards: bool = session.step_index == TutorialSession.CARD_STEP
     $CardLesson.visible = showing_cards
@@ -63,7 +63,7 @@ func _description() -> String:
                 return "Elixir refills automatically. Wait for 2 to shoot (%.1f / 2)." % session.elixir
             return "You have enough elixir. Shoot into the hole for 2 elixir."
         5:
-            return "Hover over a card to see its ability and elixir cost."
+            return "Hover over a card for its ability and cost above it."
         6:
             return "Wall bounce done! Finish at the hole." if session.touched_surface else "Bounce off the right wall to reach the hole."
         7:

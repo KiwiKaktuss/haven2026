@@ -11,6 +11,8 @@ var pointer: Vector2
 var left_held: bool = false
 var _fresh_press: bool = false
 var _power_bar: ProgressBar
+var _power_fill: StyleBoxFlat
+var _power_flames: Node2D
 
 func _ready() -> void:
 	# Query after live ball/platform motion, avoiding a one-tick trailing origin.
@@ -32,7 +34,14 @@ func _ready() -> void:
 	fill.set_corner_radius_all(2)
 	_power_bar.add_theme_stylebox_override("background", background)
 	_power_bar.add_theme_stylebox_override("fill", fill)
+	_power_fill = fill
 	add_child(_power_bar)
+	_power_flames = Node2D.new()
+	_power_flames.name = "MaxPowerFlames"
+	_power_flames.set_script(preload("res://scripts/ui/power_bar_flames.gd"))
+	_power_flames.show_behind_parent = true
+	_power_flames.visible = false
+	_power_bar.add_child(_power_flames)
 	session.deck.hand_changed.connect(update_preview)
 	session.elixir_changed.connect(func(_amount: float) -> void: update_preview())
 
@@ -117,7 +126,11 @@ func update_preview() -> void:
 	var card: CardDefinition = session.deck.selected_card()
 	if _power_bar != null:
 		_power_bar.visible = aiming and card != null
-		_power_bar.value = ShotCalculation.strength(drag_vector(), session.tuning) * 100.0
+		var strength: float = ShotCalculation.strength(drag_vector(), session.tuning)
+		_power_bar.value = strength * 100.0
+		var warm: Color = Color(1.0, 0.73, 0.15)
+		_power_fill.bg_color = Color(0.3, 0.85, 0.65).lerp(warm, strength * 2.0) if strength < 0.5 else warm.lerp(Color(1.0, 0.08, 0.03), (strength - 0.5) * 2.0)
+		_power_flames.visible = _power_bar.visible and strength >= 1.0
 		# Keep the meter compact and legible at every camera zoom.
 		var canvas_scale: Vector2 = get_canvas_transform().get_scale().abs()
 		_power_bar.scale = Vector2.ONE / canvas_scale.max(Vector2(0.01, 0.01))
