@@ -8,6 +8,7 @@ extends Node
 @onready var hover: AudioStreamPlayer = $Hover
 @onready var golfball_hit: AudioStreamPlayer = $GolfballHit
 @onready var wallhit: AudioStreamPlayer = $WallHit
+@onready var winhole: AudioStreamPlayer = $WinHole
 var _last_impacts: Dictionary[int, int] = {}
 var _hover_queued: bool = false
 var menu_intro_seen: bool = false
@@ -42,6 +43,9 @@ func _watch_branch(node: Node) -> void:
         _watch_branch(child)
 
 func _watch_node(node: Node) -> void:
+    if node is GoalCup:
+        if not node.captured.is_connected(_on_hole_captured):
+            node.captured.connect(_on_hole_captured)
     if node is Control:
         if not node.mouse_entered.is_connected(_queue_hover):
             node.mouse_entered.connect(_queue_hover)
@@ -83,6 +87,9 @@ func _play_hover() -> void:
 
 func _on_ball_launched(_card: CardDefinition, _impulse: Vector2, _from_position: Vector2) -> void:
     golfball_hit.play()
+
+func _on_hole_captured() -> void:
+    winhole.play()
 
 func _on_ball_struck(_body: TerrainObject, _normal: Vector2, speed: float, ball: GolfBall) -> void:
     var now: int = Time.get_ticks_msec()

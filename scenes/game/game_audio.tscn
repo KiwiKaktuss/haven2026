@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" path="res://sound/hover.mp3" id="hover"]
 [ext_resource type="AudioStream" path="res://sound/golfball_hit.mp3" id="ball"]
 [ext_resource type="AudioStream" path="res://sound/wallhit.mp3" id="wall"]
+[ext_resource type="AudioStream" path="res://sound/winhole.mp3" id="winhole"]
 
 [node name="GameAudio" type="Node"]
 process_mode = 3
@@ -39,4 +40,8 @@ bus = &"SFX"
 stream = ExtResource("wall")
 volume_db = -5.0
 max_polyphony = 4
+bus = &"SFX"
+
+[node name="WinHole" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("winhole")
 bus = &"SFX"

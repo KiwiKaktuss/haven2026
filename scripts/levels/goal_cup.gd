@@ -1,5 +1,6 @@
 class_name GoalCup
 extends Node2D
+signal captured
 @export var capture_area: Area2D
 @export var capture_shape: CollisionShape2D
 ## Small landing assist: roughly four terrain tiles from the opening.
@@ -7,6 +8,7 @@ extends Node2D
 @export var pull_acceleration: float = 220.0
 @export var pull_max_speed: float = 38.0
 var dwell: float = 0.0
+var _captured: bool = false
 var _effect_time: float = 0.0
 
 func _ready() -> void:
@@ -53,6 +55,7 @@ func _draw() -> void:
 
 func reset_capture() -> void:
     dwell = 0.0
+    _captured = false
 
 func advance_capture(ball: GolfBall, tuning: GameTuning, delta: float) -> bool:
     # Armed/passing Ghost can penetrate the floor and must never be forced into a win.
@@ -61,7 +64,10 @@ func advance_capture(ball: GolfBall, tuning: GameTuning, delta: float) -> bool:
     var inside: bool = rectangle != null and Rect2(-rectangle.size * 0.5, rectangle.size).has_point(capture_shape.to_local(ball.global_position))
     # Query the current transform: Area2D's overlap cache can lag a teleport or exit.
     if not eligible or not inside or ball.world_velocity().length() > tuning.capture_speed:
-        dwell = 0.0
+        reset_capture()
         return false
     dwell += delta
+    if not _captured and dwell >= tuning.capture_dwell_seconds:
+        _captured = true
+        captured.emit()
     return dwell >= tuning.capture_dwell_seconds
