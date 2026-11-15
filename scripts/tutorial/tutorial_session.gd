@@ -181,9 +181,10 @@ func check_course_end(delta: float) -> void:
     if ball.global_position.y >= course.void_boundary.global_position.y or ball.global_position.x < -72.0 or ball.global_position.x > 370.0:
         _reset_miss()
         return
-    # A missed landing can be retried immediately; only this room is affected.
+    # These lessons allow follow-up shots from wherever the ball lands.
+    var allow_follow_up_shots: bool = step_index in [0, 1, 4, 6, 7, 8, 9]
     var speed: float = ball.world_velocity().length()
-    if shots > 0 and speed < 0.8 and ball.global_position.distance_to(course.goal_cup.to_global(Vector2(32, 0))) > course.goal_cup.pull_radius + 2.0 and ball.attached_body == null:
+    if not allow_follow_up_shots and shots > 0 and speed < 0.8 and ball.global_position.distance_to(course.goal_cup.to_global(Vector2(32, 0))) > course.goal_cup.pull_radius + 2.0 and ball.attached_body == null:
         _miss_elapsed += delta
         if _miss_elapsed > 1.4:
             _reset_miss()
@@ -198,8 +199,8 @@ func check_course_end(delta: float) -> void:
             lesson_changed.emit()
     else:
         course.goal_cup.reset_capture()
-        # Reaching the hole without the demonstrated mechanic offers a clean retry.
-        if course.goal_cup.capture_shape.global_position.distance_to(ball.global_position) < 6.0 and speed < tuning.capture_speed:
+        # Follow-up shots can still demonstrate the mechanic after reaching the hole.
+        if not allow_follow_up_shots and course.goal_cup.capture_shape.global_position.distance_to(ball.global_position) < 6.0 and speed < tuning.capture_speed:
             _objective_miss_elapsed += delta
             if _objective_miss_elapsed > 1.4:
                 _reset_miss()
