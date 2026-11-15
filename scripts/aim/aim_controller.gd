@@ -10,10 +10,29 @@ var anchor: Vector2
 var pointer: Vector2
 var left_held: bool = false
 var _fresh_press: bool = false
+var _power_bar: ProgressBar
 
 func _ready() -> void:
 	# Query after live ball/platform motion, avoiding a one-tick trailing origin.
 	process_physics_priority = 100
+	_power_bar = ProgressBar.new()
+	_power_bar.name = "BallPowerBar"
+	_power_bar.show_percentage = false
+	_power_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_power_bar.size = Vector2(40, 6)
+	_power_bar.z_index = 20
+	_power_bar.visible = false
+	var background := StyleBoxFlat.new()
+	background.bg_color = Color(0.06, 0.09, 0.12, 0.9)
+	background.border_color = Color(0.92, 0.96, 1.0, 0.8)
+	background.set_border_width_all(1)
+	background.set_corner_radius_all(3)
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = Color(0.3, 0.85, 0.65)
+	fill.set_corner_radius_all(2)
+	_power_bar.add_theme_stylebox_override("background", background)
+	_power_bar.add_theme_stylebox_override("fill", fill)
+	add_child(_power_bar)
 	session.deck.hand_changed.connect(update_preview)
 	session.elixir_changed.connect(func(_amount: float) -> void: update_preview())
 
@@ -37,6 +56,8 @@ func move_pointer(at: Vector2) -> void:
 func cancel() -> void:
 	aiming = false
 	preview.visible = false
+	if _power_bar != null:
+		_power_bar.visible = false
 	aim_changed.emit()
 
 func release(at: Vector2, over_ui: bool = false) -> bool:
@@ -94,6 +115,13 @@ func _physics_process(_delta: float) -> void:
 
 func update_preview() -> void:
 	var card: CardDefinition = session.deck.selected_card()
+	if _power_bar != null:
+		_power_bar.visible = aiming and card != null
+		_power_bar.value = ShotCalculation.strength(drag_vector(), session.tuning) * 100.0
+		# Keep the meter compact and legible at every camera zoom.
+		var canvas_scale: Vector2 = get_canvas_transform().get_scale().abs()
+		_power_bar.scale = Vector2.ONE / canvas_scale.max(Vector2(0.01, 0.01))
+		_power_bar.global_position = session.ball.global_position - Vector2(20, 22) * _power_bar.scale
 	if aiming and card != null and session.deck.slot_ready(session.deck.selected_slot) and ShotCalculation.valid_drag(drag_vector(), session.tuning):
 		preview.refresh(session.ball, card, drag_vector(), session.elixir >= card.cost, camera.zoom.x)
 	else:
