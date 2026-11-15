@@ -1,0 +1,116 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/tutorial/tutorial_overlay.gd" id="script"]
+[ext_resource type="Theme" path="res://resources/ui/default_theme.tres" id="theme"]
+[node name="TutorialOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource("theme")
+script = ExtResource("script")
+[node name="Menu" type="Button" parent="."]
+offset_left = 18.0
+offset_top = 20.0
+offset_right = 108.0
+offset_bottom = 60.0
+text = "Menu"
+[node name="Retry" type="Button" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -108.0
+offset_top = 20.0
+offset_right = -18.0
+offset_bottom = 60.0
+text = "Retry"
+[node name="Lesson" type="PanelContainer" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -246.0
+offset_top = 14.0
+offset_right = 246.0
+offset_bottom = 130.0
+mouse_filter = 2
+[node name="Content" type="VBoxContainer" parent="Lesson"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+[node name="Count" type="Label" parent="Lesson/Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 18
+text = "1 / 10"
+horizontal_alignment = 1
+[node name="Title" type="Label" parent="Lesson/Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 24
+text = "Aiming and shooting"
+horizontal_alignment = 1
+[node name="Instruction" type="Label" parent="Lesson/Content"]
+layout_mode = 2
+mouse_filter = 2
+text = "Drag back, then release to shoot into the nearby hole."
+horizontal_alignment = 1
+autowrap_mode = 2
+[node name="Hint" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -360.0
+offset_top = -207.0
+offset_right = 360.0
+offset_bottom = -167.0
+mouse_filter = 2
+text = "Pull opposite the direction you want the ball to travel."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+[node name="Complete" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+[node name="Shade" type="ColorRect" parent="Complete"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.94, 0.97, 0.93, 0.86)
+[node name="Center" type="CenterContainer" parent="Complete"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+[node name="Panel" type="PanelContainer" parent="Complete/Center"]
+custom_minimum_size = Vector2(470, 300)
+layout_mode = 2
+[node name="Content" type="VBoxContainer" parent="Complete/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+[node name="Count" type="Label" parent="Complete/Center/Panel/Content"]
+layout_mode = 2
+text = "10 / 10   ·   ALL HOLES COMPLETE"
+horizontal_alignment = 1
+[node name="Title" type="Label" parent="Complete/Center/Panel/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Tutorial complete!"
+horizontal_alignment = 1
+[node name="Message" type="Label" parent="Complete/Center/Panel/Content"]
+layout_mode = 2
+text = "You're ready for the course.\nExplore the cards whenever you like."
+horizontal_alignment = 1
+[node name="Begin" type="Button" parent="Complete/Center/Panel/Content"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_type_variation = &"PrimaryButton"
+theme_override_colors/font_focus_color = Color(0.17, 0.18, 0.24, 1)
+text = "Begin playing"
+[node name="Cards" type="Button" parent="Complete/Center/Panel/Content"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Card guide · Deck selector preview"

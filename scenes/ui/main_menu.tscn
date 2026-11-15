@@ -39,7 +39,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="MenuPanel" type="Panel" parent="Center" unique_id=1766136300]
-custom_minimum_size = Vector2(408, 390)
+custom_minimum_size = Vector2(408, 452)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("menu_panel")
@@ -83,6 +83,11 @@ custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_type_variation = &"PrimaryButton"
 text = "Play"
+
+[node name="Tutorial" type="Button" parent="Center/Content"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Tutorial"
 
 [node name="Deck" type="Button" parent="Center/Content" unique_id=170866608]
 custom_minimum_size = Vector2(0, 48)

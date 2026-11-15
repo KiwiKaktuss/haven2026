@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="PackedScene" path="res://scenes/levels/goal_cup.tscn" id="base"]
+[sub_resource type="RectangleShape2D" id="capture"]
+size = Vector2(3, 5)
+[node name="TutorialCup" instance=ExtResource("base")]
+scale = Vector2(2, 1)
+pull_radius = 36.0
+[node name="Shape" parent="CaptureArea" index="0"]
+shape = SubResource("capture")

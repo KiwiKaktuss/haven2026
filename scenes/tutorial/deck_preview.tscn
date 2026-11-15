@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="PackedScene" path="res://scenes/ui/deck_editor.tscn" id="base"]
+[node name="DeckPreview" instance=ExtResource("base")]
+preview_mode = true
+[node name="Title" parent="Margin/Content/Header" index="0"]
+text = "Card guide · Deck selector preview"
+[node name="Count" parent="Margin/Content/Header" index="1"]
+text = "OPTIONAL"
+[node name="BattleDeck" parent="Margin/Content" index="2"]
+visible = false
+[node name="Tip" parent="Margin/Content/CollectionHeader" index="1"]
+text = "Select any card to read what it does"
+[node name="CardExplanation" type="Label" parent="Margin/Content" index="5"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.98, 0.93, 1)
+text = "Normal · 1 elixir\nA reliable shot with balanced power and accuracy."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+[node name="Back" parent="Margin/Content/Footer" index="0"]
+text = "Back to tutorial"
+tooltip_text = "Return to the tutorial-complete screen."

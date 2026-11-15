@@ -1,0 +1,78 @@
+[gd_resource type="Resource" script_class="CourseCatalog" format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/course_definition.gd" id="1_ri737"]
+[ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_01.tscn" id="2_8vfv4"]
+[ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_02.tscn" id="3_q8d2m"]
+[ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_03.tscn" id="4_55v7b"]
+[ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_04.tscn" id="5_qklmu"]
+[ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_05.tscn" id="6_fkwif"]
+[ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_06.tscn" id="7_qhpjs"]
+[ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_07.tscn" id="8_c1btl"]
+[ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_08.tscn" id="9_hm7pw"]
+[ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_09.tscn" id="10_dimc2"]
+[ext_resource type="PackedScene" path="res://scenes/tutorial/lesson_10.tscn" id="11_keufp"]
+[ext_resource type="Script" path="res://scripts/levels/course_catalog.gd" id="12_mvxhp"]
+
+[sub_resource type="Resource" id="Resource_cr61q"]
+script = ExtResource("1_ri737")
+id = &"tutorial_1"
+title = "Aiming and shooting"
+scene = ExtResource("2_8vfv4")
+
+[sub_resource type="Resource" id="Resource_idsm0"]
+script = ExtResource("1_ri737")
+id = &"tutorial_2"
+title = "Shot power"
+scene = ExtResource("3_q8d2m")
+
+[sub_resource type="Resource" id="Resource_hyfks"]
+script = ExtResource("1_ri737")
+id = &"tutorial_3"
+title = "Selecting a card"
+scene = ExtResource("4_55v7b")
+
+[sub_resource type="Resource" id="Resource_u6v04"]
+script = ExtResource("1_ri737")
+id = &"tutorial_4"
+title = "Card replacement"
+scene = ExtResource("5_qklmu")
+
+[sub_resource type="Resource" id="Resource_mjc88"]
+script = ExtResource("1_ri737")
+id = &"tutorial_5"
+title = "Elixir"
+scene = ExtResource("6_fkwif")
+
+[sub_resource type="Resource" id="Resource_q16ft"]
+script = ExtResource("1_ri737")
+id = &"tutorial_6"
+title = "Normal walls"
+scene = ExtResource("7_qhpjs")
+
+[sub_resource type="Resource" id="Resource_xosus"]
+script = ExtResource("1_ri737")
+id = &"tutorial_7"
+title = "Sticky walls"
+scene = ExtResource("8_c1btl")
+
+[sub_resource type="Resource" id="Resource_2vujd"]
+script = ExtResource("1_ri737")
+id = &"tutorial_8"
+title = "Ice"
+scene = ExtResource("9_hm7pw")
+
+[sub_resource type="Resource" id="Resource_bib2y"]
+script = ExtResource("1_ri737")
+id = &"tutorial_9"
+title = "Bouncy surfaces"
+scene = ExtResource("10_dimc2")
+
+[sub_resource type="Resource" id="Resource_v8xy4"]
+script = ExtResource("1_ri737")
+id = &"tutorial_10"
+title = "Moving platforms"
+scene = ExtResource("11_keufp")
+
+[resource]
+script = ExtResource("12_mvxhp")
+courses = Array[ExtResource("1_ri737")]([SubResource("Resource_cr61q"), SubResource("Resource_idsm0"), SubResource("Resource_hyfks"), SubResource("Resource_u6v04"), SubResource("Resource_mjc88"), SubResource("Resource_q16ft"), SubResource("Resource_xosus"), SubResource("Resource_2vujd"), SubResource("Resource_bib2y"), SubResource("Resource_v8xy4")])

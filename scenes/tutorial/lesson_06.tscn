@@ -1,0 +1,100 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://scripts/levels/course.gd" id="1_pcl80"]
+[ext_resource type="Script" path="res://scripts/terrain/terrain_object.gd" id="2_p5yod"]
+[ext_resource type="Resource" path="res://resources/terrain/normal.tres" id="3_qf7ob"]
+[ext_resource type="TileSet" path="res://resources/terrain/terrain_tileset.tres" id="4_qtai7"]
+[ext_resource type="Script" path="res://scripts/terrain/editable_terrain_tiles.gd" id="5_wgrws"]
+[ext_resource type="PackedScene" path="res://scenes/tutorial/tutorial_cup.tscn" id="6_0akd3"]
+[ext_resource type="Script" path="res://scripts/levels/goal_cup.gd" id="7_3d24b"]
+
+[node name="TutorialRoom" type="Node2D" unique_id=1707744835 node_paths=PackedStringArray("start_marker", "goal_cup", "void_boundary")]
+script = ExtResource("1_pcl80")
+camera_bounds = Rect2(-80, -104, 432, 248)
+start_marker = NodePath("StartMarker")
+goal_cup = NodePath("GoalCup")
+void_boundary = NodePath("VoidBoundary")
+
+[node name="Terrain" type="Node2D" parent="." unique_id=2118376115]
+
+[node name="Start" type="StaticBody2D" parent="Terrain" unique_id=878759668]
+position = Vector2(-48, 72)
+collision_mask = 0
+script = ExtResource("2_p5yod")
+object_id = &"start"
+surface = ExtResource("3_qf7ob")
+
+[node name="Tiles" type="TileMapLayer" parent="Terrain/Start" unique_id=1148085844]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAAIAAAAAAAEAAAAAAAJAAAAAAAEAAAAAAAKAAAAAAAEAAAAAAAAAAEAAAAEAAEAAAABAAEAAAAEAAEAAAACAAEAAAAEAAEAAAADAAEAAAAEAAEAAAAEAAEAAAAEAAEAAAAFAAEAAAAEAAEAAAAGAAEAAAAEAAEAAAAHAAEAAAAEAAEAAAAIAAEAAAAEAAEAAAAJAAEAAAAEAAEAAAAKAAEAAAAEAAEAAAAAAAIAAAAEAAEAAAABAAIAAAAEAAEAAAACAAIAAAAEAAEAAAADAAIAAAAEAAEAAAAEAAIAAAAEAAEAAAAFAAIAAAAEAAEAAAAGAAIAAAAEAAEAAAAHAAIAAAAEAAEAAAAIAAIAAAAEAAEAAAAJAAIAAAAEAAEAAAAKAAIAAAAEAAEAAAAAAAMAAAAEAAEAAAABAAMAAAAEAAEAAAACAAMAAAAEAAEAAAADAAMAAAAEAAEAAAAEAAMAAAAEAAEAAAAFAAMAAAAEAAEAAAAGAAMAAAAEAAEAAAAHAAMAAAAEAAEAAAAIAAMAAAAEAAEAAAAJAAMAAAAEAAEAAAAKAAMAAAAEAAEAAAA=")
+tile_set = ExtResource("4_qtai7")
+collision_enabled = false
+script = ExtResource("5_wgrws")
+
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/Start" unique_id=1074054023]
+polygon = PackedVector2Array(0, 32, 88, 32, 88, 0, 0, 0)
+
+[node name="FarBank" type="StaticBody2D" parent="Terrain" unique_id=846427187]
+position = Vector2(168, 72)
+collision_mask = 0
+script = ExtResource("2_p5yod")
+object_id = &"far_bank"
+surface = ExtResource("3_qf7ob")
+
+[node name="Tiles" type="TileMapLayer" parent="Terrain/FarBank" unique_id=1743565825]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAAAAAEAAAAEAAEAAAABAAEAAAAEAAEAAAACAAEAAAAEAAEAAAADAAEAAAAEAAEAAAAEAAEAAAAEAAEAAAAFAAEAAAAEAAEAAAAGAAEAAAAEAAEAAAAHAAEAAAAEAAEAAAAAAAIAAAAEAAEAAAABAAIAAAAEAAEAAAACAAIAAAAEAAEAAAADAAIAAAAEAAEAAAAEAAIAAAAEAAEAAAAFAAIAAAAEAAEAAAAGAAIAAAAEAAEAAAAHAAIAAAAEAAEAAAAAAAMAAAAEAAEAAAABAAMAAAAEAAEAAAACAAMAAAAEAAEAAAADAAMAAAAEAAEAAAAEAAMAAAAEAAEAAAAFAAMAAAAEAAEAAAAGAAMAAAAEAAEAAAAHAAMAAAAEAAEAAAA=")
+tile_set = ExtResource("4_qtai7")
+collision_enabled = false
+script = ExtResource("5_wgrws")
+
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/FarBank" unique_id=258601992]
+polygon = PackedVector2Array(0, 32, 64, 32, 64, 0, 0, 0)
+
+[node name="BankWall" type="StaticBody2D" parent="Terrain" unique_id=1314872954]
+position = Vector2(184, -48)
+collision_mask = 0
+script = ExtResource("2_p5yod")
+object_id = &"bank_wall"
+surface = ExtResource("3_qf7ob")
+
+[node name="Tiles" type="TileMapLayer" parent="Terrain/BankWall" unique_id=1567422742]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAAAAAEAAAAEAAEAAAABAAEAAAAEAAEAAAAAAAIAAAAEAAEAAAABAAIAAAAEAAEAAAAAAAMAAAAEAAEAAAABAAMAAAAEAAEAAAAAAAQAAAAEAAEAAAABAAQAAAAEAAEAAAAAAAUAAAAEAAEAAAABAAUAAAAEAAEAAAAAAAYAAAAEAAEAAAABAAYAAAAEAAEAAAAAAAcAAAAEAAEAAAABAAcAAAAEAAEAAAAAAAgAAAAEAAEAAAABAAgAAAAEAAEAAAAAAAkAAAAEAAEAAAABAAkAAAAEAAEAAAAAAAoAAAAEAAEAAAABAAoAAAAEAAEAAAAAAAsAAAAEAAEAAAABAAsAAAAEAAEAAAAAAAwAAAAEAAEAAAABAAwAAAAEAAEAAAAAAA0AAAAEAAEAAAABAA0AAAAEAAEAAAAAAA4AAAAEAAEAAAABAA4AAAAEAAEAAAA=")
+tile_set = ExtResource("4_qtai7")
+collision_enabled = false
+script = ExtResource("5_wgrws")
+
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/BankWall" unique_id=2716670]
+polygon = PackedVector2Array(0, 120, 16, 120, 16, 0, 0, 0)
+
+[node name="Overhang" type="StaticBody2D" parent="Terrain" unique_id=1929316532]
+position = Vector2(48, 16)
+collision_mask = 0
+script = ExtResource("2_p5yod")
+object_id = &"overhang"
+surface = ExtResource("3_qf7ob")
+
+[node name="Tiles" type="TileMapLayer" parent="Terrain/Overhang" unique_id=906453280]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAAIAAAAAAAEAAAAAAAJAAAAAAAEAAAAAAAAAAEAAAAEAAEAAAABAAEAAAAEAAEAAAACAAEAAAAEAAEAAAADAAEAAAAEAAEAAAAEAAEAAAAEAAEAAAAFAAEAAAAEAAEAAAAGAAEAAAAEAAEAAAAHAAEAAAAEAAEAAAAIAAEAAAAEAAEAAAAJAAEAAAAEAAEAAAA=")
+tile_set = ExtResource("4_qtai7")
+collision_enabled = false
+script = ExtResource("5_wgrws")
+
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/Overhang" unique_id=1166167823]
+polygon = PackedVector2Array(0, 16, 80, 16, 80, 0, 0, 0)
+
+[node name="StartMarker" type="Marker2D" parent="." unique_id=477960911]
+position = Vector2(0, 69.9)
+
+[node name="VoidBoundary" type="Marker2D" parent="." unique_id=1165363553]
+position = Vector2(0, 136)
+
+[node name="GoalCup" type="Node2D" parent="." unique_id=2061399282 node_paths=PackedStringArray("capture_area", "capture_shape") instance=ExtResource("6_0akd3")]
+position = Vector2(40, 72)
+scale = Vector2(2, 1)
+script = ExtResource("7_3d24b")
+capture_area = NodePath("CaptureArea")
+capture_shape = NodePath("CaptureArea/Shape")
+pull_radius = 36.0

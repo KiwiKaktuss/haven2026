@@ -28,3 +28,31 @@
   spring win finishes at frame 544, and both ride/launch fixtures finish at 831.
   Native AVFoundation encodes the PNG sequence because ffmpeg is unavailable.
   Its hardware encoder needs the same approved host access as desktop rendering.
+
+# Tutorial notes
+
+- Keep the numbered course at ten lessons; the user's extra card-explanation
+  request is an optional deck-selector preview after completion, not an ability
+  lesson or an eleventh practical challenge.
+- Tutorial uses the existing GameSession shot/deal/elixir transaction and actual
+  terrain physics. Fixed Normal/Snipe hands and reserved replacements bypass
+  random draws. Gameplay hand tooltips are hidden to keep abilities out of lessons.
+- Ordinary cup capture height ends exactly at the 60Hz settled contact (5px),
+  which can round a fraction past the shape. The tutorial-only inherited cup
+  uses a 3x5 local capture rectangle and 2x horizontal scaling; base cups stay intact.
+- Save inherited child shape overrides in tutorial_cup.tscn; editing an instanced
+  child's shape in the room builder alone does not persist it in the packed room.
+- Spring lesson uses the existing launch_spring resource for a dependable 208px/s
+  rebound. The mover is a 96px-wide ordinary surface, 88px travel, 10s period.
+- Real engine replay passes all ten holes with twelve releases. Structural/flow
+  checks: 95/95. Existing cards: 799/799; cup: 88/88; menu journey: 32/32;
+  menu intro: 7/7. Lifecycle remains 55/56: its old rescue assertion puts the
+  ball centre 1px above a sea boundary that now detects the 2px lower edge.
+  This is outside tutorial code; sea-course defeat behavior was not changed.
+- Menu/lifecycle save-writing tests require approved host access for temporary
+  user:// files; otherwise their missing writable file can leave a test waiting.
+- Full proof captures use 2x playback with the same 1/60 physics step, not ball
+  teleports, synthetic wins or accelerated gravity. All holes still require dwell.
+- Final tutorial proof: `screenshots/result/27/video.mp4` plus 900 original PNGs,
+  30s at 30fps. Ten holes complete by frame 702, then completion/card guide.
+  Visually checked the minimum 800×640 window, 960×640 and 1440×900 layouts.

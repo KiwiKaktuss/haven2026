@@ -79,6 +79,7 @@ func _show_menu() -> void:
     menu.get_node("Background").process_mode = Node.PROCESS_MODE_ALWAYS
     menu.play_requested.connect(_show_levels)
     menu.deck_requested.connect(_show_deck)
+    menu.tutorial_requested.connect(_start_tutorial)
     menu.inspect_requested.connect(_inspect_session)
     menu.lab_requested.connect(_open_physics_lab)
     menu.cards_requested.connect(_open_card_lab)
@@ -193,7 +194,21 @@ func _start_course(index: int) -> void:
     game_host.add_child(session)
 
 func _restart() -> void:
+    if session is TutorialSession:
+        _clear_screens()
+        session.resume_attempt()
+        session.retry_step()
+        return
     _start_course(course_index)
+
+func _start_tutorial() -> void:
+    _clear_screens()
+    _clear_games()
+    session = preload("res://scenes/tutorial/tutorial_session.tscn").instantiate()
+    session.pause_requested.connect(_pause)
+    session.menu_requested.connect(_show_menu)
+    session.begin_playing.connect(func() -> void: _start_course(0))
+    game_host.add_child(session)
 
 func _pause() -> void:
     if not is_instance_valid(session) or not session.pause_attempt():

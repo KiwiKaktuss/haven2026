@@ -1,6 +1,7 @@
 extends Control
 signal play_requested
 signal deck_requested
+signal tutorial_requested
 signal inspect_requested
 signal lab_requested
 signal cards_requested
@@ -11,6 +12,7 @@ const MOTION = preload("res://resources/audio/menu_motion.json")
 @onready var panel: Panel = $Center/MenuPanel
 @onready var play: Button = $Center/Content/Play
 @onready var deck: Button = $Center/Content/Deck
+@onready var tutorial: Button = $Center/Content/Tutorial
 @onready var credits: Label = $Center/Content/Credits
 @onready var audio: Node = get_node("/root/GameAudio")
 var _intro: bool = false
@@ -26,6 +28,7 @@ func _ready() -> void:
     _flight_layer.draw.connect(_draw_flight)
     play.pressed.connect(func() -> void: play_requested.emit())
     deck.pressed.connect(func() -> void: deck_requested.emit())
+    tutorial.pressed.connect(func() -> void: tutorial_requested.emit())
     $CenterContainer/VBoxContainer/InspectButton.pressed.connect(func() -> void: inspect_requested.emit())
     $CenterContainer/VBoxContainer/PhysicsLabButton.pressed.connect(func() -> void: lab_requested.emit())
     $CenterContainer/VBoxContainer/CardLabButton.pressed.connect(func() -> void: cards_requested.emit())
@@ -35,7 +38,7 @@ func _input(event: InputEvent) -> void:
     if not _intro:
         return
     if event is InputEventMouseButton:
-        for button: Button in [play, deck]:
+        for button: Button in [play, tutorial, deck]:
             if not button.disabled and button.get_global_rect().has_point(event.position):
                 _finish_intro()
                 return
@@ -66,6 +69,7 @@ func _process(_delta: float) -> void:
     _reveal_control(panel, float(data.panel_time), 0.40)
     _reveal_control(play, float(data.panel_time), 0.32)
     _reveal_control(deck, float(data.deck_time), 0.30)
+    _reveal_control(tutorial, float(data.panel_time) + 0.12, 0.30)
     credits.modulate.a = _ease((_intro_time - 2.70) / 0.30)
     _flight_layer.queue_redraw()
     if _intro_time >= float(data.end_time):
@@ -86,11 +90,12 @@ func _reveal_control(control: Control, start: float, duration: float) -> void:
 func _finish_intro() -> void:
     _intro = false
     logo.modulate.a = 1.0
-    for control: Control in [panel, play, deck]:
+    for control: Control in [panel, play, tutorial, deck]:
         control.modulate.a = 1.0
         control.offset_transform_position = Vector2.ZERO
     play.disabled = false
     deck.disabled = false
+    tutorial.disabled = false
     credits.modulate.a = 1.0
     _flight_layer.queue_redraw()
 

@@ -1,19 +1,24 @@
-# Level 4 — Final Ascent
+# Beginner tutorial — ten playable lessons
 
-Rebuild the fourth course as a coastal summit that combines the first three
-levels: readable ordinary-grip routes, ice with a sticky catch bank, optional
-spring combinations and moving-platform shortcuts, and recoverable misses.
+- [x] Add the Tutorial menu button using the existing menu artwork and reveal.
+- [x] Author ten saved, editable rooms with generous physical cups and fixed hands.
+- [x] Teach aiming, power, selection, replacement, elixir, walls, sticky, ice,
+      springs and moving platforms through practical tasks.
+- [x] Gate each hole on its lesson mechanic; advance only after actual cup capture.
+- [x] Add consistent top-centre instructions, gesture/route guidance, surface
+      names and patterns, current-room Retry and local miss recovery.
+- [x] Keep timers, scores, random draws and ability lessons out of gameplay.
+- [x] Add completion, Begin playing, and an optional real deck-selector preview
+      with clickable card explanations. Preview cannot change the saved deck.
+- [x] Verify ten holes on real engine ticks using legal aim-and-release inputs.
+- [x] Verify menu/pause/retry/first-course flow and existing card/menu/cup tests.
+- [x] Inspect the final 30fps proof and encode its fresh screenshots/result/27/ bundle.
 
-- [x] Inspect levels 1–3, the course authoring tools and real-card replay harness.
-- [x] Author and visually inspect the saved, editor-paintable level 4 scene.
-- [x] Verify both baseline routes with legal cards and independent engine replay.
-- [x] Check ice catching, springs, mover rides/clearance, water and camera bounds.
-- [x] Capture a fresh final proof with raw frames and a 30 fps video.
+Acceptance: `tests/test_tutorial.gd` (95 checks),
+`tests/test_tutorial_playthrough.gd` (all 10 holes, 12 legal releases), and a
+fresh full-course visual proof. Existing user edits to aim/power flames remain intact.
 
-Completed proof: `screenshots/result/25/video.mp4` plus its 900 raw frames.
-Visual review confirms the spring bank, full cup finish, and both ride launches.
-Default Safe/Alternate routes, the spring shortcut, and 22 constrained Safe
-decks all pass independent engine replay. Focused gameplay: 154/154 checks.
-
-Scope: level 4 scene, its offline builder, scenery, and focused test/capture tools.
-Preserve the existing course ID, progression, physics and card rules.
+Final proof: `screenshots/result/27/video.mp4`, 900 original PNG frames,
+30 seconds at 30fps. All ten holes finish at frame 702; the remainder shows
+completion and the optional card guide. Layout inspected at 800×640,
+960×640 and 1440×900.

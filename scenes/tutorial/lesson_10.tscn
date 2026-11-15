@@ -1,0 +1,87 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://scripts/levels/course.gd" id="1_1kf1d"]
+[ext_resource type="Script" path="res://scripts/terrain/terrain_object.gd" id="2_flqx3"]
+[ext_resource type="Resource" path="res://resources/terrain/normal.tres" id="3_veslb"]
+[ext_resource type="TileSet" path="res://resources/terrain/terrain_tileset.tres" id="4_6gxbp"]
+[ext_resource type="Script" path="res://scripts/terrain/editable_terrain_tiles.gd" id="5_yiwru"]
+[ext_resource type="Script" path="res://scripts/terrain/moving_platform.gd" id="6_mk5de"]
+[ext_resource type="PackedScene" path="res://scenes/tutorial/tutorial_cup.tscn" id="7_3j840"]
+[ext_resource type="Script" path="res://scripts/levels/goal_cup.gd" id="8_kxjf0"]
+
+[node name="TutorialRoom" type="Node2D" unique_id=166509749 node_paths=PackedStringArray("start_marker", "goal_cup", "void_boundary")]
+script = ExtResource("1_1kf1d")
+camera_bounds = Rect2(-80, -104, 432, 248)
+start_marker = NodePath("StartMarker")
+goal_cup = NodePath("GoalCup")
+void_boundary = NodePath("VoidBoundary")
+
+[node name="Terrain" type="Node2D" parent="." unique_id=763205333]
+
+[node name="Start" type="StaticBody2D" parent="Terrain" unique_id=132391218]
+position = Vector2(-48, 72)
+collision_mask = 0
+script = ExtResource("2_flqx3")
+object_id = &"start"
+surface = ExtResource("3_veslb")
+
+[node name="Tiles" type="TileMapLayer" parent="Terrain/Start" unique_id=2084838994]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAAIAAAAAAAEAAAAAAAJAAAAAAAEAAAAAAAKAAAAAAAEAAAAAAALAAAAAAAEAAAAAAAAAAEAAAAEAAEAAAABAAEAAAAEAAEAAAACAAEAAAAEAAEAAAADAAEAAAAEAAEAAAAEAAEAAAAEAAEAAAAFAAEAAAAEAAEAAAAGAAEAAAAEAAEAAAAHAAEAAAAEAAEAAAAIAAEAAAAEAAEAAAAJAAEAAAAEAAEAAAAKAAEAAAAEAAEAAAALAAEAAAAEAAEAAAAAAAIAAAAEAAEAAAABAAIAAAAEAAEAAAACAAIAAAAEAAEAAAADAAIAAAAEAAEAAAAEAAIAAAAEAAEAAAAFAAIAAAAEAAEAAAAGAAIAAAAEAAEAAAAHAAIAAAAEAAEAAAAIAAIAAAAEAAEAAAAJAAIAAAAEAAEAAAAKAAIAAAAEAAEAAAALAAIAAAAEAAEAAAAAAAMAAAAEAAEAAAABAAMAAAAEAAEAAAACAAMAAAAEAAEAAAADAAMAAAAEAAEAAAAEAAMAAAAEAAEAAAAFAAMAAAAEAAEAAAAGAAMAAAAEAAEAAAAHAAMAAAAEAAEAAAAIAAMAAAAEAAEAAAAJAAMAAAAEAAEAAAAKAAMAAAAEAAEAAAALAAMAAAAEAAEAAAA=")
+tile_set = ExtResource("4_6gxbp")
+collision_enabled = false
+script = ExtResource("5_yiwru")
+
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/Start" unique_id=1405225637]
+polygon = PackedVector2Array(0, 32, 96, 32, 96, 0, 0, 0)
+
+[node name="Ride" type="AnimatableBody2D" parent="Terrain" unique_id=144755073]
+process_physics_priority = -100
+position = Vector2(64, 72)
+collision_mask = 0
+script = ExtResource("6_mk5de")
+endpoint_b = Vector2(88, 0)
+period_seconds = 10.0
+object_id = &"ride"
+surface = ExtResource("3_veslb")
+
+[node name="Tiles" type="TileMapLayer" parent="Terrain/Ride" unique_id=1682766450]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAAIAAAAAAAEAAAAAAAJAAAAAAAEAAAAAAAKAAAAAAAEAAAAAAALAAAAAAAEAAAAAAAAAAEAAAAEAAEAAAABAAEAAAAEAAEAAAACAAEAAAAEAAEAAAADAAEAAAAEAAEAAAAEAAEAAAAEAAEAAAAFAAEAAAAEAAEAAAAGAAEAAAAEAAEAAAAHAAEAAAAEAAEAAAAIAAEAAAAEAAEAAAAJAAEAAAAEAAEAAAAKAAEAAAAEAAEAAAALAAEAAAAEAAEAAAA=")
+tile_set = ExtResource("4_6gxbp")
+collision_enabled = false
+script = ExtResource("5_yiwru")
+
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/Ride" unique_id=2078777117]
+polygon = PackedVector2Array(0, 16, 96, 16, 96, 0, 0, 0)
+
+[node name="FarBank" type="StaticBody2D" parent="Terrain" unique_id=1844832]
+position = Vector2(336, 56)
+collision_mask = 0
+script = ExtResource("2_flqx3")
+object_id = &"far_bank"
+surface = ExtResource("3_veslb")
+
+[node name="Tiles" type="TileMapLayer" parent="Terrain/FarBank" unique_id=628790454]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAAAAAEAAAAEAAEAAAABAAEAAAAEAAEAAAAAAAIAAAAEAAEAAAABAAIAAAAEAAEAAAAAAAMAAAAEAAEAAAABAAMAAAAEAAEAAAA=")
+tile_set = ExtResource("4_6gxbp")
+collision_enabled = false
+script = ExtResource("5_yiwru")
+
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/FarBank" unique_id=393747603]
+polygon = PackedVector2Array(0, 32, 16, 32, 16, 0, 0, 0)
+
+[node name="StartMarker" type="Marker2D" parent="." unique_id=1267879302]
+position = Vector2(0, 69.9)
+
+[node name="VoidBoundary" type="Marker2D" parent="." unique_id=740531710]
+position = Vector2(0, 136)
+
+[node name="GoalCup" type="Node2D" parent="." unique_id=1000125739 node_paths=PackedStringArray("capture_area", "capture_shape") instance=ExtResource("7_3j840")]
+position = Vector2(208, 56)
+scale = Vector2(2, 1)
+script = ExtResource("8_kxjf0")
+capture_area = NodePath("CaptureArea")
+capture_shape = NodePath("CaptureArea/Shape")
+pull_radius = 36.0
