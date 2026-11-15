@@ -36,7 +36,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/StartIsland" unique_id=2143017615]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/StartIsland" unique_id=221114613]
 polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 30, 1, 30, 1, 31, 2, 31, 2, 32, 174, 32, 174, 31, 175, 31, 175, 30, 176, 30, 176, 2, 175, 2, 175, 1, 174, 1, 174, 0, 2, 0)
 
 [node name="LowerLanding" type="StaticBody2D" parent="Terrain" unique_id=1982659480]
@@ -53,7 +53,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/LowerLanding" unique_id=1830854435]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/LowerLanding" unique_id=251128770]
 polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 30, 1, 30, 1, 31, 2, 31, 2, 32, 126, 32, 126, 31, 127, 31, 127, 30, 128, 30, 128, 2, 127, 2, 127, 1, 126, 1, 126, 0, 2, 0)
 
 [node name="EastGallery" type="StaticBody2D" parent="Terrain" unique_id=1438900430]
@@ -70,7 +70,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/EastGallery" unique_id=2140216294]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/EastGallery" unique_id=29229454]
 polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 38, 1, 38, 1, 39, 2, 39, 2, 40, 152, 40, 152, 0, 2, 0)
 
 [node name="ReturnGallery" type="StaticBody2D" parent="Terrain" unique_id=1487128581]
@@ -87,7 +87,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/ReturnGallery" unique_id=763149457]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/ReturnGallery" unique_id=213087229]
 polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 30, 1, 30, 1, 31, 2, 31, 2, 32, 142, 32, 142, 31, 143, 31, 143, 30, 144, 30, 144, 2, 143, 2, 143, 1, 142, 1, 142, 0, 2, 0)
 
 [node name="UpperTerrace" type="StaticBody2D" parent="Terrain" unique_id=1828605988]
@@ -104,7 +104,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/UpperTerrace" unique_id=714508098]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/UpperTerrace" unique_id=744059272]
 polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 30, 1, 30, 1, 31, 2, 31, 2, 32, 158, 32, 158, 31, 159, 31, 159, 30, 160, 30, 160, 2, 159, 2, 159, 1, 158, 1, 158, 0, 2, 0)
 
 [node name="WestGallery" type="StaticBody2D" parent="Terrain" unique_id=56022052]
@@ -121,7 +121,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/WestGallery" unique_id=1159593196]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/WestGallery" unique_id=142229255]
 polygon = PackedVector2Array(0, 32, 126, 32, 126, 31, 127, 31, 127, 30, 128, 30, 128, 2, 127, 2, 127, 1, 126, 1, 126, 0, 0, 0)
 
 [node name="WestPerch" type="StaticBody2D" parent="Terrain" unique_id=62827759]
@@ -138,7 +138,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/WestPerch" unique_id=1241297794]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/WestPerch" unique_id=1902705680]
 polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 22, 1, 22, 1, 23, 2, 23, 2, 24, 104, 24, 104, 0, 2, 0)
 
 [node name="LaunchSpring" type="StaticBody2D" parent="Terrain" unique_id=456305882]
@@ -155,7 +155,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/LaunchSpring" unique_id=1864834739]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/LaunchSpring" unique_id=840192866]
 polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 14, 1, 14, 1, 15, 2, 15, 2, 16, 64, 16, 64, 0, 2, 0)
 
 [node name="LaunchDock" type="StaticBody2D" parent="Terrain" unique_id=24438332]
@@ -172,7 +172,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/LaunchDock" unique_id=1143309327]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/LaunchDock" unique_id=2058018808]
 polygon = PackedVector2Array(0, 16, 46, 16, 46, 15, 47, 15, 47, 14, 48, 14, 48, 2, 47, 2, 47, 1, 46, 1, 46, 0, 0, 0)
 
 [node name="UpperSpring" type="StaticBody2D" parent="Terrain" unique_id=1394844589]
@@ -189,7 +189,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/UpperSpring" unique_id=644642707]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/UpperSpring" unique_id=1484355572]
 polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 14, 1, 14, 1, 15, 2, 15, 2, 16, 62, 16, 62, 15, 63, 15, 63, 14, 64, 14, 64, 2, 63, 2, 63, 1, 62, 1, 62, 0, 2, 0)
 
 [node name="WestSpring" type="StaticBody2D" parent="Terrain" unique_id=131603318]
@@ -206,7 +206,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/WestSpring" unique_id=1438831721]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/WestSpring" unique_id=1107116144]
 polygon = PackedVector2Array(0, 24, 30, 24, 30, 23, 31, 23, 31, 22, 32, 22, 32, 2, 31, 2, 31, 1, 30, 1, 30, 0, 0, 0)
 
 [node name="RecoveryBeach" type="StaticBody2D" parent="Terrain" unique_id=620741241]
@@ -223,7 +223,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/RecoveryBeach" unique_id=1899665278]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/RecoveryBeach" unique_id=2116289119]
 polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 14, 1, 14, 1, 15, 2, 15, 2, 16, 248, 16, 248, 0, 2, 0)
 
 [node name="RecoverySpring" type="StaticBody2D" parent="Terrain" unique_id=2037021100]
@@ -240,7 +240,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/RecoverySpring" unique_id=392922767]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/RecoverySpring" unique_id=173185297]
 polygon = PackedVector2Array(0, 16, 38, 16, 38, 15, 39, 15, 39, 14, 40, 14, 40, 2, 39, 2, 39, 1, 38, 1, 38, 0, 0, 0)
 
 [node name="EastBeach" type="StaticBody2D" parent="Terrain" unique_id=1975601288]
@@ -257,7 +257,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/EastBeach" unique_id=1221299649]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/EastBeach" unique_id=1373948743]
 polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 22, 1, 22, 1, 23, 2, 23, 2, 24, 166, 24, 166, 23, 167, 23, 167, 22, 168, 22, 168, 2, 167, 2, 167, 1, 166, 1, 166, 0, 2, 0)
 
 [node name="WestBreakwater" type="StaticBody2D" parent="Terrain" unique_id=340736474]
@@ -274,7 +274,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/WestBreakwater" unique_id=210491807]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/WestBreakwater" unique_id=1313817664]
 polygon = PackedVector2Array(0, 24, 86, 24, 86, 23, 87, 23, 87, 22, 88, 22, 88, 2, 87, 2, 87, 1, 86, 1, 86, 0, 0, 0)
 
 [node name="WestCaveBack" type="StaticBody2D" parent="Terrain" unique_id=573100670]
@@ -291,7 +291,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/WestCaveBack" unique_id=751612426]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/WestCaveBack" unique_id=2025103599]
 polygon = PackedVector2Array(0, 112, 16, 112, 16, 0, 0, 0)
 
 [node name="EastCaveBack" type="StaticBody2D" parent="Terrain" unique_id=223713873]
@@ -308,7 +308,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/EastCaveBack" unique_id=569283618]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/EastCaveBack" unique_id=1368612814]
 polygon = PackedVector2Array(0, 78, 1, 78, 1, 79, 2, 79, 2, 80, 16, 80, 16, 0, 0, 0)
 
 [node name="WestWall" type="StaticBody2D" parent="Terrain" unique_id=110072929]
@@ -325,7 +325,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/WestWall" unique_id=1910769681]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/WestWall" unique_id=357362043]
 polygon = PackedVector2Array(0, 480, 24, 480, 24, 0, 0, 0)
 
 [node name="EastWall" type="StaticBody2D" parent="Terrain" unique_id=1886789724]
@@ -342,7 +342,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/EastWall" unique_id=1807390968]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/EastWall" unique_id=1840346611]
 polygon = PackedVector2Array(0, 480, 24, 480, 24, 0, 0, 0)
 
 [node name="Ceiling" type="StaticBody2D" parent="Terrain" unique_id=436319263]
@@ -359,7 +359,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/Ceiling" unique_id=1506526774]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/Ceiling" unique_id=2036842396]
 polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 16, 704, 16, 704, 2, 703, 2, 703, 1, 702, 1, 702, 0, 2, 0)
 
 [node name="Seabed" type="StaticBody2D" parent="Terrain" unique_id=1227428847]
@@ -376,7 +376,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/Seabed" unique_id=2017950517]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/Seabed" unique_id=2031367780]
 polygon = PackedVector2Array(0, 14, 1, 14, 1, 15, 2, 15, 2, 16, 702, 16, 702, 15, 703, 15, 703, 14, 704, 14, 704, 0, 0, 0)
 
 [node name="MovingPlatforms" type="Node2D" parent="." unique_id=176484698]
@@ -398,7 +398,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="MovingPlatforms/Lift" unique_id=2116586845]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="MovingPlatforms/Lift" unique_id=1495463693]
 polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 6, 1, 6, 1, 7, 2, 7, 2, 8, 62, 8, 62, 7, 63, 7, 63, 6, 64, 6, 64, 2, 63, 2, 63, 1, 62, 1, 62, 0, 2, 0)
 
 [node name="Shuttle" type="AnimatableBody2D" parent="MovingPlatforms" unique_id=658758961]
@@ -418,7 +418,7 @@ tile_set = ExtResource("4_6ui6l")
 collision_enabled = false
 script = ExtResource("5_gfef5")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="MovingPlatforms/Shuttle" unique_id=545838378]
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="MovingPlatforms/Shuttle" unique_id=766502756]
 polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 6, 1, 6, 1, 7, 2, 7, 2, 8, 54, 8, 54, 7, 55, 7, 55, 6, 56, 6, 56, 2, 55, 2, 55, 1, 54, 1, 54, 0, 2, 0)
 
 [node name="Decorations" type="Node2D" parent="." unique_id=234114532]

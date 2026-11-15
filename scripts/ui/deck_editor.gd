@@ -11,6 +11,7 @@ func _ready() -> void:
     for index: int in range(CardCatalog.DECK_SIZE):
         get_node("Margin/Content/BattleDeck/DeckContent/Hand/Slot%s" % index).pressed.connect(_deck_slot_clicked.bind(index))
     $Margin/Content/Footer/Back.pressed.connect(_done)
+    $Margin/Content/Header/Random.pressed.connect(_randomize_deck)
     refresh()
 
 func configure(ids: Array[StringName]) -> void:
@@ -20,6 +21,15 @@ func configure(ids: Array[StringName]) -> void:
             selected.append(id)
     pending_swap = &""
     _saved_selection = selected.duplicate()
+    refresh()
+
+func _randomize_deck() -> void:
+    var candidates: Array[StringName] = []
+    for card: CardDefinition in catalog.cards:
+        candidates.append(card.id)
+    candidates.shuffle()
+    selected.assign(candidates.slice(0, CardCatalog.DECK_SIZE))
+    pending_swap = &""
     refresh()
 
 func _toggle(id: StringName) -> void:
@@ -63,11 +73,14 @@ func refresh() -> void:
             view.set_pending(false)
         else:
             view.show_empty(index)
-    $Margin/Content/Header/Count.text = "%s / %s cards" % [selected.size(), CardCatalog.DECK_SIZE]
+    var total_cost: int = 0
+    for id: StringName in selected:
+        total_cost += catalog.find_card(id).cost
+    $Margin/Content/BattleDeck/DeckContent/Summary/AverageCost.text = "%.1f" % (float(total_cost) / selected.size()) if not selected.is_empty() else "—"
     if not pending_swap.is_empty():
         $Margin/Content/BattleDeck/DeckContent/Summary/Tip.text = "Replace a deck card with %s, or click it again to cancel." % catalog.find_card(pending_swap).display_name
     else:
-        $Margin/Content/BattleDeck/DeckContent/Summary/Tip.text = "Five cards · Three in hand" if selected.size() == CardCatalog.DECK_SIZE else "Choose %s more card%s to complete your deck." % [CardCatalog.DECK_SIZE - selected.size(), "" if selected.size() == CardCatalog.DECK_SIZE - 1 else "s"]
+        $Margin/Content/BattleDeck/DeckContent/Summary/Tip.text = "" if selected.size() == CardCatalog.DECK_SIZE else "Choose %s more card%s to complete your deck." % [CardCatalog.DECK_SIZE - selected.size(), "" if selected.size() == CardCatalog.DECK_SIZE - 1 else "s"]
 
 func show_save_error() -> void:
     $Margin/Content/BattleDeck/DeckContent/Summary/Tip.text = "Could not save your deck. Press Back to try again."

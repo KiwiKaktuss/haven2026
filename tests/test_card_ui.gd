@@ -26,7 +26,7 @@ func run() -> void:
     editor.configure(catalog.default_deck)
     check(editor.selected.size() == CardCatalog.DECK_SIZE, "Default deck has five cards")
     check(editor.get_node("Margin/Content/BattleDeck/DeckContent/Hand").get_child_count() == 5, "Editor has exactly five deck slots")
-    check(editor.get_node("Margin/Content/Header/Count").text == "5 / 5 cards", "Deck counter uses the five-card limit")
+    check(editor.get_node("Margin/Content/Header/Random") is Button and not editor.has_node("Margin/Content/Header/Count"), "Random button replaces the deck counter")
     var slot: CardView = editor.get_node("Margin/Content/BattleDeck/DeckContent/Hand/Slot0")
     check(slot.definition.id == catalog.default_deck[0], "Battle Deck shows the equipped order")
     var collection: CardView = editor.get_node("Margin/Content/Grid/Card0")
@@ -99,6 +99,24 @@ func run() -> void:
     check(editor.selected.is_empty() and slot.definition == null and slot.get_node("Artwork").texture == null, "Empty slots never retain stale artwork")
     editor._toggle(&"fire")
     check(slot.definition.id == &"fire" and slot.get_node("Artwork").visible, "Empty slot can be filled again")
+    var random_decks: Dictionary = {}
+    for roll: int in range(20):
+        editor.get_node("Margin/Content/Header/Random").pressed.emit()
+        var unique_ids: Dictionary = {}
+        var total_cost: int = 0
+        for id: StringName in editor.selected:
+            unique_ids[id] = true
+            total_cost += catalog.find_card(id).cost
+        check(editor.selected.size() == CardCatalog.DECK_SIZE and unique_ids.size() == CardCatalog.DECK_SIZE, "Random equips five unique cards")
+        check(editor.get_node("Margin/Content/BattleDeck/DeckContent/Summary/AverageCost").text == "%.1f" % (total_cost / float(CardCatalog.DECK_SIZE)), "Random deck updates its average cost")
+        random_decks[str(editor.selected)] = true
+    check(random_decks.size() > 1, "Repeated random rolls produce different decks")
+    for card: CardDefinition in catalog.cards:
+        if not editor.selected.has(card.id):
+            editor._toggle(card.id)
+            break
+    editor.get_node("Margin/Content/Header/Random").pressed.emit()
+    check(editor.pending_swap.is_empty(), "Random clears a pending replacement")
     editor.free()
     var session: GameSession = load("res://scenes/game/game_session.tscn").instantiate()
     root.add_child(session)
