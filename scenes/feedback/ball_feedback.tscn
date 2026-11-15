@@ -10,3 +10,7 @@ burst_scene = ExtResource("burst")
 [node name="WorldTrail" type="Line2D" parent="."]
 width = 0.65
 gradient = SubResource("fade")
+[node name="Tether" type="Line2D" parent="."]
+visible = false
+width = 1.5
+default_color = Color(0.7, 0.44, 0.78, 0.9)

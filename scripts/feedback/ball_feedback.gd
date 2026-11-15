@@ -65,6 +65,9 @@ func _impact(body: TerrainObject, normal: Vector2, speed: float) -> void:
 func _process(delta: float) -> void:
     _clock += delta
     var zoom: float = maxf(get_canvas_transform().get_scale().x, 0.01)
+    $Tether.visible = is_instance_valid(ball.attached_body)
+    if $Tether.visible:
+        $Tether.points = PackedVector2Array([Vector2.ZERO, -ball.contact_normal * 4.0])
     if ball.global_position.distance_to(_last_position) > 80.0:
         _history.clear()
     _last_position = ball.global_position
