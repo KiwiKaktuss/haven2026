@@ -18,6 +18,11 @@ func run() -> void:
         await capture("lesson_%02d" % (index+1))
     for viewport_size: Vector2i in [Vector2i(800,640), Vector2i(960,640), Vector2i(1440,900)]:
         root.size = viewport_size
+        for index: int in [0,2,6]:
+            session.step_index = index
+            session.retry_step()
+            await capture("clean_%d_lesson_%02d" % [viewport_size.x,index+1])
+        root.size = viewport_size
         session.step_index = 5
         session.retry_step()
         await capture("cards_%d_intro" % viewport_size.x)

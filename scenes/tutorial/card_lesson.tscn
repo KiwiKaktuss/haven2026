@@ -14,7 +14,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 144.0
+offset_top = 164.0
 offset_bottom = -20.0
 mouse_filter = 2
 [node name="Panel" type="PanelContainer" parent="Center"]
@@ -98,12 +98,8 @@ text = "Every card changes your shot in its own way. Hover over any card to take
 autowrap_mode = 2
 [node name="Footer" type="HBoxContainer" parent="Center/Panel/Content"]
 layout_mode = 2
+alignment = 2
 theme_override_constants/separation = 12
-[node name="Tip" type="Label" parent="Center/Panel/Content/Footer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.36, 0.40, 0.44, 1)
-text = "Explore at your own pace"
 [node name="Continue" type="Button" parent="Center/Panel/Content/Footer"]
 custom_minimum_size = Vector2(220, 44)
 layout_mode = 2

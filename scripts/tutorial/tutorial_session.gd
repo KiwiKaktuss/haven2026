@@ -80,16 +80,34 @@ func _prepare_lesson() -> void:
     _frame_room()
     lesson_changed.emit()
 
+func challenge_bounds() -> Rect2:
+    var bounds := Rect2()
+    var initialized: bool = false
+    var bodies: Array = course.get_node("Terrain").get_children() + [course.goal_cup.get_node("Terrain")]
+    for body: TerrainObject in bodies:
+        for child: Node in body.get_children():
+            if child is CollisionPolygon2D:
+                for point: Vector2 in child.polygon:
+                    var at: Vector2 = child.to_global(point)
+                    if not initialized:
+                        bounds = Rect2(at, Vector2.ZERO)
+                        initialized = true
+                    else:
+                        bounds = bounds.expand(at)
+    return bounds
+
 func _frame_room() -> void:
     var viewport: Vector2 = get_viewport_rect().size
-    var top: float = 148.0
-    var bottom: float = viewport.y - 177.0
-    var zoom_value: float = minf((viewport.x - 64.0) / 416.0, (bottom - top) / 176.0)
-    zoom_value = maxf(0.6, zoom_value)
+    var top: float = 176.0
+    var bottom: float = viewport.y - 171.0
+    var bounds: Rect2 = challenge_bounds()
+    var available := Vector2(viewport.x - 96.0, bottom - top)
+    var framed_size: Vector2 = bounds.size + Vector2(48, 48)
+    var zoom_value: float = minf(2.0, minf(available.x / framed_size.x, available.y / framed_size.y))
     var camera: Camera2D = camera_controller.camera
-    camera.zoom = Vector2.ONE * zoom_value
+    camera.zoom = Vector2.ONE * maxf(0.6, zoom_value)
     var screen_center := Vector2(viewport.x * 0.5, (top + bottom) * 0.5)
-    camera.global_position = Vector2(144, 40) - (screen_center - viewport * 0.5) / zoom_value
+    camera.global_position = bounds.get_center() - (screen_center - viewport * 0.5) / camera.zoom
     camera.offset = Vector2.ZERO
     camera.reset_physics_interpolation()
 
@@ -165,7 +183,7 @@ func check_course_end(delta: float) -> void:
         return
     # A missed landing can be retried immediately; only this room is affected.
     var speed: float = ball.world_velocity().length()
-    if shots > 0 and speed < 0.8 and ball.global_position.distance_to(course.goal_cup.to_global(Vector2(32, 0))) > 38.0 and ball.attached_body == null:
+    if shots > 0 and speed < 0.8 and ball.global_position.distance_to(course.goal_cup.to_global(Vector2(32, 0))) > course.goal_cup.pull_radius + 2.0 and ball.attached_body == null:
         _miss_elapsed += delta
         if _miss_elapsed > 1.4:
             _reset_miss()

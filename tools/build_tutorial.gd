@@ -41,7 +41,7 @@ func cup(at: Vector2) -> void:
     scene.goal_cup = load("res://scenes/tutorial/tutorial_cup.tscn").instantiate()
     scene.goal_cup.name = "GoalCup"
     scene.goal_cup.position = at - Vector2(32, 0)
-    scene.goal_cup.pull_radius = 36.0
+    scene.goal_cup.pull_radius = 18.0
     own(scene, scene.goal_cup)
     # Save the contextual border joins as ordinary editable room nodes.
     scene.goal_cup.scene_file_path = ""
@@ -86,7 +86,7 @@ func build_cup() -> void:
     var shape := RectangleShape2D.new()
     shape.size = Vector2(3, 5)
     scene.capture_shape.shape = shape
-    scene.pull_radius = 36.0
+    scene.pull_radius = 18.0
     join_tiles()
     var packed := PackedScene.new()
     assert(packed.pack(scene) == OK)

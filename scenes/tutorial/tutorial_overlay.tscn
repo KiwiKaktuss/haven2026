@@ -10,27 +10,23 @@ anchor_bottom = 1.0
 mouse_filter = 2
 theme = ExtResource("theme")
 script = ExtResource("script")
-[node name="Menu" type="Button" parent="."]
-offset_left = 18.0
+[node name="PauseButton" type="Button" parent="."]
+custom_minimum_size = Vector2(48, 48)
+offset_left = 24.0
 offset_top = 20.0
-offset_right = 108.0
-offset_bottom = 60.0
-text = "Menu"
-[node name="Retry" type="Button" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -108.0
-offset_top = 20.0
-offset_right = -18.0
-offset_bottom = 60.0
-text = "Retry"
+offset_right = 72.0
+offset_bottom = 68.0
+tooltip_text = "Pause (Esc)"
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 24
+text = "II"
 [node name="Lesson" type="PanelContainer" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -246.0
+offset_left = -288.0
 offset_top = 14.0
-offset_right = 246.0
-offset_bottom = 130.0
+offset_right = 288.0
+offset_bottom = 150.0
 mouse_filter = 2
 [node name="Content" type="VBoxContainer" parent="Lesson"]
 layout_mode = 2
@@ -54,19 +50,13 @@ mouse_filter = 2
 text = "Drag back, then release to shoot into the nearby hole."
 horizontal_alignment = 1
 autowrap_mode = 2
-[node name="Hint" type="Label" parent="."]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -360.0
-offset_top = -207.0
-offset_right = 360.0
-offset_bottom = -167.0
+[node name="Explanation" type="Label" parent="Lesson/Content"]
+layout_mode = 2
 mouse_filter = 2
+theme_override_colors/font_color = Color(0.30, 0.34, 0.39, 1)
+theme_override_font_sizes/font_size = 15
 text = "Pull opposite the direction you want the ball to travel."
 horizontal_alignment = 1
-vertical_alignment = 1
 autowrap_mode = 2
 [node name="CardLesson" parent="." instance=ExtResource("cards")]
 visible = false

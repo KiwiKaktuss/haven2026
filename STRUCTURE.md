@@ -34,10 +34,12 @@ Focused checks:
 - `tutorial_cup.tscn` uses the production native-size rim/flag within a 128×32
   bank built from square terrain tiles. Rooms save contextual edge joins with
   their neighbors; collision silhouettes include the tile art and physical rim.
-  The broad attraction field and 60Hz capture tolerance remain tutorial-specific.
+  The attraction radius matches the normal game (18px); a small capture-shape
+  tolerance still handles 60Hz contact rounding.
 - `tutorial_overlay.tscn` owns the consistent lesson/count/instruction layout,
-  Retry, completion and Begin playing. Its script draws passive guidance and
-  patterns in viewport space. Camera framing reserves space for header and hand.
+  II pause button, completion and Begin playing. Explanations stay in the top
+  panel; passive route/material patterns remain in the field. Camera framing
+  centers the saved collision bounds between the header and the hand.
 - `card_lesson.tscn` is the in-place sixth lesson. Its ten compact `lesson_card`
   instances reveal catalog descriptions/costs on hover, focus or click in one
   stable detail panel. Continue requires one inspection and leads to walls.
@@ -49,14 +51,15 @@ Focused checks:
 
 Verification:
 - `tests/test_tutorial.gd`: resources, transactions, lesson gates, real menu and
-  Retry clicks, real hover for every card, Esc pause, Continue and Begin playing.
+  pause/restart clicks, centered geometry, normal cup radius, real hover for every
+  card, Esc pause, Continue and Begin playing.
 - `tests/test_tutorial_playthrough.gd`: all ten lessons through ordinary engine ticks,
   nine physical holes, legal releases and a real sticky attachment/departure.
 - `tests/support/tutorial_routes.json`: discovered ordinary-shot route fixtures.
 - `tests/support/tutorial_engine_routes.json`: accepted engine input trace.
 - `tests/capture_tutorial_views.gd`: screenshots of the menu, lesson HUD and guide.
 - `tests/capture_tutorial_playthrough.gd`: complete 2x proof (120 physics ticks/s
-  with time_scale 2 preserves the tested 1/60 physics delta), 900 frames at 30fps.
+  with time_scale 2 preserves the tested 1/60 physics delta), 750 frames at 30fps (25 seconds).
 
 - `tests/test_tutorial_tiles.gd`: native proportions, opaque connected joins,
   and exact art/collision agreement across all ten tutorial rooms.

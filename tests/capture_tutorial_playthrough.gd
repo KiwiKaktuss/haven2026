@@ -73,7 +73,7 @@ func _process(_delta: float) -> bool:
             completed_frame = frame
             all_complete = true
             print("CAPTURE COMPLETE frame=",frame)
-    if frame == 899:
+    if frame == 749:
         assert(all_complete, "All ten lessons must finish")
         print("ASSERT PASS: menu, nine real holes, in-place hoverable card lesson, terrain and completion.")
     return false

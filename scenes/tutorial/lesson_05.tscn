@@ -66,7 +66,7 @@ position = Vector2(72, 72)
 script = ExtResource("6_gnl74")
 capture_area = NodePath("CaptureArea")
 capture_shape = NodePath("CaptureArea/Shape")
-pull_radius = 36.0
+pull_radius = 18.0
 
 [node name="Terrain" type="StaticBody2D" parent="GoalCup" unique_id=79559245]
 texture_filter = 1

@@ -33,7 +33,14 @@ func run() -> void:
         session.step_index = step
         session.retry_step()
         await physics_frame
+        await process_frame
         check(session.course != null, "Room %d loads" % step)
+        check(session.course.goal_cup.pull_radius == 18.0, "Normal game hole attraction radius")
+        var center: Vector2 = session.get_canvas_transform() * session.challenge_bounds().get_center()
+        check(absf(center.x - session.get_viewport_rect().size.x * 0.5) < 1.0, "Challenge is centered horizontally")
+        check(absf(center.y - (176.0 + session.get_viewport_rect().size.y - 171.0) * 0.5) < 1.0, "Challenge is centered in the playable area")
+        check(not session.lesson_ui.has_node("Hint") and not session.lesson_ui.has_node("Menu") and not session.lesson_ui.has_node("Retry"), "Clean tutorial controls and no lower label")
+        check(session.lesson_ui.get_node("PauseButton").text == "II", "Standard pause button")
         check(session.deck.hand.size() == 3, "Fixed hand")
         check(session.hud.get_node("Top").visible == false, "No timer")
         check(not session.objective_met(), "No automatic lesson completion")
@@ -82,13 +89,17 @@ func run() -> void:
     session = main.session
     session.step_index = 4
     session.retry_step()
-    main._pause()
-    check(session.state == GameSession.State.PAUSED, "Tutorial pauses")
+    click(session.lesson_ui.get_node("PauseButton"))
+    check(session.state == GameSession.State.PAUSED, "Pause button opens the normal pause menu")
     main._restart()
     check(main.session == session and session.step_index == 4 and session.state == GameSession.State.READY, "Pause restart retries current tutorial lesson")
     await process_frame
-    click(session.lesson_ui.get_node("Retry"))
-    check(session.step_index == 4 and session.elixir < 2.0 and session.shots == 0, "Real Retry resets lesson resources")
+    click(session.lesson_ui.get_node("PauseButton"))
+    await process_frame
+    await process_frame
+    click(main.screen_host.get_child(0).get_node("Center/Content/Restart"))
+    check(session.step_index == 4 and session.elixir < 2.0 and session.shots == 0, "Pause restart resets lesson resources")
+    await process_frame
     var equipped: Array[StringName] = main.save.equipped.duplicate()
     session.step_index = TutorialSession.CARD_STEP
     session.retry_step()
@@ -108,8 +119,11 @@ func run() -> void:
         check(cards.details.get_node("Text/Description").text == session.deck.catalog.cards[index].description, "Real hover explains each card")
     check(session.card_explored and not cards.next_button.disabled, "Inspection enables Continue")
     check(main.save.equipped == equipped, "Card overview cannot change the saved deck")
-    click(session.lesson_ui.get_node("Retry"))
-    check(not session.card_explored and cards.next_button.disabled and session.step_index == 5, "Retry resets only the card overview")
+    click(session.lesson_ui.get_node("PauseButton"))
+    await process_frame
+    await process_frame
+    click(main.screen_host.get_child(0).get_node("Center/Content/Restart"))
+    check(not session.card_explored and cards.next_button.disabled and session.step_index == 5, "Pause restart resets only the card overview")
     cards.grid.get_child(1).grab_focus()
     check(session.card_explored and cards.details.get_node("Text/Heading/Name").text == "Snipe", "Keyboard focus also explains a card")
     var pause_key := InputEventKey.new()

@@ -90,3 +90,20 @@
   32 existing menu journey checks. Layout verified at 800×640 through 1440×900.
 - Final revised-flow proof: `screenshots/result/29/video.mp4` with 900 frames
   at 30fps (30 seconds). Card lesson at 402; walls at 495; completion at 790.
+
+# Tutorial HUD simplification
+
+- Only II remains in the top-left. Restart and Menu use the ordinary pause
+  screen; do not reintroduce direct Menu/Retry buttons on the lesson overlay.
+- Instructions and changing lesson explanations belong together in the top box.
+  Removed the lower caption, floating surface names, yellow hole arc, HOLE tag,
+  and the first-step drag-gesture circle/path/text.
+- Cup pull_radius is the normal 18px in all saved rooms and the builder.
+  Stopped misses now reset based on that real radius, not the former hardcoded
+  38px. Accepted legal-shot traces were refreshed for the smaller attraction field.
+- Camera centers the union of terrain/cup collision bounds, reserving the top
+  panel and bottom hand. This centers every challenge at every supported width.
+- Tests: 189 flow checks, including actual pause/restart, horizontal/vertical
+  centering and normal hole radius in all ten steps. All practical holes replay.
+- Fresh proof: screenshots/result/30/video.mp4, 750 PNGs, 25s at 30fps. Cards at
+  frame 340; full tutorial completes at frame 686.
