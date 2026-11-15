@@ -1,21 +1,19 @@
-[gd_scene format=4]
+[gd_scene format=4 uid="uid://b8pkgxlf1fvr0"]
 
-[ext_resource type="Script" path="res://scripts/levels/course.gd" id="1_3n2sw"]
-[ext_resource type="Script" path="res://scripts/terrain/terrain_object.gd" id="2_gnj45"]
+[ext_resource type="Script" uid="uid://dpw3h6qyuxeld" path="res://scripts/levels/course.gd" id="1_3n2sw"]
+[ext_resource type="Script" uid="uid://rn60opm7d2af" path="res://scripts/terrain/terrain_object.gd" id="2_gnj45"]
 [ext_resource type="Resource" path="res://resources/terrain/normal.tres" id="3_yi18g"]
-[ext_resource type="TileSet" path="res://resources/terrain/terrain_tileset.tres" id="4_5fmh3"]
-[ext_resource type="Script" path="res://scripts/terrain/editable_terrain_tiles.gd" id="5_b3mc7"]
+[ext_resource type="TileSet" uid="uid://dwxkqwc1cnw23" path="res://resources/terrain/terrain_tileset.tres" id="4_5fmh3"]
+[ext_resource type="Script" uid="uid://dr0uhgqafho4r" path="res://scripts/terrain/editable_terrain_tiles.gd" id="5_b3mc7"]
 [ext_resource type="Resource" path="res://resources/terrain/ice.tres" id="6_4tnyk"]
 [ext_resource type="Resource" path="res://resources/terrain/sticky.tres" id="7_8g1jh"]
 [ext_resource type="Resource" path="res://resources/terrain/launch_spring.tres" id="8_hslmv"]
 [ext_resource type="Resource" path="res://resources/terrain/bouncy.tres" id="9_4ybd4"]
-[ext_resource type="Script" path="res://scripts/terrain/moving_platform.gd" id="10_0ulaj"]
-[ext_resource type="TileSet" path="res://resources/terrain/coast_tileset.tres" id="11_de70m"]
-[ext_resource type="TileSet" path="res://resources/terrain/spring_works_scenery.tres" id="12_0wexd"]
-[ext_resource type="TileSet" path="res://resources/terrain/cold_snap_scenery.tres" id="13_08qsg"]
-[ext_resource type="TileSet" path="res://resources/terrain/final_ascent_scenery.tres" id="14_ajk6g"]
+[ext_resource type="Script" uid="uid://b5bipumwn8c05" path="res://scripts/terrain/moving_platform.gd" id="10_0ulaj"]
+[ext_resource type="TileSet" uid="uid://byq1ft6yty1ju" path="res://resources/terrain/coast_tileset.tres" id="11_de70m"]
+[ext_resource type="TileSet" uid="uid://6lk4gp50ee5p" path="res://resources/terrain/spring_works_scenery.tres" id="12_0wexd"]
+[ext_resource type="TileSet" uid="uid://b2xpejw34u6tq" path="res://resources/terrain/cold_snap_scenery.tres" id="13_08qsg"]
 [ext_resource type="PackedScene" path="res://scenes/levels/goal_cup.tscn" id="15_ci45r"]
-[ext_resource type="Script" path="res://scripts/levels/goal_cup.gd" id="16_hhshq"]
 
 [node name="Course" type="Node2D" unique_id=1726298618 node_paths=PackedStringArray("start_marker", "goal_cup", "void_boundary")]
 script = ExtResource("1_3n2sw")
@@ -687,20 +685,17 @@ metadata/support = "GoalCup"
 [node name="StartMarker" type="Marker2D" parent="." unique_id=2043062545]
 position = Vector2(-80, 181.9)
 
-[node name="GoalCup" type="Node2D" parent="." unique_id=243701655 node_paths=PackedStringArray("capture_area", "capture_shape") instance=ExtResource("15_ci45r")]
+[node name="GoalCup" parent="." unique_id=243701655 instance=ExtResource("15_ci45r")]
 position = Vector2(0, -192)
-script = ExtResource("16_hhshq")
-capture_area = NodePath("CaptureArea")
-capture_shape = NodePath("CaptureArea/Shape")
+
+[node name="Tiles" parent="GoalCup/Terrain" index="0" unique_id=662144106]
+tile_map_data = PackedByteArray("AAAAAAIAAAAIAAAAAAABAAIAAAAIAAAAAAAAAAMAAAAGAAkAAAABAAMAAAAHAAkAAAAAAAAAAAAEAAgAAAABAAAAAAAFAAgAAAAAAAEAAAAIAAAAAAABAAEAAAAIAAAAAAACAAIAAAAIAAAAAAADAAIAAAAIAAAAAAACAAMAAAAGAAkAAAADAAMAAAAHAAkAAAACAAAAAAAEAAgAAAADAAAAAAAFAAgAAAACAAEAAAAIAAAAAAADAAEAAAAIAAAAAAAEAAIAAAAIAAAAAAAFAAIAAAAIAAAAAAAEAAMAAAAGAAkAAAAFAAMAAAAHAAkAAAAGAAIAAAAIAAAAAAAHAAIAAAAIAAAAAAAGAAMAAAAGAAkAAAAHAAMAAAAHAAkAAAAIAAIAAAAIAAAAAAAJAAIAAAAIAAAAAAAIAAMAAAAGAAkAAAAJAAMAAAAHAAkAAAAKAAIAAAAIAAAAAAALAAIAAAAIAAAAAAAKAAMAAAAGAAkAAAALAAMAAAAHAAkAAAAMAAIAAAAIAAAAAAANAAIAAAAIAAAAAAAMAAMAAAAGAAkAAAANAAMAAAAHAAkAAAAMAAAAAAAEAAgAAAANAAAAAAAFAAgAAAAMAAEAAAAIAAAAAAANAAEAAAAIAAAAAAAOAAIAAAAIAAAAAAAPAAIAAAAIAAAAAAAOAAMAAAAGAAkAAAAPAAMAAAAGAAkAAAAOAAAAAAAEAAgAAAAPAAAAAAAEAAgAAAAOAAEAAAAIAAAAAAAPAAEAAAAIAAAAAAAEAAAAAAAEAAgAAAAEAAEAAAAIAAAAAAAFAAAAAAAFAAgAAAAFAAEAAAAIAAAAAAAGAAAAAAAEAAgAAAAGAAEAAAAIAAAAAAAJAAAAAAAFAAgAAAAJAAEAAAAIAAAAAAAKAAAAAAAEAAgAAAAKAAEAAAAIAAAAAAALAAAAAAAFAAgAAAALAAEAAAAIAAAAAAA=")
+
+[node name="SolidSilhouette" parent="GoalCup/Terrain" index="1" unique_id=46530098]
+polygon = PackedVector2Array(0, 0, 0, 16, 64, 16, 64, 0, 35, 0, 35, 7, 29, 7, 29, 0)
 
 [node name="VoidBoundary" type="Marker2D" parent="." unique_id=1981183019]
 position = Vector2(0, 275)
-
-[node name="Tiles" parent="GoalCup/Terrain" index="0"]
-tile_map_data = PackedByteArray("AAAAAAIAAAAIAAAAAAABAAIAAAAIAAAAAAAAAAMAAAAGAAkAAAABAAMAAAAHAAkAAAAAAAAAAAAEAAgAAAABAAAAAAAFAAgAAAAAAAEAAAAIAAAAAAABAAEAAAAIAAAAAAACAAIAAAAIAAAAAAADAAIAAAAIAAAAAAACAAMAAAAGAAkAAAADAAMAAAAHAAkAAAACAAAAAAAEAAgAAAADAAAAAAAFAAgAAAACAAEAAAAIAAAAAAADAAEAAAAIAAAAAAAEAAIAAAAIAAAAAAAFAAIAAAAIAAAAAAAEAAMAAAAGAAkAAAAFAAMAAAAHAAkAAAAGAAIAAAAIAAAAAAAHAAIAAAAIAAAAAAAGAAMAAAAGAAkAAAAHAAMAAAAHAAkAAAAIAAIAAAAIAAAAAAAJAAIAAAAIAAAAAAAIAAMAAAAGAAkAAAAJAAMAAAAHAAkAAAAKAAIAAAAIAAAAAAALAAIAAAAIAAAAAAAKAAMAAAAGAAkAAAALAAMAAAAHAAkAAAAMAAIAAAAIAAAAAAANAAIAAAAIAAAAAAAMAAMAAAAGAAkAAAANAAMAAAAHAAkAAAAMAAAAAAAEAAgAAAANAAAAAAAFAAgAAAAMAAEAAAAIAAAAAAANAAEAAAAIAAAAAAAOAAIAAAAIAAAAAAAPAAIAAAAIAAAAAAAOAAMAAAAGAAkAAAAPAAMAAAAGAAkAAAAOAAAAAAAEAAgAAAAPAAAAAAAEAAgAAAAOAAEAAAAIAAAAAAAPAAEAAAAIAAAAAAAEAAAAAAAEAAgAAAAEAAEAAAAIAAAAAAAFAAAAAAAFAAgAAAAFAAEAAAAIAAAAAAAGAAAAAAAEAAgAAAAGAAEAAAAIAAAAAAAJAAAAAAAFAAgAAAAJAAEAAAAIAAAAAAAKAAAAAAAEAAgAAAAKAAEAAAAIAAAAAAALAAAAAAAFAAgAAAALAAEAAAAIAAAAAAA=")
-
-[node name="SolidSilhouette" parent="GoalCup/Terrain" index="1"]
-polygon = PackedVector2Array(0, 0, 0, 16, 64, 16, 64, 0, 35, 0, 35, 7, 29, 7, 29, 0)
 
 [editable path="GoalCup"]
 [editable path="GoalCup/Terrain"]

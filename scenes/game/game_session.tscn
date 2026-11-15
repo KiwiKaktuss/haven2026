@@ -30,12 +30,13 @@ camera_controller = NodePath("CameraRig")
 [node name="Ball" parent="." unique_id=448906579 instance=ExtResource("2")]
 position = Vector2(-70, -40)
 
-[node name="AimController" type="Node2D" parent="." unique_id=990583632 node_paths=PackedStringArray("session", "preview", "camera")]
+[node name="AimController" type="Node2D" parent="." unique_id=990583632 node_paths=PackedStringArray("session", "preview", "camera", "ball_feedback")]
 process_physics_priority = 100
 script = ExtResource("aim")
 session = NodePath("..")
 preview = NodePath("../TrajectoryPreview")
 camera = NodePath("../CameraRig/Camera2D")
+ball_feedback = NodePath("../Ball/Feedback")
 
 [node name="TrajectoryPreview" parent="." unique_id=1397546951 instance=ExtResource("3")]
 

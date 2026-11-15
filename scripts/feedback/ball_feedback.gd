@@ -21,6 +21,7 @@ var _effect: int = 0
 var _last_position: Vector2
 var _locator_anchor: Vector2
 var _locator_idle_elapsed: float = 0.0
+var _locator_aiming: bool = false
 
 func _ready() -> void:
     ball.effect_changed.connect(_effect_changed)
@@ -37,9 +38,20 @@ func _ready() -> void:
 func _reset_locator() -> void:
     _locator_anchor = ball.global_position
     _locator_idle_elapsed = 0.0
-    $Locator.show()
+    $Locator.visible = not _locator_aiming
+
+func set_locator_aiming(aiming: bool) -> void:
+    _locator_aiming = aiming
+    if aiming:
+        _locator_idle_elapsed = 0.0
+        $Locator.hide()
 
 func _physics_process(delta: float) -> void:
+    if _locator_aiming:
+        _locator_anchor = ball.global_position
+        _locator_idle_elapsed = 0.0
+        $Locator.hide()
+        return
     # Compare with an anchor, not the previous frame, so slow movement still
     # counts while sub-pixel contact jitter does not continually reset the timer.
     if ball.global_position.distance_to(_locator_anchor) > locator_movement_tolerance:

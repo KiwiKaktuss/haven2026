@@ -4,6 +4,7 @@ signal aim_changed
 @export var session: GameSession
 @export var preview: TrajectoryPreview
 @export var camera: Camera2D
+@export var ball_feedback: BallFeedback
 @export var enabled: bool = true
 var aiming: bool = false
 var anchor: Vector2
@@ -15,6 +16,8 @@ var _power_fill: StyleBoxFlat
 var _power_flames: Node2D
 
 func _ready() -> void:
+	if ball_feedback != null:
+		aim_changed.connect(func() -> void: ball_feedback.set_locator_aiming(aiming))
 	# Query after live ball/platform motion, avoiding a one-tick trailing origin.
 	process_physics_priority = 100
 	_power_bar = ProgressBar.new()

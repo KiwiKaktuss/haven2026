@@ -43,6 +43,15 @@ func run() -> void:
     check(not arrow.visible, "A shot immediately hides the locator")
     ball.reset_motion(session.course.start_marker.global_position)
     check(arrow.visible, "Respawning restores the locator immediately")
+    session.aim.begin(Vector2(400, 200))
+    check(not arrow.visible, "Starting aim immediately hides the locator")
+    feedback._physics_process(15.0)
+    check(not arrow.visible, "Locator stays hidden even when aiming longer than ten seconds")
+    session.aim.cancel()
+    feedback._physics_process(9.9)
+    check(not arrow.visible, "Cancelling aim starts a fresh idle delay")
+    feedback._physics_process(0.1)
+    check(arrow.visible, "Locator returns after ten idle seconds following cancelled aim")
     session.camera_controller.set_zoom(3.0)
     await process_frame
     feedback._process(0.0)
@@ -55,7 +64,10 @@ func run() -> void:
     feedback._process(0.0)
     check(arrow.get_global_transform_with_canvas().get_scale().x > screen_scale.x, "Zooming in makes the arrow larger on screen")
     session.camera_controller.set_zoom(3.0)
-    if "--capture" in OS.get_cmdline_user_args():
+    if "--capture" in OS.get_cmdline_user_args() or "--capture-aim" in OS.get_cmdline_user_args():
+        if "--capture-aim" in OS.get_cmdline_user_args():
+            session.aim.begin(Vector2(400, 200))
+            session.aim.move_pointer(Vector2(380, 250))
         session.camera_controller.recenter(true)
         await process_frame
         await process_frame
