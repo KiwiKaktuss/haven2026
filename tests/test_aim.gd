@@ -102,7 +102,10 @@ func run() -> void:
     aim.update_preview()
     check(preview.envelope.visible and preview.envelope.polygons.size() > 0, "Spread draws as explicit filled sections")
     var shared_count: int = mini(preview.central.points.size(), mini(preview.lower.points.size(), preview.upper.points.size()))
-    check(preview.envelope.polygon.size() == shared_count * 2, "Ribbon stops at the first terminated prediction")
+    check(shared_count == preview.central.points.size(), "Spread samples reach the main trajectory's final tick")
+    check(preview.envelope.polygon.size() == preview.central.points.size() * 2, "Ribbon reaches the main trajectory endpoint")
+    check(preview.envelope.polygon[-2].lerp(preview.envelope.polygon[-1], 0.5).distance_to(preview.to_local(preview.central.points[-1])) < 0.01, "Final spread section stays centered on main endpoint")
+    check(preview.envelope.polygon[-2].distance_to(preview.envelope.polygon[-1]) > 0.1, "Spread stays visible through the endpoint without a moving taper")
     var widest_spread: float = 0.0
     for index: int in range(shared_count):
         var ribbon_width: float = preview.envelope.polygon[index * 2].distance_to(preview.envelope.polygon[index * 2 + 1])
@@ -215,6 +218,7 @@ func run() -> void:
     terrain.position = old_terrain_position
     await ticks()
     await prediction_cases()
+    await spread_wall_case()
     lab.free()
     print("Aim checks: %s checks, %s failure(s)" % [checks, failures])
     quit(0 if failures == 0 else 1)
@@ -270,3 +274,32 @@ func prediction_cases() -> void:
     ball.play_card(card, ShotCalculation.impulse(card, drag, ball.tuning))
     ball.step_motion(dt)
     check(ball.global_position.distance_to(predicted.points[1]) < 0.01, "Moving-platform launch agrees with preview")
+
+func spread_wall_case() -> void:
+    ball.reset_motion(Vector2(48, 50))
+    choose(&"fire")
+    aim.begin(Vector2(300, 200))
+    aim.move_pointer(Vector2(300, 360))
+    aim.update_preview()
+    # Put a thin obstacle on an outer path, away from the nominal path. It must
+    # stop a normal query without shortening or changing the displayed band.
+    var baseline_band: PackedVector2Array = preview.envelope.polygon.duplicate()
+    var baseline_main: PackedVector2Array = preview.central.points.duplicate()
+    var obstacle := StaticBody2D.new()
+    var obstacle_shape := CollisionShape2D.new()
+    var rectangle := RectangleShape2D.new()
+    rectangle.size = Vector2(2, 2)
+    obstacle_shape.shape = rectangle
+    obstacle.add_child(obstacle_shape)
+    lab.add_child(obstacle)
+    var sample_index: int = preview.upper.points.size() / 2
+    obstacle.global_position = preview.upper.points[sample_index]
+    await ticks(2)
+    var spread: float = ShotCalculation.spread(session.deck.selected_card(), 1.0)
+    var clipped: Dictionary = preview.predict(ball, session.deck.selected_card(), aim.drag_vector(), spread, baseline_main.size() - 1)
+    aim.update_preview()
+    check(clipped.points.size() < preview.upper.points.size(), "Fixture wall intersects an outer prediction before nominal endpoint")
+    check(preview.central.points == baseline_main, "Outer-path wall leaves main trajectory unchanged")
+    check(preview.envelope.polygon == baseline_band, "Light green band continues unchanged through outer-path walls")
+    obstacle.free()
+    aim.cancel()

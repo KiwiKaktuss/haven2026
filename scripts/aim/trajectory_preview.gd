@@ -42,7 +42,7 @@ func _draw() -> void:
 	else:
 		draw_circle(endpoint, 1.8 * _screen_scale, Color(0.18, 0.43, 0.32, 0.4))
 
-func predict(ball: GolfBall, card: CardDefinition, drag: Vector2, angular_offset: float = 0.0, max_steps: int = -1) -> Dictionary:
+func predict(ball: GolfBall, card: CardDefinition, drag: Vector2, angular_offset: float = 0.0, max_steps: int = -1, stop_on_collision: bool = true) -> Dictionary:
 	var at: Vector2 = ShotCalculation.origin(card, ball)
 	var speed: Vector2 = ShotCalculation.velocity_after(card, ball, drag, ball.tuning, angular_offset)
 	var points: PackedVector2Array = PackedVector2Array([at])
@@ -81,7 +81,9 @@ func predict(ball: GolfBall, card: CardDefinition, drag: Vector2, angular_offset
 		speed = BallMotion.accelerate(speed, ball.tuning.gravity * gravity_multiplier, dt)
 		var motion: Vector2 = speed * dt
 		probe.global_position = at
-		var hit: KinematicCollision2D = probe.move_and_collide(motion, true, ball.tuning.collision_margin)
+		var hit: KinematicCollision2D
+		if stop_on_collision or armed:
+			hit = probe.move_and_collide(motion, true, ball.tuning.collision_margin)
 		if armed and passing == null and hit != null and TerrainQuery.enters(motion, hit.get_normal()):
 			passing = hit.get_collider() as TerrainObject
 			if passing != null:
@@ -91,7 +93,12 @@ func predict(ball: GolfBall, card: CardDefinition, drag: Vector2, angular_offset
 				ignored_id = passing.object_id
 				probe.add_collision_exception_with(passing)
 				ghost_points.append(at + hit.get_travel())
-				hit = probe.move_and_collide(motion, true, ball.tuning.collision_margin)
+				if stop_on_collision:
+					hit = probe.move_and_collide(motion, true, ball.tuning.collision_margin)
+		# Spread samples describe uncertainty for the full nominal flight. Terrain
+		# still drives Ghost's passage effect, but cannot truncate the spread band.
+		if not stop_on_collision:
+			hit = null
 		if hit != null:
 			at += hit.get_travel()
 			points.append(at)
@@ -122,8 +129,8 @@ func refresh(ball: GolfBall, card: CardDefinition, drag: Vector2, affordable: bo
 	if frame != _last_query_frame or key != _last_query_key:
 		central = predict(ball, card, drag)
 		var spread: float = ShotCalculation.spread(card, ShotCalculation.strength(drag, ball.tuning))
-		lower = predict(ball, card, drag, -spread, central.points.size() - 1) if spread > 0.00001 else central
-		upper = predict(ball, card, drag, spread, central.points.size() - 1) if spread > 0.00001 else central
+		lower = predict(ball, card, drag, -spread, central.points.size() - 1, false) if spread > 0.00001 else central
+		upper = predict(ball, card, drag, spread, central.points.size() - 1, false) if spread > 0.00001 else central
 		_last_query_frame = frame
 		_last_query_key = key
 	_screen_scale = 1.0 / maxf(zoom, 0.001)
@@ -146,8 +153,8 @@ func _local_points(world_points: PackedVector2Array) -> PackedVector2Array:
 	return result
 
 func _build_envelope(left: PackedVector2Array, right: PackedVector2Array) -> void:
-	# A bounded ribbon follows only the shared, collision-free part of the
-	# predictions. Never join a stopped endpoint to a still-flying boundary.
+	# Both spread samples run for the entire central flight, including through
+	# terrain. Keep the ribbon centered on the main line through its final point.
 	var count: int = mini(central.points.size(), mini(left.size(), right.size()))
 	var vertices := PackedVector2Array()
 	var colors := PackedColorArray()
@@ -159,11 +166,9 @@ func _build_envelope(left: PackedVector2Array, right: PackedVector2Array) -> voi
 		var normal: Vector2 = (after - before).normalized().orthogonal()
 		var half_width: float = minf(left[index].distance_to(right[index]) * 0.5, maximum_spread_screen_width * 0.5 * _screen_scale)
 		var progress: float = float(index) / maxf(count - 1, 1)
-		# Taper both ends so the spread never ends with a blunt cut.
-		half_width *= minf(1.0, (1.0 - progress) * 8.0)
 		vertices.append(to_local(center + normal * half_width))
 		vertices.append(to_local(center - normal * half_width))
-		var tint := Color(0.42, 0.73, 0.53, 0.22 * (1.0 - progress * 0.7))
+		var tint := Color(0.58, 0.86, 0.62, 0.26 * (1.0 - progress * 0.35))
 		colors.append(tint)
 		colors.append(tint)
 		if index == 0:
