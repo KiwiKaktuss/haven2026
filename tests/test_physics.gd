@@ -102,7 +102,12 @@ func run() -> void:
     var vertical: MovingPlatform = lab.get_node("MovingPlatforms/Vertical")
     place(vertical.to_global(Vector2(24, -2.02)), Vector2(0, 5))
     ball.safe_position = Vector2(999, 999)
-    await ticks(10)
+    # A descending platform can initially move away from this slow ball.
+    # Wait for contact rather than assuming it happens in ten physics ticks.
+    for tick: int in range(120):
+        await ticks(1)
+        if ball.attached_body == vertical:
+            break
     check(ball.attached_body == vertical, "Moving sticky contact attaches")
     local = vertical.to_local(ball.global_position)
     await ticks(45)

@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Deck Golf"
+config/version="1.0"
 run/main_scene="uid://1xa8a3r8vswf"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"

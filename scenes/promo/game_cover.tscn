@@ -1,0 +1,321 @@
+[gd_scene format=3 uid="uid://b40k5be676u5l"]
+
+[ext_resource type="Script" uid="uid://dnbcjo1nrtnwc" path="res://scripts/promo/game_cover.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bb1m40l15ox2e" path="res://art/DeckGolf.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://rh0u6s2dfrv4" path="res://art/cards2.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://byhafr15l7ld8" path="res://art/background2.png" id="background"]
+
+[sub_resource type="AtlasTexture" id="classic"]
+atlas = ExtResource("4")
+region = Rect2(44, 0, 22, 31)
+
+[sub_resource type="AtlasTexture" id="heavy"]
+atlas = ExtResource("4")
+region = Rect2(88, 0, 22, 31)
+
+[sub_resource type="AtlasTexture" id="rewind"]
+atlas = ExtResource("4")
+region = Rect2(88, 31, 22, 31)
+
+[sub_resource type="AtlasTexture" id="ghost"]
+atlas = ExtResource("4")
+region = Rect2(66, 31, 22, 31)
+
+[sub_resource type="AtlasTexture" id="slow"]
+atlas = ExtResource("4")
+region = Rect2(66, 0, 22, 31)
+
+[sub_resource type="AtlasTexture" id="sniper"]
+atlas = ExtResource("4")
+region = Rect2(22, 0, 22, 31)
+
+[sub_resource type="AtlasTexture" id="bounce"]
+atlas = ExtResource("4")
+region = Rect2(0, 31, 22, 31)
+
+[sub_resource type="AtlasTexture" id="glue"]
+atlas = ExtResource("4")
+region = Rect2(22, 31, 22, 31)
+
+[sub_resource type="AtlasTexture" id="fire"]
+atlas = ExtResource("4")
+region = Rect2(0, 0, 22, 31)
+
+[sub_resource type="AtlasTexture" id="dash"]
+atlas = ExtResource("4")
+region = Rect2(44, 31, 22, 31)
+
+[node name="DeckGolfCover" type="Control" unique_id=239330300]
+texture_filter = 1
+clip_contents = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 630.0
+offset_bottom = 500.0
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="." unique_id=2047938574]
+layout_mode = 0
+offset_right = 630.0
+offset_bottom = 500.0
+mouse_filter = 2
+color = Color(0.95, 0.98, 0.95, 1)
+
+[node name="Atmosphere" type="TextureRect" parent="Background" unique_id=1157330223]
+modulate = Color(1, 1, 1, 0.08)
+layout_mode = 0
+offset_right = 630.0
+offset_bottom = 500.0
+mouse_filter = 2
+texture = ExtResource("background")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="CardFrame" type="Node2D" parent="." unique_id=1426039516]
+
+[node name="Left_2_2_ClassicShadow" type="Sprite2D" parent="CardFrame" unique_id=370451237]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(13.009, 523.88)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("classic")
+
+[node name="Left_2_2_ClassicCard" type="Sprite2D" parent="CardFrame" unique_id=2106994199]
+position = Vector2(10.009, 519.88)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("classic")
+
+[node name="Left_1_1_HeavyShadow" type="Sprite2D" parent="CardFrame" unique_id=2091815764]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(-20.72, 313.94)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("heavy")
+
+[node name="Left_1_1_HeavyCard" type="Sprite2D" parent="CardFrame" unique_id=1257526079]
+position = Vector2(-23.72, 309.94)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("heavy")
+
+[node name="Left_1_2_RewindShadow" type="Sprite2D" parent="CardFrame" unique_id=2127483851]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(101.115, 435.775)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("rewind")
+
+[node name="Left_1_2_RewindCard" type="Sprite2D" parent="CardFrame" unique_id=1908275810]
+position = Vector2(98.115, 431.775)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("rewind")
+
+[node name="Left_1_3_GhostShadow" type="Sprite2D" parent="CardFrame" unique_id=139162445]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(222.949, 557.609)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("ghost")
+
+[node name="Left_1_3_GhostCard" type="Sprite2D" parent="CardFrame" unique_id=1608697120]
+position = Vector2(219.949, 553.609)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("ghost")
+
+[node name="Left_0_0_SlowShadow" type="Sprite2D" parent="CardFrame" unique_id=1188897017]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(-54.449, 104)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("slow")
+
+[node name="Left_0_0_SlowCard" type="Sprite2D" parent="CardFrame" unique_id=1838345374]
+position = Vector2(-57.449, 100)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("slow")
+
+[node name="Left_0_1_SniperShadow" type="Sprite2D" parent="CardFrame" unique_id=257966665]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(67.386, 225.834)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("sniper")
+
+[node name="Left_0_1_SniperCard" type="Sprite2D" parent="CardFrame" unique_id=884343624]
+position = Vector2(64.386, 221.834)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("sniper")
+
+[node name="Left_0_2_BounceShadow" type="Sprite2D" parent="CardFrame" unique_id=1602696727]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(189.22, 347.669)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("bounce")
+
+[node name="Left_0_2_BounceCard" type="Sprite2D" parent="CardFrame" unique_id=712691050]
+position = Vector2(186.22, 343.669)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("bounce")
+
+[node name="Left_0_3_GlueShadow" type="Sprite2D" parent="CardFrame" unique_id=1577196555]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(311.055, 469.503)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("glue")
+
+[node name="Left_0_3_GlueCard" type="Sprite2D" parent="CardFrame" unique_id=1502784885]
+position = Vector2(308.055, 465.503)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("glue")
+
+[node name="Left_0_4_HeavyShadow" type="Sprite2D" parent="CardFrame" unique_id=247236191]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(432.889, 591.338)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("heavy")
+
+[node name="Left_0_4_HeavyCard" type="Sprite2D" parent="CardFrame" unique_id=938800516]
+position = Vector2(429.889, 587.338)
+rotation = -0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("heavy")
+
+[node name="Right_2_2_GlueShadow" type="Sprite2D" parent="CardFrame" unique_id=1990220126]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(622.991, 523.88)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("glue")
+
+[node name="Right_2_2_GlueCard" type="Sprite2D" parent="CardFrame" unique_id=1741546024]
+position = Vector2(619.991, 519.88)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("glue")
+
+[node name="Right_1_1_FireShadow" type="Sprite2D" parent="CardFrame" unique_id=136125682]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(656.72, 313.94)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("fire")
+
+[node name="Right_1_1_FireCard" type="Sprite2D" parent="CardFrame" unique_id=415999984]
+position = Vector2(653.72, 309.94)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("fire")
+
+[node name="Right_1_2_SlowShadow" type="Sprite2D" parent="CardFrame" unique_id=214679303]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(534.885, 435.775)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("slow")
+
+[node name="Right_1_2_SlowCard" type="Sprite2D" parent="CardFrame" unique_id=1322224483]
+position = Vector2(531.885, 431.775)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("slow")
+
+[node name="Right_1_3_SniperShadow" type="Sprite2D" parent="CardFrame" unique_id=2115745392]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(413.051, 557.609)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("sniper")
+
+[node name="Right_1_3_SniperCard" type="Sprite2D" parent="CardFrame" unique_id=1944307487]
+position = Vector2(410.051, 553.609)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("sniper")
+
+[node name="Right_0_0_RewindShadow" type="Sprite2D" parent="CardFrame" unique_id=65891728]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(690.449, 104)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("rewind")
+
+[node name="Right_0_0_RewindCard" type="Sprite2D" parent="CardFrame" unique_id=1089294863]
+position = Vector2(687.449, 100)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("rewind")
+
+[node name="Right_0_1_GhostShadow" type="Sprite2D" parent="CardFrame" unique_id=855242421]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(568.614, 225.834)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("ghost")
+
+[node name="Right_0_1_GhostCard" type="Sprite2D" parent="CardFrame" unique_id=1666404004]
+position = Vector2(565.614, 221.834)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("ghost")
+
+[node name="Right_0_2_DashShadow" type="Sprite2D" parent="CardFrame" unique_id=93088873]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(446.78, 347.669)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("dash")
+
+[node name="Right_0_2_DashCard" type="Sprite2D" parent="CardFrame" unique_id=52694091]
+position = Vector2(443.78, 343.669)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("dash")
+
+[node name="Right_0_3_ClassicShadow" type="Sprite2D" parent="CardFrame" unique_id=1544883983]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(324.945, 469.503)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("classic")
+
+[node name="Right_0_3_ClassicCard" type="Sprite2D" parent="CardFrame" unique_id=1083328360]
+position = Vector2(321.945, 465.503)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("classic")
+
+[node name="Right_0_4_FireShadow" type="Sprite2D" parent="CardFrame" unique_id=641721910]
+modulate = Color(0.1, 0.16, 0.19, 0.12)
+position = Vector2(203.111, 591.338)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("fire")
+
+[node name="Right_0_4_FireCard" type="Sprite2D" parent="CardFrame" unique_id=1896208986]
+position = Vector2(200.111, 587.338)
+rotation = 0.7853982
+scale = Vector2(5.3, 5.3)
+texture = SubResource("fire")
+
+[node name="Logo" type="TextureRect" parent="." unique_id=640133030]
+texture_filter = 1
+layout_mode = 0
+offset_left = 107.0
+offset_top = -14.0
+offset_right = 523.0
+offset_bottom = 298.0
+mouse_filter = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 5
+

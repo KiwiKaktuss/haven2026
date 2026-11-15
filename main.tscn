@@ -2,10 +2,6 @@
 [ext_resource type="Script" path="res://scripts/game/main.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/ui/main_menu.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/game/game_session.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://tests/scenes/physics_lab.tscn" id="4"]
-
-[ext_resource type="PackedScene" path="res://tests/scenes/card_lab.tscn" id="card_lab"]
-
 [ext_resource type="PackedScene" path="res://scenes/ui/level_select.tscn" id="levels"]
 [ext_resource type="PackedScene" path="res://scenes/ui/deck_editor.tscn" id="deck"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="pause"]
@@ -24,8 +20,6 @@ cards = ExtResource("cards")
 courses = ExtResource("courses")
 menu_scene = ExtResource("2")
 game_scene = ExtResource("3")
-card_lab_scene = ExtResource("card_lab")
-physics_lab_scene = ExtResource("4")
 screen_host = NodePath("ScreenHost")
 game_host = NodePath("GameHost")
 course_transition = NodePath("TransitionLayer/CourseTransition")

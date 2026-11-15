@@ -228,8 +228,9 @@ func run() -> void:
         check(main.course_index == index and main.session.course.goal_cup != null, "Selectable course has lifecycle targets")
         main.session.finish_attempt(true)
         if index == 3:
-            check(screen().get_node("Center/Content/Next").text == "Choose a course", "Final result offers course selection")
-            click("Center/Content/Next")
+            check(not screen().get_node("Center/Content/Next").visible, "Final result hides next level")
+            click("Center/Content/Menu")
+            click("Center/Content/Play")
             await finish_menu_travel()
             check(screen().has_node("Center/Content/Grid/Course0"), "Final next returns to course selection")
         else:

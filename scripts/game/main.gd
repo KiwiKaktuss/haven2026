@@ -284,9 +284,17 @@ func _inspect_session() -> void:
     game_host.add_child(session)
 
 func _open_physics_lab() -> void:
+    if not OS.is_debug_build():
+        return
+    if physics_lab_scene == null:
+        physics_lab_scene = load("res://tests/scenes/physics_lab.tscn")
     _open_lab(physics_lab_scene)
 
 func _open_card_lab() -> void:
+    if not OS.is_debug_build():
+        return
+    if card_lab_scene == null:
+        card_lab_scene = load("res://tests/scenes/card_lab.tscn")
     _open_lab(card_lab_scene)
 
 func _open_lab(packed: PackedScene) -> void:

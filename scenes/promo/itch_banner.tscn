@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/promo/itch_banner.gd" id="export"]
+[ext_resource type="PackedScene" path="res://scenes/promo/itch_background.tscn" id="background"]
+[ext_resource type="Texture2D" path="res://art/DeckGolf.png" id="logo"]
+
+[node name="ItchBanner" type="Control"]
+texture_filter = 1
+clip_contents = true
+offset_right = 960.0
+offset_bottom = 300.0
+script = ExtResource("export")
+artwork_size = Vector2i(960, 300)
+output_path = "res://art/promo/deck_golf_itch_banner_960x300.png"
+transparent_background = true
+
+[node name="Background" parent="." instance=ExtResource("background")]
+offset_left = -480.0
+offset_right = 1440.0
+script = null
+
+[node name="DeckGolfLogo" type="Sprite2D" parent="."]
+position = Vector2(480, 150)
+scale = Vector2(7, 7)
+texture = ExtResource("logo")

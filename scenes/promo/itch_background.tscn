@@ -1,0 +1,1006 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://scripts/promo/game_cover.gd" id="1_tgwu7"]
+[ext_resource type="Texture2D" path="res://art/background2.png" id="2_encm7"]
+[ext_resource type="Texture2D" path="res://art/coast_tiles.svg" id="3_gar1v"]
+[ext_resource type="TileSet" path="res://resources/terrain/terrain_tileset.tres" id="4_pe12s"]
+[ext_resource type="Texture2D" path="res://art/ball.png" id="5_3ffb6"]
+[ext_resource type="Texture2D" path="res://art/spring_works_scenery.svg" id="6_kv3ei"]
+[ext_resource type="Texture2D" path="res://art/cards2.png" id="7_vi6rf"]
+[ext_resource type="Texture2D" path="res://art/final_ascent_scenery.svg" id="8_anygq"]
+[ext_resource type="Texture2D" path="res://art/cold_snap_scenery.svg" id="9_xniw1"]
+[ext_resource type="Texture2D" path="res://art/all_tiles2.png" id="10_c0cf1"]
+[ext_resource type="Texture2D" path="res://art/hole_sprites.png" id="11_unwcm"]
+
+[sub_resource type="Shader" id="Shader_kpg3m"]
+code = "shader_type canvas_item; uniform bool right_side = false; void fragment() { vec4 c = texture(TEXTURE, UV); float fade = right_side ? smoothstep(0.0, 0.65, UV.x) : 1.0 - smoothstep(0.35, 1.0, UV.x); COLOR = c * COLOR * vec4(1.0, 1.0, 1.0, fade); }"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_af7s0"]
+shader = SubResource("Shader_kpg3m")
+shader_parameter/right_side = false
+
+[sub_resource type="Shader" id="Shader_x1oeu"]
+code = "shader_type canvas_item; uniform bool right_side = false; void fragment() { vec4 c = texture(TEXTURE, UV); float fade = right_side ? smoothstep(0.0, 0.65, UV.x) : 1.0 - smoothstep(0.35, 1.0, UV.x); COLOR = c * COLOR * vec4(1.0, 1.0, 1.0, fade); }"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f81sx"]
+shader = SubResource("Shader_x1oeu")
+shader_parameter/right_side = true
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cx3mu"]
+texture = ExtResource("10_c0cf1")
+texture_region_size = Vector2i(4, 4)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+8:1/0 = 0
+9:1/0 = 0
+10:1/0 = 0
+11:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+8:2/0 = 0
+9:2/0 = 0
+10:2/0 = 0
+11:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+8:3/0 = 0
+9:3/0 = 0
+10:3/0 = 0
+11:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+7:4/0 = 0
+8:4/0 = 0
+9:4/0 = 0
+10:4/0 = 0
+11:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+5:5/0 = 0
+6:5/0 = 0
+7:5/0 = 0
+8:5/0 = 0
+9:5/0 = 0
+10:5/0 = 0
+11:5/0 = 0
+0:6/0 = 0
+1:6/0 = 0
+2:6/0 = 0
+3:6/0 = 0
+4:6/0 = 0
+5:6/0 = 0
+6:6/0 = 0
+7:6/0 = 0
+8:6/0 = 0
+9:6/0 = 0
+10:6/0 = 0
+11:6/0 = 0
+0:7/0 = 0
+1:7/0 = 0
+2:7/0 = 0
+3:7/0 = 0
+4:7/0 = 0
+5:7/0 = 0
+6:7/0 = 0
+7:7/0 = 0
+8:7/0 = 0
+9:7/0 = 0
+10:7/0 = 0
+11:7/0 = 0
+0:8/0 = 0
+1:8/0 = 0
+2:8/0 = 0
+3:8/0 = 0
+4:8/0 = 0
+5:8/0 = 0
+6:8/0 = 0
+7:8/0 = 0
+8:8/0 = 0
+9:8/0 = 0
+10:8/0 = 0
+11:8/0 = 0
+0:9/0 = 0
+1:9/0 = 0
+2:9/0 = 0
+3:9/0 = 0
+4:9/0 = 0
+5:9/0 = 0
+6:9/0 = 0
+7:9/0 = 0
+8:9/0 = 0
+9:9/0 = 0
+10:9/0 = 0
+11:9/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_60hpt"]
+tile_size = Vector2i(4, 4)
+sources/0 = SubResource("TileSetAtlasSource_cx3mu")
+
+[node name="ItchBackground" type="Control" unique_id=225397012]
+texture_filter = 1
+clip_contents = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+script = ExtResource("1_tgwu7")
+artwork_size = Vector2i(1920, 1080)
+output_path = "res://art/promo/deck_golf_itch_background_1920x1080.png"
+metadata/center_safe_area = Rect2i(480, 0, 960, 1080)
+
+[node name="PlainSky" type="ColorRect" parent="." unique_id=798508148]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.95, 0.98, 0.95, 1)
+
+[node name="LeftCoastalCourse" type="Control" parent="." unique_id=1330239192]
+clip_contents = true
+anchors_preset = 0
+offset_right = 480.0
+offset_bottom = 1080.0
+mouse_filter = 2
+
+[node name="GameplayAtmosphere" type="TextureRect" parent="LeftCoastalCourse" unique_id=539641889]
+modulate = Color(1, 1, 1, 0.06)
+material = SubResource("ShaderMaterial_af7s0")
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 1080.0
+texture = ExtResource("2_encm7")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="HighCloud" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1215686781]
+position = Vector2(252, 64)
+scale = Vector2(5, 5)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(176, 32, 16, 16)
+
+[node name="LowCloud" type="Sprite2D" parent="LeftCoastalCourse" unique_id=363353264]
+position = Vector2(-32, 448)
+scale = Vector2(6, 6)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(176, 32, 16, 16)
+
+[node name="Water0_0" type="Sprite2D" parent="LeftCoastalCourse" unique_id=915860704]
+position = Vector2(-80, 1008)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Water1_0" type="Sprite2D" parent="LeftCoastalCourse" unique_id=411608092]
+position = Vector2(-16, 1008)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 16)
+
+[node name="Water2_0" type="Sprite2D" parent="LeftCoastalCourse" unique_id=909897882]
+position = Vector2(48, 1008)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 16)
+
+[node name="Water3_0" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1262542388]
+position = Vector2(112, 1008)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 16)
+
+[node name="Water4_0" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1063498956]
+position = Vector2(176, 1008)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Water5_0" type="Sprite2D" parent="LeftCoastalCourse" unique_id=2051647398]
+position = Vector2(240, 1008)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 16)
+
+[node name="Water6_0" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1698950227]
+position = Vector2(304, 1008)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 16)
+
+[node name="Water7_0" type="Sprite2D" parent="LeftCoastalCourse" unique_id=317646561]
+position = Vector2(368, 1008)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 16)
+
+[node name="Water8_0" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1206846330]
+position = Vector2(432, 1008)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Water0_1" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1541565361]
+position = Vector2(-80, 1072)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 32, 16, 16)
+
+[node name="Water1_1" type="Sprite2D" parent="LeftCoastalCourse" unique_id=68227817]
+position = Vector2(-16, 1072)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 32, 16, 16)
+
+[node name="Water2_1" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1229738299]
+position = Vector2(48, 1072)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(32, 32, 16, 16)
+
+[node name="Water3_1" type="Sprite2D" parent="LeftCoastalCourse" unique_id=509102554]
+position = Vector2(112, 1072)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(48, 32, 16, 16)
+
+[node name="Water4_1" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1442261847]
+position = Vector2(176, 1072)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(64, 32, 16, 16)
+
+[node name="Water5_1" type="Sprite2D" parent="LeftCoastalCourse" unique_id=505567991]
+position = Vector2(240, 1072)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(80, 32, 16, 16)
+
+[node name="Water6_1" type="Sprite2D" parent="LeftCoastalCourse" unique_id=618036884]
+position = Vector2(304, 1072)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 32, 16, 16)
+
+[node name="Water7_1" type="Sprite2D" parent="LeftCoastalCourse" unique_id=2089114621]
+position = Vector2(368, 1072)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(112, 32, 16, 16)
+
+[node name="Water8_1" type="Sprite2D" parent="LeftCoastalCourse" unique_id=2087820783]
+position = Vector2(432, 1072)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 32, 16, 16)
+
+[node name="Water0_2" type="Sprite2D" parent="LeftCoastalCourse" unique_id=650080507]
+position = Vector2(-80, 1136)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 48, 16, 16)
+
+[node name="Water1_2" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1497959980]
+position = Vector2(-16, 1136)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 48, 16, 16)
+
+[node name="Water2_2" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1248582725]
+position = Vector2(48, 1136)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(32, 48, 16, 16)
+
+[node name="Water3_2" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1970790350]
+position = Vector2(112, 1136)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(48, 48, 16, 16)
+
+[node name="Water4_2" type="Sprite2D" parent="LeftCoastalCourse" unique_id=736998974]
+position = Vector2(176, 1136)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(64, 48, 16, 16)
+
+[node name="Water5_2" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1873413159]
+position = Vector2(240, 1136)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(80, 48, 16, 16)
+
+[node name="Water6_2" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1074796240]
+position = Vector2(304, 1136)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 48, 16, 16)
+
+[node name="Water7_2" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1246470000]
+position = Vector2(368, 1136)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(112, 48, 16, 16)
+
+[node name="Water8_2" type="Sprite2D" parent="LeftCoastalCourse" unique_id=837235065]
+position = Vector2(432, 1136)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 48, 16, 16)
+
+[node name="Water0_3" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1228907812]
+position = Vector2(-80, 1200)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 64, 16, 16)
+
+[node name="Water1_3" type="Sprite2D" parent="LeftCoastalCourse" unique_id=289274369]
+position = Vector2(-16, 1200)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 64, 16, 16)
+
+[node name="Water2_3" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1186304320]
+position = Vector2(48, 1200)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(32, 64, 16, 16)
+
+[node name="Water3_3" type="Sprite2D" parent="LeftCoastalCourse" unique_id=933217421]
+position = Vector2(112, 1200)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(48, 64, 16, 16)
+
+[node name="Water4_3" type="Sprite2D" parent="LeftCoastalCourse" unique_id=649917624]
+position = Vector2(176, 1200)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(64, 64, 16, 16)
+
+[node name="Water5_3" type="Sprite2D" parent="LeftCoastalCourse" unique_id=31563727]
+position = Vector2(240, 1200)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(80, 64, 16, 16)
+
+[node name="Water6_3" type="Sprite2D" parent="LeftCoastalCourse" unique_id=965395281]
+position = Vector2(304, 1200)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 64, 16, 16)
+
+[node name="Water7_3" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1160319288]
+position = Vector2(368, 1200)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(112, 64, 16, 16)
+
+[node name="Water8_3" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1486463843]
+position = Vector2(432, 1200)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 64, 16, 16)
+
+[node name="HighFairway" type="TileMapLayer" parent="LeftCoastalCourse" unique_id=256908243]
+position = Vector2(-48, 280)
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray("AAAAAAAAAAACAAIAAAABAAAAAAACAAQAAAACAAAAAAACAAQAAAADAAAAAAACAAQAAAAEAAAAAAACAAQAAAAFAAAAAAACAAQAAAAGAAAAAAACAAQAAAAHAAAAAAACAAQAAAAIAAAAAAACAAQAAAAJAAAAAAACAAQAAAAKAAAAAAADAAIAAAAAAAEAAAAAAAQAAAABAAEAAQAAAAAAAAACAAEAAQAAAAAAAAADAAEAAQAAAAAAAAAEAAEAAQAAAAAAAAAFAAEAAQAAAAAAAAAGAAEAAQAAAAAAAAAHAAEAAQAAAAAAAAAIAAEAAQAAAAAAAAAJAAEAAQAAAAAAAAAKAAEAAAABAAQAAAAAAAIAAAACAAMAAAABAAIAAAADAAQAAAACAAIAAAADAAQAAAADAAIAAAADAAQAAAAEAAIAAAADAAQAAAAFAAIAAAADAAQAAAAGAAIAAAADAAQAAAAHAAIAAAADAAQAAAAIAAIAAAADAAQAAAAJAAIAAAADAAQAAAAKAAIAAAADAAMAAAA=")
+tile_set = ExtResource("4_pe12s")
+collision_enabled = false
+
+[node name="FairwayGrass" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1068020729]
+position = Vector2(4, 216)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(128, 0, 16, 16)
+
+[node name="FairwayFlowers" type="Sprite2D" parent="LeftCoastalCourse" unique_id=669351610]
+position = Vector2(196, 216)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(144, 0, 16, 16)
+
+[node name="FairwayVines" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1809874822]
+position = Vector2(164, 376)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 0, 16, 16)
+
+[node name="BallOnTee" type="Sprite2D" parent="LeftCoastalCourse" unique_id=2101204693]
+position = Vector2(120, 264)
+scale = Vector2(4, 4)
+texture = ExtResource("5_3ffb6")
+centered = false
+
+[node name="SteppingStone" type="TileMapLayer" parent="LeftCoastalCourse" unique_id=898571740]
+position = Vector2(260, 520)
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray("AAAAAAAAAAACAAIAAAABAAAAAAACAAQAAAACAAAAAAACAAQAAAADAAAAAAACAAQAAAAEAAAAAAADAAIAAAAAAAEAAAACAAMAAAABAAEAAAADAAQAAAACAAEAAAADAAQAAAADAAEAAAADAAQAAAAEAAEAAAADAAMAAAA=")
+tile_set = ExtResource("4_pe12s")
+collision_enabled = false
+
+[node name="DirectionSign" type="Sprite2D" parent="LeftCoastalCourse" unique_id=2005019757]
+position = Vector2(292, 456)
+scale = Vector2(4, 4)
+texture = ExtResource("6_kv3ei")
+centered = false
+region_enabled = true
+region_rect = Rect2(80, 0, 16, 16)
+
+[node name="LowerCoast" type="TileMapLayer" parent="LeftCoastalCourse" unique_id=1348609844]
+position = Vector2(-64, 784)
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray("AAAAAAAAAAACAAIAAAABAAAAAAACAAQAAAACAAAAAAACAAQAAAADAAAAAAACAAQAAAAEAAAAAAACAAQAAAAFAAAAAAACAAQAAAAGAAAAAAACAAQAAAAHAAAAAAACAAQAAAAIAAAAAAACAAQAAAAJAAAAAAACAAQAAAAKAAAAAAACAAQAAAALAAAAAAADAAIAAAAAAAEAAAAAAAQAAAABAAEAAQAAAAAAAAACAAEAAQAAAAAAAAADAAEAAQAAAAAAAAAEAAEAAQAAAAAAAAAFAAEAAQAAAAAAAAAGAAEAAQAAAAAAAAAHAAEAAQAAAAAAAAAIAAEAAQAAAAAAAAAJAAEAAQAAAAAAAAAKAAEAAQAAAAAAAAALAAEAAAABAAQAAAAAAAIAAAAAAAQAAAABAAIAAQAAAAAAAAACAAIAAQAAAAAAAAADAAIAAQAAAAAAAAAEAAIAAQAAAAAAAAAFAAIAAQAAAAAAAAAGAAIAAQAAAAAAAAAHAAIAAQAAAAAAAAAIAAIAAQAAAAAAAAAJAAIAAQAAAAAAAAAKAAIAAQAAAAAAAAALAAIAAAABAAQAAAAAAAMAAAACAAMAAAABAAMAAAADAAQAAAACAAMAAAADAAQAAAADAAMAAAADAAQAAAAEAAMAAAADAAQAAAAFAAMAAAADAAQAAAAGAAMAAAADAAQAAAAHAAMAAAADAAQAAAAIAAMAAAADAAQAAAAJAAMAAAADAAQAAAAKAAMAAAADAAQAAAALAAMAAAADAAMAAAA=")
+tile_set = ExtResource("4_pe12s")
+collision_enabled = false
+
+[node name="CoastalReeds" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1852454636]
+position = Vector2(20, 720)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(176, 0, 16, 16)
+
+[node name="CoastalFlowers" type="Sprite2D" parent="LeftCoastalCourse" unique_id=23359141]
+position = Vector2(232, 720)
+scale = Vector2(4, 4)
+texture = ExtResource("6_kv3ei")
+centered = false
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 16)
+
+[node name="CoastalVines" type="Sprite2D" parent="LeftCoastalCourse" unique_id=1647035094]
+position = Vector2(112, 912)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(192, 0, 16, 16)
+
+[node name="LowSteppingStone" type="TileMapLayer" parent="LeftCoastalCourse" unique_id=545895170]
+position = Vector2(352, 948)
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAEAAAABAAAAAAAAAAIAAAACAAAAAAACAAEAAAA=")
+tile_set = ExtResource("4_pe12s")
+collision_enabled = false
+
+[node name="ClassicCard" type="Sprite2D" parent="LeftCoastalCourse" unique_id=53506205]
+position = Vector2(24, 966)
+rotation = -0.18
+scale = Vector2(3, 3)
+texture = ExtResource("7_vi6rf")
+centered = false
+region_enabled = true
+region_rect = Rect2(44, 0, 22, 31)
+
+[node name="RightSummitCourse" type="Control" parent="." unique_id=937063615]
+clip_contents = true
+anchors_preset = 0
+offset_left = 1440.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+
+[node name="GameplayAtmosphere" type="TextureRect" parent="RightSummitCourse" unique_id=1936996287]
+modulate = Color(1, 1, 1, 0.06)
+material = SubResource("ShaderMaterial_f81sx")
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 1080.0
+texture = ExtResource("2_encm7")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="HighCloud" type="Sprite2D" parent="RightSummitCourse" unique_id=1806177612]
+position = Vector2(28, 100)
+scale = Vector2(5, 5)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(176, 32, 16, 16)
+
+[node name="LowCloud" type="Sprite2D" parent="RightSummitCourse" unique_id=954074455]
+position = Vector2(300, 452)
+scale = Vector2(6, 6)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(176, 32, 16, 16)
+
+[node name="Water0_0" type="Sprite2D" parent="RightSummitCourse" unique_id=670342079]
+position = Vector2(-16, 1024)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Water1_0" type="Sprite2D" parent="RightSummitCourse" unique_id=371663066]
+position = Vector2(48, 1024)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 16)
+
+[node name="Water2_0" type="Sprite2D" parent="RightSummitCourse" unique_id=826450257]
+position = Vector2(112, 1024)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 16)
+
+[node name="Water3_0" type="Sprite2D" parent="RightSummitCourse" unique_id=513753238]
+position = Vector2(176, 1024)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 16)
+
+[node name="Water4_0" type="Sprite2D" parent="RightSummitCourse" unique_id=339169025]
+position = Vector2(240, 1024)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Water5_0" type="Sprite2D" parent="RightSummitCourse" unique_id=498799370]
+position = Vector2(304, 1024)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 16)
+
+[node name="Water6_0" type="Sprite2D" parent="RightSummitCourse" unique_id=1657120109]
+position = Vector2(368, 1024)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 16)
+
+[node name="Water7_0" type="Sprite2D" parent="RightSummitCourse" unique_id=23964913]
+position = Vector2(432, 1024)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 16)
+
+[node name="Water8_0" type="Sprite2D" parent="RightSummitCourse" unique_id=341970450]
+position = Vector2(496, 1024)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Water0_1" type="Sprite2D" parent="RightSummitCourse" unique_id=1778817741]
+position = Vector2(-16, 1088)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 32, 16, 16)
+
+[node name="Water1_1" type="Sprite2D" parent="RightSummitCourse" unique_id=2129303231]
+position = Vector2(48, 1088)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 32, 16, 16)
+
+[node name="Water2_1" type="Sprite2D" parent="RightSummitCourse" unique_id=235626483]
+position = Vector2(112, 1088)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(32, 32, 16, 16)
+
+[node name="Water3_1" type="Sprite2D" parent="RightSummitCourse" unique_id=1081512262]
+position = Vector2(176, 1088)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(48, 32, 16, 16)
+
+[node name="Water4_1" type="Sprite2D" parent="RightSummitCourse" unique_id=1556006704]
+position = Vector2(240, 1088)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(64, 32, 16, 16)
+
+[node name="Water5_1" type="Sprite2D" parent="RightSummitCourse" unique_id=2027158602]
+position = Vector2(304, 1088)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(80, 32, 16, 16)
+
+[node name="Water6_1" type="Sprite2D" parent="RightSummitCourse" unique_id=1542268548]
+position = Vector2(368, 1088)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 32, 16, 16)
+
+[node name="Water7_1" type="Sprite2D" parent="RightSummitCourse" unique_id=1531691044]
+position = Vector2(432, 1088)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(112, 32, 16, 16)
+
+[node name="Water8_1" type="Sprite2D" parent="RightSummitCourse" unique_id=843930678]
+position = Vector2(496, 1088)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 32, 16, 16)
+
+[node name="Water0_2" type="Sprite2D" parent="RightSummitCourse" unique_id=2140116263]
+position = Vector2(-16, 1152)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 48, 16, 16)
+
+[node name="Water1_2" type="Sprite2D" parent="RightSummitCourse" unique_id=300023391]
+position = Vector2(48, 1152)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 48, 16, 16)
+
+[node name="Water2_2" type="Sprite2D" parent="RightSummitCourse" unique_id=106049967]
+position = Vector2(112, 1152)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(32, 48, 16, 16)
+
+[node name="Water3_2" type="Sprite2D" parent="RightSummitCourse" unique_id=1584849703]
+position = Vector2(176, 1152)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(48, 48, 16, 16)
+
+[node name="Water4_2" type="Sprite2D" parent="RightSummitCourse" unique_id=860246992]
+position = Vector2(240, 1152)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(64, 48, 16, 16)
+
+[node name="Water5_2" type="Sprite2D" parent="RightSummitCourse" unique_id=364909548]
+position = Vector2(304, 1152)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(80, 48, 16, 16)
+
+[node name="Water6_2" type="Sprite2D" parent="RightSummitCourse" unique_id=221242108]
+position = Vector2(368, 1152)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 48, 16, 16)
+
+[node name="Water7_2" type="Sprite2D" parent="RightSummitCourse" unique_id=490321844]
+position = Vector2(432, 1152)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(112, 48, 16, 16)
+
+[node name="Water8_2" type="Sprite2D" parent="RightSummitCourse" unique_id=1909892972]
+position = Vector2(496, 1152)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 48, 16, 16)
+
+[node name="Water0_3" type="Sprite2D" parent="RightSummitCourse" unique_id=2037448972]
+position = Vector2(-16, 1216)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 64, 16, 16)
+
+[node name="Water1_3" type="Sprite2D" parent="RightSummitCourse" unique_id=260975871]
+position = Vector2(48, 1216)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 64, 16, 16)
+
+[node name="Water2_3" type="Sprite2D" parent="RightSummitCourse" unique_id=1590068473]
+position = Vector2(112, 1216)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(32, 64, 16, 16)
+
+[node name="Water3_3" type="Sprite2D" parent="RightSummitCourse" unique_id=569953315]
+position = Vector2(176, 1216)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(48, 64, 16, 16)
+
+[node name="Water4_3" type="Sprite2D" parent="RightSummitCourse" unique_id=338229146]
+position = Vector2(240, 1216)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(64, 64, 16, 16)
+
+[node name="Water5_3" type="Sprite2D" parent="RightSummitCourse" unique_id=62224692]
+position = Vector2(304, 1216)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(80, 64, 16, 16)
+
+[node name="Water6_3" type="Sprite2D" parent="RightSummitCourse" unique_id=1377949037]
+position = Vector2(368, 1216)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(96, 64, 16, 16)
+
+[node name="Water7_3" type="Sprite2D" parent="RightSummitCourse" unique_id=411475884]
+position = Vector2(432, 1216)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(112, 64, 16, 16)
+
+[node name="Water8_3" type="Sprite2D" parent="RightSummitCourse" unique_id=2059774079]
+position = Vector2(496, 1216)
+scale = Vector2(4, 4)
+texture = ExtResource("3_gar1v")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 64, 16, 16)
+
+[node name="Summit" type="TileMapLayer" parent="RightSummitCourse" unique_id=1847288016]
+position = Vector2(208, 300)
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray("AAAAAAAAAAACAAIAAAABAAAAAAACAAQAAAACAAAAAAACAAQAAAADAAAAAAACAAQAAAAEAAAAAAACAAQAAAAFAAAAAAACAAQAAAAGAAAAAAACAAQAAAAHAAAAAAACAAQAAAAIAAAAAAACAAQAAAAJAAAAAAACAAQAAAAKAAAAAAADAAIAAAAAAAEAAAAAAAQAAAABAAEAAQAAAAAAAAACAAEAAQAAAAAAAAADAAEAAQAAAAAAAAAEAAEAAQAAAAAAAAAFAAEAAQAAAAAAAAAGAAEAAQAAAAAAAAAHAAEAAQAAAAAAAAAIAAEAAQAAAAAAAAAJAAEAAQAAAAAAAAAKAAEAAAABAAQAAAAAAAIAAAACAAMAAAABAAIAAAADAAQAAAACAAIAAAADAAQAAAADAAIAAAADAAQAAAAEAAIAAAADAAQAAAAFAAIAAAADAAQAAAAGAAIAAAADAAQAAAAHAAIAAAADAAQAAAAIAAIAAAADAAQAAAAJAAIAAAADAAQAAAAKAAIAAAADAAMAAAA=")
+tile_set = ExtResource("4_pe12s")
+collision_enabled = false
+
+[node name="SummitBeacon" type="Sprite2D" parent="RightSummitCourse" unique_id=611929827]
+position = Vector2(244, 108)
+scale = Vector2(4, 4)
+texture = ExtResource("8_anygq")
+centered = false
+
+[node name="SummitFlowers" type="Sprite2D" parent="RightSummitCourse" unique_id=110756855]
+position = Vector2(400, 236)
+scale = Vector2(4, 4)
+texture = ExtResource("6_kv3ei")
+centered = false
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 16)
+
+[node name="IceLanding" type="TileMapLayer" parent="RightSummitCourse" unique_id=1960351612]
+position = Vector2(48, 548)
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray("AAAAAAAAAAACAAwAAAABAAAAAAACAA4AAAACAAAAAAACAA4AAAADAAAAAAACAA4AAAAEAAAAAAACAA4AAAAFAAAAAAACAA4AAAAGAAAAAAADAAwAAAAAAAEAAAAAAA4AAAABAAEAAQAAAAEAAAACAAEAAQAAAAEAAAADAAEAAQAAAAEAAAAEAAEAAQAAAAEAAAAFAAEAAQAAAAEAAAAGAAEAAAABAA4AAAAAAAIAAAACAA0AAAABAAIAAAADAA4AAAACAAIAAAADAA4AAAADAAIAAAADAA4AAAAEAAIAAAADAA4AAAAFAAIAAAADAA4AAAAGAAIAAAADAA0AAAA=")
+tile_set = ExtResource("4_pe12s")
+collision_enabled = false
+
+[node name="FrostPine" type="Sprite2D" parent="RightSummitCourse" unique_id=1189962664]
+position = Vector2(76, 484)
+scale = Vector2(4, 4)
+texture = ExtResource("9_xniw1")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="FrostCrystals" type="Sprite2D" parent="RightSummitCourse" unique_id=321377065]
+position = Vector2(204, 484)
+scale = Vector2(4, 4)
+texture = ExtResource("9_xniw1")
+centered = false
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 16)
+
+[node name="Icicles" type="Sprite2D" parent="RightSummitCourse" unique_id=606542356]
+position = Vector2(140, 644)
+scale = Vector2(4, 4)
+texture = ExtResource("9_xniw1")
+centered = false
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 16)
+
+[node name="SpringStep" type="TileMapLayer" parent="RightSummitCourse" unique_id=1646056973]
+position = Vector2(324, 716)
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray("AAAAAAAAAAACABEAAAABAAAAAAACABMAAAACAAAAAAACABMAAAADAAAAAAACABMAAAAEAAAAAAADABEAAAAAAAEAAAACABIAAAABAAEAAAADABMAAAACAAEAAAADABMAAAADAAEAAAADABMAAAAEAAEAAAADABIAAAA=")
+tile_set = ExtResource("4_pe12s")
+collision_enabled = false
+
+[node name="GoalCup" type="Node2D" parent="RightSummitCourse" unique_id=1485804638]
+position = Vector2(160, 924)
+scale = Vector2(4, 4)
+
+[node name="Tiles" type="TileMapLayer" parent="RightSummitCourse/GoalCup" unique_id=614889562]
+tile_map_data = PackedByteArray("AAAAAAIAAAAAAAgAAAABAAIAAAAIAAAAAAAAAAMAAAAEAAcAAAABAAMAAAAHAAkAAAAAAAAAAAAEAAQAAAABAAAAAAAFAAgAAAAAAAEAAAAAAAkAAAABAAEAAAAIAAAAAAACAAIAAAAIAAAAAAADAAIAAAAIAAAAAAACAAMAAAAGAAkAAAADAAMAAAAHAAkAAAACAAAAAAAEAAgAAAADAAAAAAAFAAgAAAACAAEAAAAIAAAAAAADAAEAAAAIAAAAAAAEAAIAAAAIAAAAAAAFAAIAAAAIAAAAAAAEAAMAAAAGAAkAAAAFAAMAAAAHAAkAAAAGAAIAAAAIAAAAAAAHAAIAAAAIAAAAAAAGAAMAAAAGAAkAAAAHAAMAAAAHAAkAAAAIAAIAAAAIAAAAAAAJAAIAAAAIAAAAAAAIAAMAAAAGAAkAAAAJAAMAAAAHAAkAAAAKAAIAAAAIAAAAAAALAAIAAAAIAAAAAAAKAAMAAAAGAAkAAAALAAMAAAAHAAkAAAAMAAIAAAAIAAAAAAANAAIAAAAIAAAAAAAMAAMAAAAGAAkAAAANAAMAAAAHAAkAAAAMAAAAAAAEAAgAAAANAAAAAAAFAAgAAAAMAAEAAAAIAAAAAAANAAEAAAAIAAAAAAAOAAIAAAAIAAAAAAAPAAIAAAADAAgAAAAOAAMAAAAGAAkAAAAPAAMAAAAHAAcAAAAOAAAAAAAEAAgAAAAPAAAAAAAHAAQAAAAOAAEAAAAIAAAAAAAPAAEAAAADAAkAAAAEAAAAAAAEAAgAAAAEAAEAAAAIAAAAAAAFAAAAAAAFAAgAAAAFAAEAAAAIAAAAAAAGAAAAAAAEAAgAAAAGAAEAAAAIAAAAAAAJAAAAAAAFAAgAAAAJAAEAAAAIAAAAAAAKAAAAAAAEAAgAAAAKAAEAAAAIAAAAAAALAAAAAAAFAAgAAAALAAEAAAAIAAAAAAA=")
+tile_set = SubResource("TileSet_60hpt")
+collision_enabled = false
+
+[node name="HoleSprite" type="Sprite2D" parent="RightSummitCourse/GoalCup" unique_id=354141768]
+position = Vector2(28, 0)
+texture = ExtResource("11_unwcm")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 8, 8, 8)
+
+[node name="FlagSprite" type="Sprite2D" parent="RightSummitCourse/GoalCup" unique_id=1467601728]
+position = Vector2(28, -8)
+texture = ExtResource("11_unwcm")
+centered = false
+region_enabled = true
+region_rect = Rect2(8, 0, 8, 16)
+
+[node name="BounceCard" type="Sprite2D" parent="RightSummitCourse" unique_id=1469839983]
+position = Vector2(402, 968)
+rotation = 0.18
+scale = Vector2(3, 3)
+texture = ExtResource("7_vi6rf")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 31, 22, 31)
