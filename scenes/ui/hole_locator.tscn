@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/hole_locator.gd" id="script"]
+[ext_resource type="Texture2D" path="res://art/arrow.png" id="arrow"]
+[ext_resource type="Texture2D" path="res://art/flag.png" id="flag"]
+
+[node name="HoleLocator" type="Node2D"]
+visible = false
+texture_filter = 1
+process_priority = 100
+script = ExtResource("script")
+
+[node name="Arrow" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("arrow")
+
+[node name="Flag" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("flag")

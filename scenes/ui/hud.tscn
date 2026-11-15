@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://b50wt6jxo86jf" path="res://art/line.png" id="line"]
 [ext_resource type="Script" uid="uid://qigccmo7t7ql" path="res://scripts/ui/hud.gd" id="script"]
 [ext_resource type="Theme" uid="uid://vd5i5ly3o81k" path="res://resources/ui/default_theme.tres" id="theme"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hole_locator.tscn" id="locator"]
 
 [sub_resource type="AtlasTexture" id="ink"]
 atlas = ExtResource("frame")
@@ -92,6 +93,8 @@ mouse_filter = 2
 theme = ExtResource("theme")
 script = ExtResource("script")
 flight_scene = ExtResource("flight")
+
+[node name="HoleLocator" parent="." instance=ExtResource("locator")]
 
 [node name="PauseButton" type="Button" parent="." unique_id=1292993583]
 custom_minimum_size = Vector2(48, 48)

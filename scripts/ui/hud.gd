@@ -19,6 +19,7 @@ static func format_time(seconds: float) -> String:
 
 func configure(value: GameSession, _title: String) -> void:
 	session = value
+	$HoleLocator.session = session
 	for slot: int in range(3):
 		get_node("Bottom/Stack/Hand/Card%s" % slot).pressed.connect(_select.bind(slot))
 	session.card_presented.connect(_play_card)
