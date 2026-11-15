@@ -67,20 +67,12 @@ func run() -> void:
     hud.refresh()
     await advance(1)
     check(hud.get_node("Flights").get_child_count() == 0 and session.deck.slot_ready(0), "Redeal cancels all old presentation state")
-    var feedback: BallFeedback = session.ball.get_node("Feedback")
     for card: CardDefinition in session.deck.catalog.cards:
         session.ball.play_card(card, Vector2(30, -70))
-        var visible_count: int = 0
-        for index: int in range(feedback.get_node("Markers").get_child_count()):
-            var marker: CanvasItem = feedback.get_node("Markers").get_child(index)
-            if marker.visible:
-                visible_count += 1
-                check(index == card.effect, "Correct active glyph for " + str(card.id))
-        check(visible_count == 1, "Exactly one active effect glyph for " + str(card.id))
         check(session.ball.fire_trail.emitting == (card.effect == CardDefinition.Effect.FIRE), "Fire trail follows actual active effect")
         check(is_equal_approx(ShotCalculation.impulse(card, Vector2(0, 160), session.tuning).length(), card.power * session.tuning.shot_power_multiplier), "Increased range shared by each card")
     session.ball.set_card_effect(null)
-    check(session.ball.sprite.modulate == Color.WHITE and feedback.get_node("Markers/Classic").visible, "Ghost/reset returns to solid Classic appearance")
+    check(session.ball.sprite.modulate == Color.WHITE, "Ghost/reset returns to solid Classic appearance")
     # A differently sized back reference keeps the authored screen-space footprint.
     var alternate: CardFlight = load("res://scenes/ui/card_flight.tscn").instantiate()
     alternate.back_texture = load("res://art/ball.png")

@@ -4,7 +4,6 @@ extends Node2D
 @export var ball: GolfBall
 @export var burst_scene: PackedScene
 @export var trail_seconds: float = 0.22
-@export var minimum_marker_pixels: float = 5.0
 @export var impact_cooldown: float = 0.07
 @export var effect_colors: PackedColorArray = PackedColorArray([
     Color(0.48, 0.67, 0.64), Color(0.2, 0.67, 0.76), Color(0.55, 0.59, 0.85),
@@ -29,9 +28,6 @@ func _ready() -> void:
 func _effect_changed(effect: CardDefinition.Effect) -> void:
     var was_ghost: bool = _effect == CardDefinition.Effect.GHOST
     _effect = effect
-    for index: int in range($Markers.get_child_count()):
-        $Markers.get_child(index).visible = index == effect
-    $Markers.modulate = effect_colors[effect]
     # Line2D gradients replace default_color; tint the gradient as a whole.
     $WorldTrail.modulate = effect_colors[effect]
     if was_ghost and effect != CardDefinition.Effect.GHOST:
@@ -69,12 +65,6 @@ func _impact(body: TerrainObject, normal: Vector2, speed: float) -> void:
 func _process(delta: float) -> void:
     _clock += delta
     var zoom: float = maxf(get_canvas_transform().get_scale().x, 0.01)
-    $Markers.scale = Vector2.ONE * maxf(1.0, minimum_marker_pixels / (5.0 * zoom))
-    $Markers.rotation = sin(_clock * 3.0) * 0.1
-    $Markers.modulate.a = 0.7 + sin(_clock * 5.0) * 0.12
-    $Tether.visible = is_instance_valid(ball.attached_body)
-    if $Tether.visible:
-        $Tether.points = PackedVector2Array([Vector2.ZERO, -ball.contact_normal * 4.0])
     if ball.global_position.distance_to(_last_position) > 80.0:
         _history.clear()
     _last_position = ball.global_position
