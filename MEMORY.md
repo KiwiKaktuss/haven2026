@@ -39,7 +39,8 @@
   random draws. Gameplay hand tooltips are hidden to keep abilities out of lessons.
 - Ordinary cup capture height ends exactly at the 60Hz settled contact (5px),
   which can round a fraction past the shape. The tutorial-only inherited cup
-  uses a 3x5 local capture rectangle and 2x horizontal scaling; base cups stay intact.
+  uses a 3x5 local capture rectangle; base cups stay intact. The tile-polish
+  follow-up removes the old 2x horizontal scaling entirely.
 - Save inherited child shape overrides in tutorial_cup.tscn; editing an instanced
   child's shape in the room builder alone does not persist it in the packed room.
 - Spring lesson uses the existing launch_spring resource for a dependable 208px/s
@@ -56,3 +57,19 @@
 - Final tutorial proof: `screenshots/result/27/video.mp4` plus 900 original PNGs,
   30s at 30fps. Ten holes complete by frame 702, then completion/card guide.
   Visually checked the minimum 800×640 window, 960×640 and 1440×900 layouts.
+
+# Tutorial tile polish
+
+- Native tile proportions throughout: the cup bank is authored 128×32, with
+  unscaled 8×8 tiles, original 4×4 rim quarters and original 8px hole/flag art.
+  Its root remains at target−(32,0), preserving GoalCup's mouth coordinates.
+- Paint exposed corners/edges with the normal-game atlas and interiors from
+  full.png. Contextual occupancy joins cup banks, wall bases and ice transitions.
+  Moving platforms get independent borders, rather than joins at their initial pose.
+- The rim and main tile layer share one alpha-derived collision silhouette.
+  Bake the cup as owned room nodes after clearing nested scene_file_path values;
+  leaving the old cup-body instance path silently reintroduces renamed children.
+- Tests: 112,992 tile checks, 95 flow checks, all ten holes on real engine ticks.
+  Updated accepted input fixtures for the native-size rim and proper corner solids.
+- Final tile-polish proof: `screenshots/result/28/video.mp4`, 900 PNGs,
+  30 seconds at 30fps; all ten holes complete at frame 777.

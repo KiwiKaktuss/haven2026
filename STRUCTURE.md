@@ -30,8 +30,10 @@ Focused checks:
 - `TutorialSession` inherits the production session scene and shot transaction.
   It supplies known ordinary cards, tracks lesson-specific interactions, and
   advances only on real cup dwell. Misses/retries never touch course records.
-- `tutorial_cup.tscn` inherits the production cup with a wider physical opening,
-  broader attraction field and capture tolerance for 60Hz contact rounding.
+- `tutorial_cup.tscn` uses the production native-size rim/flag within a 128×32
+  bank built from square terrain tiles. Rooms save contextual edge joins with
+  their neighbors; collision silhouettes include the tile art and physical rim.
+  The broad attraction field and 60Hz capture tolerance remain tutorial-specific.
 - `tutorial_overlay.tscn` owns the consistent lesson/count/instruction layout,
   Retry, completion and Begin playing. Its script draws passive guidance and
   patterns in viewport space. Camera framing reserves space for header and hand.
@@ -50,3 +52,6 @@ Verification:
 - `tests/capture_tutorial_views.gd`: screenshots of the menu, lesson HUD and guide.
 - `tests/capture_tutorial_playthrough.gd`: complete 2x proof (120 physics ticks/s
   with time_scale 2 preserves the tested 1/60 physics delta), 900 frames at 30fps.
+
+- `tests/test_tutorial_tiles.gd`: native proportions, opaque connected joins,
+  and exact art/collision agreement across all ten tutorial rooms.

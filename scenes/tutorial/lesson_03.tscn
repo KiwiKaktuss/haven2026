@@ -1,66 +1,113 @@
 [gd_scene format=4]
 
-[ext_resource type="Script" path="res://scripts/levels/course.gd" id="1_n4lfq"]
-[ext_resource type="Script" path="res://scripts/terrain/terrain_object.gd" id="2_b1koy"]
-[ext_resource type="Resource" path="res://resources/terrain/normal.tres" id="3_yk3yu"]
-[ext_resource type="TileSet" path="res://resources/terrain/terrain_tileset.tres" id="4_4546u"]
-[ext_resource type="Script" path="res://scripts/terrain/editable_terrain_tiles.gd" id="5_mre4f"]
-[ext_resource type="PackedScene" path="res://scenes/tutorial/tutorial_cup.tscn" id="6_epion"]
-[ext_resource type="Script" path="res://scripts/levels/goal_cup.gd" id="7_f5jui"]
+[ext_resource type="Script" path="res://scripts/levels/course.gd" id="1_b1koy"]
+[ext_resource type="Script" path="res://scripts/terrain/terrain_object.gd" id="2_yk3yu"]
+[ext_resource type="Resource" path="res://resources/terrain/normal.tres" id="3_4546u"]
+[ext_resource type="TileSet" path="res://resources/terrain/terrain_tileset.tres" id="4_mre4f"]
+[ext_resource type="Script" path="res://scripts/terrain/editable_terrain_tiles.gd" id="5_epion"]
+[ext_resource type="Script" path="res://scripts/levels/goal_cup.gd" id="6_f5jui"]
+[ext_resource type="Texture2D" path="res://art/hole_sprites.png" id="7_2teov"]
+[ext_resource type="TileSet" path="res://resources/terrain/cup_quarters.tres" id="8_2xeeo"]
 
-[node name="TutorialRoom" type="Node2D" unique_id=1476707893 node_paths=PackedStringArray("start_marker", "goal_cup", "void_boundary")]
-script = ExtResource("1_n4lfq")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ue717"]
+size = Vector2(3, 5)
+
+[node name="TutorialRoom" type="Node2D" unique_id=143664539 node_paths=PackedStringArray("start_marker", "goal_cup", "void_boundary")]
+script = ExtResource("1_b1koy")
 camera_bounds = Rect2(-80, -104, 432, 248)
 start_marker = NodePath("StartMarker")
 goal_cup = NodePath("GoalCup")
 void_boundary = NodePath("VoidBoundary")
 
-[node name="Terrain" type="Node2D" parent="." unique_id=1963142572]
+[node name="Terrain" type="Node2D" parent="." unique_id=727162084]
 
-[node name="Start" type="StaticBody2D" parent="Terrain" unique_id=1612756956]
+[node name="Start" type="StaticBody2D" parent="Terrain" unique_id=1947406004]
 position = Vector2(-48, 72)
 collision_mask = 0
-script = ExtResource("2_b1koy")
+script = ExtResource("2_yk3yu")
 object_id = &"start"
-surface = ExtResource("3_yk3yu")
+surface = ExtResource("3_4546u")
 
-[node name="Tiles" type="TileMapLayer" parent="Terrain/Start" unique_id=1332012367]
+[node name="Tiles" type="TileMapLayer" parent="Terrain/Start" unique_id=1045718454]
 texture_filter = 1
-tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAAIAAAAAAAEAAAAAAAJAAAAAAAEAAAAAAAKAAAAAAAEAAAAAAAAAAEAAAAEAAEAAAABAAEAAAAEAAEAAAACAAEAAAAEAAEAAAADAAEAAAAEAAEAAAAEAAEAAAAEAAEAAAAFAAEAAAAEAAEAAAAGAAEAAAAEAAEAAAAHAAEAAAAEAAEAAAAIAAEAAAAEAAEAAAAJAAEAAAAEAAEAAAAKAAEAAAAEAAEAAAAAAAIAAAAEAAEAAAABAAIAAAAEAAEAAAACAAIAAAAEAAEAAAADAAIAAAAEAAEAAAAEAAIAAAAEAAEAAAAFAAIAAAAEAAEAAAAGAAIAAAAEAAEAAAAHAAIAAAAEAAEAAAAIAAIAAAAEAAEAAAAJAAIAAAAEAAEAAAAKAAIAAAAEAAEAAAAAAAMAAAAEAAEAAAABAAMAAAAEAAEAAAACAAMAAAAEAAEAAAADAAMAAAAEAAEAAAAEAAMAAAAEAAEAAAAFAAMAAAAEAAEAAAAGAAMAAAAEAAEAAAAHAAMAAAAEAAEAAAAIAAMAAAAEAAEAAAAJAAMAAAAEAAEAAAAKAAMAAAAEAAEAAAA=")
-tile_set = ExtResource("4_4546u")
+tile_map_data = PackedByteArray("AAAAAAAAAAACAAIAAAABAAAAAAACAAQAAAACAAAAAAACAAQAAAADAAAAAAACAAQAAAAEAAAAAAACAAQAAAAFAAAAAAACAAQAAAAGAAAAAAACAAQAAAAHAAAAAAACAAQAAAAIAAAAAAACAAQAAAAJAAAAAAACAAQAAAAKAAAAAAACAAQAAAAAAAEAAAAAAAQAAAABAAEAAQAAAAAAAAACAAEAAQAAAAAAAAADAAEAAQAAAAAAAAAEAAEAAQAAAAAAAAAFAAEAAQAAAAAAAAAGAAEAAQAAAAAAAAAHAAEAAQAAAAAAAAAIAAEAAQAAAAAAAAAJAAEAAQAAAAAAAAAKAAEAAQAAAAAAAAAAAAIAAAAAAAQAAAABAAIAAQAAAAAAAAACAAIAAQAAAAAAAAADAAIAAQAAAAAAAAAEAAIAAQAAAAAAAAAFAAIAAQAAAAAAAAAGAAIAAQAAAAAAAAAHAAIAAQAAAAAAAAAIAAIAAQAAAAAAAAAJAAIAAQAAAAAAAAAKAAIAAQAAAAAAAAAAAAMAAAACAAMAAAABAAMAAAADAAQAAAACAAMAAAADAAQAAAADAAMAAAADAAQAAAAEAAMAAAADAAQAAAAFAAMAAAADAAQAAAAGAAMAAAADAAQAAAAHAAMAAAADAAQAAAAIAAMAAAADAAQAAAAJAAMAAAADAAQAAAAKAAMAAAADAAQAAAA=")
+tile_set = ExtResource("4_mre4f")
 collision_enabled = false
-script = ExtResource("5_mre4f")
+script = ExtResource("5_epion")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/Start" unique_id=1398204771]
-polygon = PackedVector2Array(0, 32, 88, 32, 88, 0, 0, 0)
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/Start" unique_id=1324780300]
+polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 30, 1, 30, 1, 31, 2, 31, 2, 32, 88, 32, 88, 0, 2, 0)
 
-[node name="FarBank" type="StaticBody2D" parent="Terrain" unique_id=1163111562]
+[node name="FarBank" type="StaticBody2D" parent="Terrain" unique_id=1206405521]
 position = Vector2(168, 72)
 collision_mask = 0
-script = ExtResource("2_b1koy")
+script = ExtResource("2_yk3yu")
 object_id = &"far_bank"
-surface = ExtResource("3_yk3yu")
+surface = ExtResource("3_4546u")
 
-[node name="Tiles" type="TileMapLayer" parent="Terrain/FarBank" unique_id=515533736]
+[node name="Tiles" type="TileMapLayer" parent="Terrain/FarBank" unique_id=156573675]
 texture_filter = 1
-tile_map_data = PackedByteArray("AAAAAAAAAAAEAAAAAAABAAAAAAAEAAAAAAACAAAAAAAEAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAEAAAAAAAGAAAAAAAEAAAAAAAHAAAAAAAEAAAAAAAAAAEAAAAEAAEAAAABAAEAAAAEAAEAAAACAAEAAAAEAAEAAAADAAEAAAAEAAEAAAAEAAEAAAAEAAEAAAAFAAEAAAAEAAEAAAAGAAEAAAAEAAEAAAAHAAEAAAAEAAEAAAAAAAIAAAAEAAEAAAABAAIAAAAEAAEAAAACAAIAAAAEAAEAAAADAAIAAAAEAAEAAAAEAAIAAAAEAAEAAAAFAAIAAAAEAAEAAAAGAAIAAAAEAAEAAAAHAAIAAAAEAAEAAAAAAAMAAAAEAAEAAAABAAMAAAAEAAEAAAACAAMAAAAEAAEAAAADAAMAAAAEAAEAAAAEAAMAAAAEAAEAAAAFAAMAAAAEAAEAAAAGAAMAAAAEAAEAAAAHAAMAAAAEAAEAAAA=")
-tile_set = ExtResource("4_4546u")
+tile_map_data = PackedByteArray("AAAAAAAAAAACAAQAAAABAAAAAAACAAQAAAACAAAAAAACAAQAAAADAAAAAAACAAQAAAAEAAAAAAACAAQAAAAFAAAAAAACAAQAAAAGAAAAAAACAAQAAAAHAAAAAAADAAIAAAAAAAEAAQAAAAAAAAABAAEAAQAAAAAAAAACAAEAAQAAAAAAAAADAAEAAQAAAAAAAAAEAAEAAQAAAAAAAAAFAAEAAQAAAAAAAAAGAAEAAQAAAAAAAAAHAAEAAAABAAQAAAAAAAIAAQAAAAAAAAABAAIAAQAAAAAAAAACAAIAAQAAAAAAAAADAAIAAQAAAAAAAAAEAAIAAQAAAAAAAAAFAAIAAQAAAAAAAAAGAAIAAQAAAAAAAAAHAAIAAAABAAQAAAAAAAMAAAADAAQAAAABAAMAAAADAAQAAAACAAMAAAADAAQAAAADAAMAAAADAAQAAAAEAAMAAAADAAQAAAAFAAMAAAADAAQAAAAGAAMAAAADAAQAAAAHAAMAAAADAAMAAAA=")
+tile_set = ExtResource("4_mre4f")
 collision_enabled = false
-script = ExtResource("5_mre4f")
+script = ExtResource("5_epion")
 
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/FarBank" unique_id=279956323]
-polygon = PackedVector2Array(0, 32, 64, 32, 64, 0, 0, 0)
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/FarBank" unique_id=1683589900]
+polygon = PackedVector2Array(0, 32, 62, 32, 62, 31, 63, 31, 63, 30, 64, 30, 64, 2, 63, 2, 63, 1, 62, 1, 62, 0, 0, 0)
 
-[node name="StartMarker" type="Marker2D" parent="." unique_id=62879394]
+[node name="StartMarker" type="Marker2D" parent="." unique_id=2061832131]
 position = Vector2(0, 69.9)
 
-[node name="VoidBoundary" type="Marker2D" parent="." unique_id=1891347274]
+[node name="VoidBoundary" type="Marker2D" parent="." unique_id=694918816]
 position = Vector2(0, 136)
 
-[node name="GoalCup" type="Node2D" parent="." unique_id=1064181570 node_paths=PackedStringArray("capture_area", "capture_shape") instance=ExtResource("6_epion")]
-position = Vector2(40, 72)
-scale = Vector2(2, 1)
-script = ExtResource("7_f5jui")
+[node name="GoalCup" type="Node2D" parent="." unique_id=1134136545 node_paths=PackedStringArray("capture_area", "capture_shape")]
+position = Vector2(72, 72)
+script = ExtResource("6_f5jui")
 capture_area = NodePath("CaptureArea")
 capture_shape = NodePath("CaptureArea/Shape")
 pull_radius = 36.0
+
+[node name="Terrain" type="StaticBody2D" parent="GoalCup" unique_id=79559245]
+texture_filter = 1
+collision_mask = 0
+script = ExtResource("2_yk3yu")
+object_id = &"cup"
+surface = ExtResource("3_4546u")
+
+[node name="HoleSprite" type="Sprite2D" parent="GoalCup/Terrain" unique_id=236768193]
+position = Vector2(28, 0)
+texture = ExtResource("7_2teov")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 8, 8, 8)
+
+[node name="FlagSprite" type="Sprite2D" parent="GoalCup/Terrain" unique_id=1648843703]
+z_index = -1
+position = Vector2(28, -8)
+texture = ExtResource("7_2teov")
+centered = false
+region_enabled = true
+region_rect = Rect2(8, 0, 8, 16)
+
+[node name="Rim" type="TileMapLayer" parent="GoalCup/Terrain" unique_id=1910218214]
+tile_map_data = PackedByteArray("AAAGAAAAAAAEAAgAAAAGAAEAAAAIAAAAAAAJAAAAAAAFAAgAAAAJAAEAAAAIAAAAAAA=")
+tile_set = ExtResource("8_2xeeo")
+collision_enabled = false
+
+[node name="Tiles" type="TileMapLayer" parent="GoalCup/Terrain" unique_id=1538362820]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAD8/wAAAAACAAQAAAD9/wAAAAACAAQAAAD+/wAAAAACAAQAAAD//wAAAAACAAQAAAAAAAAAAAACAAQAAAABAAAAAAACAAQAAAACAAAAAAACAAQAAAAFAAAAAAACAAQAAAAGAAAAAAACAAQAAAAHAAAAAAACAAQAAAAIAAAAAAACAAQAAAAJAAAAAAACAAQAAAAKAAAAAAACAAQAAAALAAAAAAACAAQAAAD8/wEAAQAAAAAAAAD9/wEAAQAAAAAAAAD+/wEAAQAAAAAAAAD//wEAAQAAAAAAAAAAAAEAAQAAAAAAAAABAAEAAQAAAAAAAAACAAEAAQAAAAAAAAADAAEAAQAAAAAAAAAEAAEAAQAAAAAAAAAFAAEAAQAAAAAAAAAGAAEAAQAAAAAAAAAHAAEAAQAAAAAAAAAIAAEAAQAAAAAAAAAJAAEAAQAAAAAAAAAKAAEAAQAAAAAAAAALAAEAAQAAAAAAAAD8/wIAAQAAAAAAAAD9/wIAAQAAAAAAAAD+/wIAAQAAAAAAAAD//wIAAQAAAAAAAAAAAAIAAQAAAAAAAAABAAIAAQAAAAAAAAACAAIAAQAAAAAAAAADAAIAAQAAAAAAAAAEAAIAAQAAAAAAAAAFAAIAAQAAAAAAAAAGAAIAAQAAAAAAAAAHAAIAAQAAAAAAAAAIAAIAAQAAAAAAAAAJAAIAAQAAAAAAAAAKAAIAAQAAAAAAAAALAAIAAQAAAAAAAAD8/wMAAAADAAQAAAD9/wMAAAADAAQAAAD+/wMAAAADAAQAAAD//wMAAAADAAQAAAAAAAMAAAADAAQAAAABAAMAAAADAAQAAAACAAMAAAADAAQAAAADAAMAAAADAAQAAAAEAAMAAAADAAQAAAAFAAMAAAADAAQAAAAGAAMAAAADAAQAAAAHAAMAAAADAAQAAAAIAAMAAAADAAQAAAAJAAMAAAADAAQAAAAKAAMAAAADAAQAAAALAAMAAAADAAQAAAA=")
+tile_set = ExtResource("4_mre4f")
+collision_enabled = false
+
+[node name="SolidSilhouette" type="CollisionPolygon2D" parent="GoalCup/Terrain" unique_id=1143849515]
+polygon = PackedVector2Array(-32, 32, 96, 32, 96, 0, 35, 0, 35, 7, 29, 7, 29, 0, -32, 0)
+
+[node name="CaptureArea" type="Area2D" parent="GoalCup" unique_id=1225452324]
+position = Vector2(32, 3.5)
+collision_layer = 0
+collision_mask = 2
+
+[node name="Shape" type="CollisionShape2D" parent="GoalCup/CaptureArea" unique_id=731256638]
+shape = SubResource("RectangleShape2D_ue717")

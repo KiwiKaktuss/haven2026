@@ -22,3 +22,19 @@ Final proof: `screenshots/result/27/video.mp4`, 900 original PNG frames,
 30 seconds at 30fps. All ten holes finish at frame 702; the remainder shows
 completion and the optional card guide. Layout inspected at 800×640,
 960×640 and 1440×900.
+
+# Tutorial tile polish
+
+- [x] Replace repeated fill/border tiles with the normal game's connected edges.
+- [x] Rebuild the 128px cup bank from native tiles; remove horizontal scaling
+      from the cup, hole and flag. Match neighboring bank depths.
+- [x] Join touching walls and material transitions; retain independent mover edges.
+- [x] Verify every terrain pixel against the saved collision silhouette and
+      replay all ten holes with legal shots.
+- [x] Inspect and encode the fresh `screenshots/result/28/` proof.
+
+Checks: 112,992 terrain checks, 95 tutorial flow checks, all ten engine-played
+holes. Original user edits to aim/power flames remain untouched.
+
+Tile-polish proof: `screenshots/result/28/video.mp4`, 900 original frames,
+30 seconds at 30fps. All ten holes finish at frame 777.

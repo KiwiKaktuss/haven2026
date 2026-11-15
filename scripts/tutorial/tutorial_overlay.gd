@@ -120,7 +120,7 @@ func _draw() -> void:
         draw_string(get_theme_default_font(), Vector2(24, size.y - 96), "Card cost: 2 elixir", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, INK)
     match session.step_index:
         5:
-            tag(Vector2(192, -54), "WALL ↔")
+            tag(Vector2(192, -46), "WALL ↔")
             if not session.touched_surface:
                 route(PackedVector2Array([Vector2(0, 70), Vector2(48, -12), Vector2(132, -22), Vector2(180, 8), Vector2(150, 48), hole]))
         6:
