@@ -46,7 +46,7 @@ func run() -> void:
 			await settle()
 			check(locator.visible, "Course %d: offscreen hole shows locator" % index)
 			check(arrow.transform.y.normalized().is_equal_approx(direction), "Arrow points toward hole in direction %s" % direction)
-			check(is_zero_approx(flag.global_rotation) and flag.global_position.is_equal_approx(locator.global_position), "Flag stays upright and centered")
+			check(is_zero_approx(flag.global_rotation) and flag.global_position.is_equal_approx(locator.global_position + Vector2(0, 3)), "Flag stays upright and slightly below the arrow center")
 			check(absf((locator.position - center).normalized().cross(direction)) < 0.001, "Edge position follows the bearing to the hole")
 			check(Rect2(Vector2(34, 34), viewport - Vector2(68, 68)).has_point(locator.position), "Rotated arrow remains inside screen")
 			if capture and index == 0:

@@ -15,5 +15,6 @@ scale = Vector2(3, 3)
 texture = ExtResource("arrow")
 
 [node name="Flag" type="Sprite2D" parent="."]
+position = Vector2(0, 3)
 scale = Vector2(3, 3)
 texture = ExtResource("flag")
