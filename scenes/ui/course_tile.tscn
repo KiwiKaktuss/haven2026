@@ -1,0 +1,126 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/course_tile.gd" id="script"]
+[ext_resource type="Texture2D" path="res://art/difficulty.png" id="art"]
+
+[ext_resource type="Texture2D" path="res://art/ui/course_white.svg" id="white"]
+[ext_resource type="Texture2D" path="res://art/ui/course_white_focus.svg" id="white_focus"]
+
+[sub_resource type="StyleBoxTexture" id="white_style"]
+texture = ExtResource("white")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxTexture" id="white_focus_style"]
+texture = ExtResource("white_focus")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+
+[sub_resource type="AtlasTexture" id="preview"]
+atlas = ExtResource("art")
+region = Rect2(1, 1, 46, 30)
+
+[sub_resource type="StyleBoxFlat" id="picture_frame"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.23, 0.32, 0.09)
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+
+[node name="CourseTile" type="Button"]
+custom_minimum_size = Vector2(316, 199)
+mouse_default_cursor_shape = 2
+script = ExtResource("script")
+theme_override_styles/normal = SubResource("white_style")
+theme_override_styles/hover = SubResource("white_focus_style")
+theme_override_styles/focus = SubResource("white_focus_style")
+theme_override_styles/pressed = SubResource("white_focus_style")
+theme_override_styles/hover_pressed = SubResource("white_focus_style")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 18
+
+[node name="Content" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Artwork" type="PanelContainer" parent="Margin/Content"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("picture_frame")
+
+[node name="Canvas" type="Control" parent="Margin/Content/Artwork"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Image" type="TextureRect" parent="Margin/Content/Artwork/Canvas"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 44.0
+offset_top = 2.0
+offset_right = 274.0
+offset_bottom = 152.0
+mouse_filter = 2
+texture = SubResource("preview")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Details" type="HBoxContainer" parent="Margin/Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 7
+
+[node name="Number" type="Label" parent="Margin/Content/Details"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 17
+text = "01"
+
+[node name="Title" type="Label" parent="Margin/Content/Details"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_font_sizes/font_size = 17
+text = "Easy Start"
+
+[node name="Divider" type="ColorRect" parent="Margin/Content/Details"]
+custom_minimum_size = Vector2(1, 17)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+color = Color(0.2, 0.23, 0.32, 0.24)
+
+[node name="Caption" type="Label" parent="Margin/Content/Details"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.38, 0.41, 0.47, 1)
+theme_override_font_sizes/font_size = 13
+text = "Best"
+
+[node name="Time" type="Label" parent="Margin/Content/Details"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 17
+text = "—"

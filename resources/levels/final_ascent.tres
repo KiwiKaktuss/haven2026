@@ -4,5 +4,5 @@
 [resource]
 script = ExtResource("1")
 id = &"final_ascent"
-title = "Final Ascent"
+title = "Up We Go"
 scene = ExtResource("2")

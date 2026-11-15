@@ -150,7 +150,7 @@ func _travel_to_menu_depth(depth: float) -> void:
     var destination: Control = _levels_screen if depth == -1.0 else (_deck_screen if depth == 1.0 else _menu_screen)
     var focus_path: String = "Center/Content/Play" if _journey_progress < 0.0 else "Center/Content/Deck"
     if depth == -1.0:
-        focus_path = "Center/Content/Course0"
+        focus_path = "Center/Content/Grid/Course0"
     elif depth == 1.0:
         focus_path = "Margin/Content/Footer/Back"
     screen_host.move_child(destination, 0)

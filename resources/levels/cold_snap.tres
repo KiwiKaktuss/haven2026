@@ -4,5 +4,5 @@
 [resource]
 script = ExtResource("1")
 id = &"cold_snap"
-title = "Cold Snap"
+title = "Ice Hop"
 scene = ExtResource("2")
