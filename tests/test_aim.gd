@@ -101,6 +101,14 @@ func run() -> void:
     aim.move_pointer(Vector2(300, 360))
     aim.update_preview()
     check(preview.envelope.visible and preview.envelope.polygons.size() > 0, "Spread draws as explicit filled sections")
+    var shared_count: int = mini(preview.central.points.size(), mini(preview.lower.points.size(), preview.upper.points.size()))
+    check(preview.envelope.polygon.size() == shared_count * 2, "Ribbon stops at the first terminated prediction")
+    var widest_spread: float = 0.0
+    for index: int in range(shared_count):
+        var ribbon_width: float = preview.envelope.polygon[index * 2].distance_to(preview.envelope.polygon[index * 2 + 1])
+        widest_spread = maxf(widest_spread, ribbon_width * aim.camera.zoom.x)
+        check(ribbon_width * aim.camera.zoom.x <= preview.maximum_spread_screen_width + 0.01, "Spread ribbon remains bounded on screen")
+    check(widest_spread > 14.0, "Imprecise shots show a broad uncertainty band")
     var different_boundaries: bool = preview.lower.points[-1].distance_to(preview.upper.points[-1]) > 0.5
     check(different_boundaries, "Spread boundary paths differ")
     for section: PackedInt32Array in preview.envelope.polygons:

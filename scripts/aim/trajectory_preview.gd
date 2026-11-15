@@ -11,12 +11,38 @@ extends Node2D
 ## Includes a full-strength vertical Fireball's ascent and return.
 @export_range(0.1, 5.0) var horizon_seconds: float = 4.0
 @export var line_screen_width: float = 2.0
+## Allow imprecise cards to show meaningful spread without covering the course.
+@export var maximum_spread_screen_width: float = 96.0
 @export_range(0.05, 1.0) var unaffordable_opacity: float = 0.3
 var central: Dictionary = {}
 var lower: Dictionary = {}
 var upper: Dictionary = {}
+var _screen_scale: float = 1.0
+var _last_query_frame: int = -1
+var _last_query_key: Array = []
 
-func predict(ball: GolfBall, card: CardDefinition, drag: Vector2, angular_offset: float = 0.0) -> Dictionary:
+func _ready() -> void:
+	central_line.antialiased = true
+	central_line.begin_cap_mode = Line2D.LINE_CAP_ROUND
+	central_line.end_cap_mode = Line2D.LINE_CAP_ROUND
+	var fade := Gradient.new()
+	fade.set_color(0, Color(0.18, 0.43, 0.32, 0.95))
+	fade.set_color(1, Color(0.18, 0.43, 0.32, 0.4))
+	central_line.gradient = fade
+	ghost_marker.antialiased = true
+
+func _draw() -> void:
+	if central.is_empty() or central.points.size() < 2:
+		return
+	var endpoint: Vector2 = to_local(central.points[-1])
+	var color := Color(0.18, 0.43, 0.32, 0.85)
+	if central.hit_step >= 0:
+		draw_circle(endpoint, 3.5 * _screen_scale, Color(0.94, 1.0, 0.95, 0.9))
+		draw_arc(endpoint, 3.5 * _screen_scale, 0, TAU, 24, color, 1.3 * _screen_scale, true)
+	else:
+		draw_circle(endpoint, 1.8 * _screen_scale, Color(0.18, 0.43, 0.32, 0.4))
+
+func predict(ball: GolfBall, card: CardDefinition, drag: Vector2, angular_offset: float = 0.0, max_steps: int = -1) -> Dictionary:
 	var at: Vector2 = ShotCalculation.origin(card, ball)
 	var speed: Vector2 = ShotCalculation.velocity_after(card, ball, drag, ball.tuning, angular_offset)
 	var points: PackedVector2Array = PackedVector2Array([at])
@@ -43,7 +69,10 @@ func predict(ball: GolfBall, card: CardDefinition, drag: Vector2, angular_offset
 		ghost_points.append(at)
 		probe.add_collision_exception_with(passing)
 	var dt: float = 1.0 / Engine.physics_ticks_per_second
-	for tick: int in range(ceili(horizon_seconds / dt)):
+	var steps: int = ceili(horizon_seconds / dt)
+	if max_steps >= 0:
+		steps = mini(steps, max_steps)
+	for tick: int in range(steps):
 		speed = BallMotion.accelerate(speed, ball.tuning.gravity * gravity_multiplier, dt)
 		var motion: Vector2 = speed * dt
 		probe.global_position = at
@@ -81,10 +110,18 @@ func predict(ball: GolfBall, card: CardDefinition, drag: Vector2, angular_offset
 	return {"points": points, "ghost_points": ghost_points, "ignored_id": ignored_id, "collider": collided, "hit_step": hit_step, "ghost_entry_step": ghost_entry_step}
 
 func refresh(ball: GolfBall, card: CardDefinition, drag: Vector2, affordable: bool, zoom: float) -> void:
-	central = predict(ball, card, drag)
-	var spread: float = ShotCalculation.spread(card, ShotCalculation.strength(drag, ball.tuning))
-	lower = predict(ball, card, drag, -spread)
-	upper = predict(ball, card, drag, spread)
+	# Signals can request the identical query several times in one physics frame.
+	# Never cache across ticks: moving terrain and the ball must stay current.
+	var key: Array = [ball, card, drag, ball.global_position, ball.world_velocity(), ball.safe_position]
+	var frame: int = Engine.get_physics_frames()
+	if frame != _last_query_frame or key != _last_query_key:
+		central = predict(ball, card, drag)
+		var spread: float = ShotCalculation.spread(card, ShotCalculation.strength(drag, ball.tuning))
+		lower = predict(ball, card, drag, -spread, central.points.size() - 1) if spread > 0.00001 else central
+		upper = predict(ball, card, drag, spread, central.points.size() - 1) if spread > 0.00001 else central
+		_last_query_frame = frame
+		_last_query_key = key
+	_screen_scale = 1.0 / maxf(zoom, 0.001)
 	central_line.points = _local_points(central.points)
 	_build_envelope(lower.points, upper.points)
 	ghost_marker.points = _local_points(central.ghost_points)
@@ -95,6 +132,7 @@ func refresh(ball: GolfBall, card: CardDefinition, drag: Vector2, affordable: bo
 	origin_marker.scale = Vector2.ONE * scale_factor
 	modulate.a = 1.0 if affordable else unaffordable_opacity
 	visible = true
+	queue_redraw()
 
 func _local_points(world_points: PackedVector2Array) -> PackedVector2Array:
 	var result: PackedVector2Array = PackedVector2Array()
@@ -103,22 +141,34 @@ func _local_points(world_points: PackedVector2Array) -> PackedVector2Array:
 	return result
 
 func _build_envelope(left: PackedVector2Array, right: PackedVector2Array) -> void:
-	# Independent triangles remain drawable when paths turn or terminate on
-	# different surfaces. A single closed contour can intersect itself there.
-	var vertices: PackedVector2Array = PackedVector2Array()
+	# A bounded ribbon follows only the shared, collision-free part of the
+	# predictions. Never join a stopped endpoint to a still-flying boundary.
+	var count: int = mini(central.points.size(), mini(left.size(), right.size()))
+	var vertices := PackedVector2Array()
+	var colors := PackedColorArray()
 	var sections: Array[PackedInt32Array] = []
-	for index: int in range(1, maxi(left.size(), right.size())):
-		var quad: PackedVector2Array = PackedVector2Array([
-			to_local(left[mini(index - 1, left.size() - 1)]),
-			to_local(left[mini(index, left.size() - 1)]),
-			to_local(right[mini(index, right.size() - 1)]),
-			to_local(right[mini(index - 1, right.size() - 1)])])
-		var base: int = vertices.size()
-		vertices.append_array(quad)
-		if absf((quad[1] - quad[0]).cross(quad[2] - quad[0])) > 0.000001:
-			sections.append(PackedInt32Array([base, base + 1, base + 2]))
-		if absf((quad[2] - quad[0]).cross(quad[3] - quad[0])) > 0.000001:
-			sections.append(PackedInt32Array([base, base + 2, base + 3]))
+	for index: int in range(count):
+		var center: Vector2 = central.points[index]
+		var before: Vector2 = central.points[maxi(0, index - 1)]
+		var after: Vector2 = central.points[mini(central.points.size() - 1, index + 1)]
+		var normal: Vector2 = (after - before).normalized().orthogonal()
+		var half_width: float = minf(left[index].distance_to(right[index]) * 0.5, maximum_spread_screen_width * 0.5 * _screen_scale)
+		var progress: float = float(index) / maxf(count - 1, 1)
+		# Taper both ends so the spread never ends with a blunt cut.
+		half_width *= minf(1.0, (1.0 - progress) * 8.0)
+		vertices.append(to_local(center + normal * half_width))
+		vertices.append(to_local(center - normal * half_width))
+		var tint := Color(0.42, 0.73, 0.53, 0.22 * (1.0 - progress * 0.7))
+		colors.append(tint)
+		colors.append(tint)
+		if index == 0:
+			continue
+		var base: int = index * 2
+		for triangle: PackedInt32Array in [PackedInt32Array([base - 2, base, base + 1]), PackedInt32Array([base - 2, base + 1, base - 1])]:
+			if absf((vertices[triangle[1]] - vertices[triangle[0]]).cross(vertices[triangle[2]] - vertices[triangle[0]])) > 0.000001:
+				sections.append(triangle)
+	envelope.color = Color.WHITE
 	envelope.polygon = vertices
+	envelope.vertex_colors = colors
 	envelope.polygons = sections
 	envelope.visible = not sections.is_empty()

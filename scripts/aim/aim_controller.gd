@@ -12,6 +12,8 @@ var left_held: bool = false
 var _fresh_press: bool = false
 
 func _ready() -> void:
+	# Query after live ball/platform motion, avoiding a one-tick trailing origin.
+	process_physics_priority = 100
 	session.deck.hand_changed.connect(update_preview)
 	session.elixir_changed.connect(func(_amount: float) -> void: update_preview())
 

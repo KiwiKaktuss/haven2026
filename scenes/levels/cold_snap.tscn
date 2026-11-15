@@ -1,16 +1,15 @@
-[gd_scene format=4]
+[gd_scene format=4 uid="uid://cbp5o6e38xklx"]
 
-[ext_resource type="Script" path="res://scripts/levels/course.gd" id="1_ixd1i"]
-[ext_resource type="Script" path="res://scripts/terrain/terrain_object.gd" id="2_4oggk"]
+[ext_resource type="Script" uid="uid://dpw3h6qyuxeld" path="res://scripts/levels/course.gd" id="1_ixd1i"]
+[ext_resource type="Script" uid="uid://rn60opm7d2af" path="res://scripts/terrain/terrain_object.gd" id="2_4oggk"]
 [ext_resource type="Resource" path="res://resources/terrain/normal.tres" id="3_gio74"]
-[ext_resource type="TileSet" path="res://resources/terrain/terrain_tileset.tres" id="4_ng8o3"]
-[ext_resource type="Script" path="res://scripts/terrain/editable_terrain_tiles.gd" id="5_glxou"]
+[ext_resource type="TileSet" uid="uid://dwxkqwc1cnw23" path="res://resources/terrain/terrain_tileset.tres" id="4_ng8o3"]
+[ext_resource type="Script" uid="uid://dr0uhgqafho4r" path="res://scripts/terrain/editable_terrain_tiles.gd" id="5_glxou"]
 [ext_resource type="Resource" path="res://resources/terrain/sticky.tres" id="6_kdsc4"]
 [ext_resource type="Resource" path="res://resources/terrain/ice.tres" id="7_4e6rq"]
-[ext_resource type="TileSet" path="res://resources/terrain/coast_tileset.tres" id="8_rghpn"]
-[ext_resource type="TileSet" path="res://resources/terrain/cold_snap_scenery.tres" id="9_dwvj3"]
+[ext_resource type="TileSet" uid="uid://byq1ft6yty1ju" path="res://resources/terrain/coast_tileset.tres" id="8_rghpn"]
+[ext_resource type="TileSet" uid="uid://b2xpejw34u6tq" path="res://resources/terrain/cold_snap_scenery.tres" id="9_dwvj3"]
 [ext_resource type="PackedScene" path="res://scenes/levels/goal_cup.tscn" id="10_8nugv"]
-[ext_resource type="Script" path="res://scripts/levels/goal_cup.gd" id="11_fw1vv"]
 
 [node name="Course" type="Node2D" unique_id=1912569742 node_paths=PackedStringArray("start_marker", "goal_cup", "void_boundary")]
 script = ExtResource("1_ixd1i")
@@ -628,11 +627,8 @@ metadata/support = "GoalCup"
 [node name="StartMarker" type="Marker2D" parent="." unique_id=1209341029]
 position = Vector2(-64, 141.9)
 
-[node name="GoalCup" type="Node2D" parent="." unique_id=1458299921 node_paths=PackedStringArray("capture_area", "capture_shape") instance=ExtResource("10_8nugv")]
+[node name="GoalCup" parent="." unique_id=1458299921 instance=ExtResource("10_8nugv")]
 position = Vector2(192, -112)
-script = ExtResource("11_fw1vv")
-capture_area = NodePath("CaptureArea")
-capture_shape = NodePath("CaptureArea/Shape")
 
 [node name="VoidBoundary" type="Marker2D" parent="." unique_id=1096262270]
 position = Vector2(0, 227)
