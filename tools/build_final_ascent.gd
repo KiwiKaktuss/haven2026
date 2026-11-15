@@ -122,18 +122,18 @@ func decorations() -> void:
     detail("BeachReeds",Vector2(360,200),Vector2i(11,0),1,coast_tiles)
     detail("RecoveryCrate",Vector2(32,224),Vector2i(6,0))
     detail("WestShore",Vector2(-216,224),Vector2i(13,0),1,coast_tiles)
-    # Guide rails communicate the complete optional platform travel.
+    # Rails pass through platform centers; pulleys clear both ends of the full sweep.
     var guide := layer(group,"LiftGuide",works_tiles,-1)
-    guide.position = Vector2(416,-32)
-    for y: int in 6:
+    guide.position = Vector2(420,-48)
+    for y: int in 8:
         guide.set_cell(Vector2i(0,y),0,Vector2i(0,1))
-    detail("LiftUpperPulley",Vector2(416,-48),Vector2i(0,0),-1)
-    detail("LiftLowerPulley",Vector2(416,56),Vector2i(0,0),-1)
+    detail("LiftUpperPulley",Vector2(420,-56),Vector2i(0,0),-1)
+    detail("LiftLowerPulley",Vector2(420,72),Vector2i(0,0),-1)
     var track := layer(group,"ShuttleGuide",works_tiles,-1)
-    track.position = Vector2(-176,-128)
-    for x: int in 10:
+    track.position = Vector2(-192,-132)
+    for x: int in 12:
         track.set_cell(Vector2i(x,0),0,Vector2i(1,1))
-    detail("ShuttleWestPulley",Vector2(-192,-132),Vector2i(0,0),-1)
+    detail("ShuttleWestPulley",Vector2(-200,-132),Vector2i(0,0),-1)
     detail("ShuttleEastPulley",Vector2(-16,-132),Vector2i(0,0),-1)
     # A small beacon gives the summit a recognizable silhouette.
     var beacon_tiles: TileSet = load("res://resources/terrain/final_ascent_scenery.tres")

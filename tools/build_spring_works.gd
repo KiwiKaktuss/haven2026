@@ -112,22 +112,22 @@ func decorations() -> void:
             var uv := Vector2i(0, posmod(x / 3, 2)) if y == 15 else Vector2i(posmod(x * 7 + y * 3, 8), mini(5, 2 + (y - 16) / 2))
             sea.set_cell(Vector2i(x, y), 0, uv)
     # Workshop details sit behind the playable surfaces; landings stay clear.
+    # Rails pass through platform centers; pulleys clear both ends of the full sweep.
     var guide := layer(group, "LiftGuide", works_tiles, -1)
-    guide.position = Vector2(240,80)
-    for y: int in 5:
+    guide.position = Vector2(240,64)
+    for y: int in 7:
         guide.set_cell(Vector2i(0,y),0,Vector2i(0,1))
     var track := layer(group, "ShuttleGuide", works_tiles, -1)
-    track.position = Vector2(-160,-112)
-    for x: int in 9:
+    track.position = Vector2(-192,-116)
+    for x: int in 13:
         track.set_cell(Vector2i(x,0),0,Vector2i(1,1))
-    detail("LiftTopPulley",Vector2(240,64),Vector2i(0,0),-1)
-    detail("LiftBasePulley",Vector2(240,144),Vector2i(0,0),-1)
-    detail("ShuttleWestPulley",Vector2(-176,-116),Vector2i(0,0),-1)
-    detail("ShuttleEastPulley",Vector2(-24,-116),Vector2i(0,0),-1)
+    detail("LiftTopPulley",Vector2(240,56),Vector2i(0,0),-1)
+    detail("LiftBasePulley",Vector2(240,160),Vector2i(0,0),-1)
+    detail("ShuttleWestPulley",Vector2(-200,-116),Vector2i(0,0),-1)
+    detail("ShuttleEastPulley",Vector2(8,-116),Vector2i(0,0),-1)
     detail("StartFlowers",Vector2(-144,136),Vector2i(3,0))
     detail("ForkSign",Vector2(-48,136),Vector2i(5,0))
     detail("WestFlowers",Vector2(-192,48),Vector2i(3,0))
-    detail("WestCog",Vector2(-160,88),Vector2i(0,0),1)
     detail("LaunchArrows",Vector2(56,48),Vector2i(4,0))
     detail("LaunchDockCrate",Vector2(128,48),Vector2i(6,0))
     detail("EastCog",Vector2(344,96),Vector2i(0,0))
@@ -191,8 +191,6 @@ func _initialize() -> void:
     platform("WestBreakwater",Vector2(-208,208),11,3)
     platform("WestCaveBack",Vector2(-208,96),2,14)
     platform("EastCaveBack",Vector2(432,96),2,10)
-    platform("GoalApron",Vector2(144,-144),5,2)
-    platform("GoalBackstop",Vector2(248,-144),10,2)
     platform("WestWall",Vector2(-232,-208),3,60)
     platform("EastWall",Vector2(448,-208),3,60)
     platform("Ceiling",Vector2(-232,-224),88,2)
@@ -206,7 +204,7 @@ func _initialize() -> void:
     scene.start_marker.name = "StartMarker"
     scene.start_marker.position = Vector2(-72,149.9)
     own(scene, scene.start_marker)
-    scene.goal_cup = load("res://scenes/levels/goal_cup.tscn").instantiate()
+    scene.goal_cup = load("res://scenes/levels/spring_works_goal_cup.tscn").instantiate()
     scene.goal_cup.name = "GoalCup"
     scene.goal_cup.position = Vector2(184,-144)
     own(scene, scene.goal_cup)

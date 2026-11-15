@@ -682,15 +682,15 @@ collision_enabled = false
 [node name="LiftGuide" type="TileMapLayer" parent="Decorations" unique_id=1578356089]
 z_index = -1
 texture_filter = 1
-position = Vector2(416, -32)
-tile_map_data = PackedByteArray("AAAAAAAAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAIAAAAAAAEAAAAAAAMAAAAAAAEAAAAAAAQAAAAAAAEAAAAAAAUAAAAAAAEAAAA=")
+position = Vector2(420, -48)
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAIAAAAAAAEAAAAAAAMAAAAAAAEAAAAAAAQAAAAAAAEAAAAAAAUAAAAAAAEAAAAAAAYAAAAAAAEAAAAAAAcAAAAAAAEAAAA=")
 tile_set = ExtResource("12_0wexd")
 collision_enabled = false
 
 [node name="LiftUpperPulley" type="TileMapLayer" parent="Decorations" unique_id=894428962]
 z_index = -1
 texture_filter = 1
-position = Vector2(416, -48)
+position = Vector2(420, -56)
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
 tile_set = ExtResource("12_0wexd")
 collision_enabled = false
@@ -698,7 +698,7 @@ collision_enabled = false
 [node name="LiftLowerPulley" type="TileMapLayer" parent="Decorations" unique_id=204950540]
 z_index = -1
 texture_filter = 1
-position = Vector2(416, 56)
+position = Vector2(420, 72)
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
 tile_set = ExtResource("12_0wexd")
 collision_enabled = false
@@ -706,15 +706,15 @@ collision_enabled = false
 [node name="ShuttleGuide" type="TileMapLayer" parent="Decorations" unique_id=1741339343]
 z_index = -1
 texture_filter = 1
-position = Vector2(-176, -128)
-tile_map_data = PackedByteArray("AAAAAAAAAAABAAEAAAABAAAAAAABAAEAAAACAAAAAAABAAEAAAADAAAAAAABAAEAAAAEAAAAAAABAAEAAAAFAAAAAAABAAEAAAAGAAAAAAABAAEAAAAHAAAAAAABAAEAAAAIAAAAAAABAAEAAAAJAAAAAAABAAEAAAA=")
+position = Vector2(-192, -132)
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAEAAAABAAAAAAABAAEAAAACAAAAAAABAAEAAAADAAAAAAABAAEAAAAEAAAAAAABAAEAAAAFAAAAAAABAAEAAAAGAAAAAAABAAEAAAAHAAAAAAABAAEAAAAIAAAAAAABAAEAAAAJAAAAAAABAAEAAAAKAAAAAAABAAEAAAALAAAAAAABAAEAAAA=")
 tile_set = ExtResource("12_0wexd")
 collision_enabled = false
 
 [node name="ShuttleWestPulley" type="TileMapLayer" parent="Decorations" unique_id=1249454176]
 z_index = -1
 texture_filter = 1
-position = Vector2(-192, -132)
+position = Vector2(-200, -132)
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
 tile_set = ExtResource("12_0wexd")
 collision_enabled = false

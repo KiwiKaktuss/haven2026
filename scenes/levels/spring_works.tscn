@@ -10,7 +10,7 @@
 [ext_resource type="Script" path="res://scripts/terrain/moving_platform.gd" id="8_4hwm4"]
 [ext_resource type="TileSet" path="res://resources/terrain/coast_tileset.tres" id="9_ufyil"]
 [ext_resource type="TileSet" path="res://resources/terrain/spring_works_scenery.tres" id="10_w22e1"]
-[ext_resource type="PackedScene" path="res://scenes/levels/goal_cup.tscn" id="11_ni45o"]
+[ext_resource type="PackedScene" path="res://scenes/levels/spring_works_goal_cup.tscn" id="11_ni45o"]
 [ext_resource type="Script" path="res://scripts/levels/goal_cup.gd" id="12_qsy1e"]
 
 [node name="Course" type="Node2D" unique_id=1606660457 node_paths=PackedStringArray("start_marker", "goal_cup", "void_boundary")]
@@ -312,39 +312,7 @@ script = ExtResource("5_gfef5")
 [node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/EastCaveBack" unique_id=569283618]
 polygon = PackedVector2Array(0, 78, 1, 78, 1, 79, 2, 79, 2, 80, 16, 80, 16, 0, 0, 0)
 
-[node name="GoalApron" type="StaticBody2D" parent="Terrain" unique_id=1036257584]
-position = Vector2(144, -144)
-collision_mask = 0
-script = ExtResource("2_ab050")
-object_id = &"goal_apron"
-surface = ExtResource("3_kened")
 
-[node name="Tiles" type="TileMapLayer" parent="Terrain/GoalApron" unique_id=802245275]
-texture_filter = 1
-tile_map_data = PackedByteArray("AAAAAAAAAAACAAIAAAABAAAAAAACAAQAAAACAAAAAAACAAQAAAADAAAAAAACAAQAAAAEAAAAAAADAAIAAAAAAAEAAAACAAMAAAABAAEAAAADAAQAAAACAAEAAAADAAQAAAADAAEAAAADAAQAAAAEAAEAAAADAAMAAAA=")
-tile_set = ExtResource("4_6ui6l")
-collision_enabled = false
-script = ExtResource("5_gfef5")
-
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/GoalApron" unique_id=2099087379]
-polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 14, 1, 14, 1, 15, 2, 15, 2, 16, 38, 16, 38, 15, 39, 15, 39, 14, 40, 14, 40, 2, 39, 2, 39, 1, 38, 1, 38, 0, 2, 0)
-
-[node name="GoalBackstop" type="StaticBody2D" parent="Terrain" unique_id=1675820917]
-position = Vector2(248, -144)
-collision_mask = 0
-script = ExtResource("2_ab050")
-object_id = &"goal_backstop"
-surface = ExtResource("3_kened")
-
-[node name="Tiles" type="TileMapLayer" parent="Terrain/GoalBackstop" unique_id=146449741]
-texture_filter = 1
-tile_map_data = PackedByteArray("AAAAAAAAAAACAAIAAAABAAAAAAACAAQAAAACAAAAAAACAAQAAAADAAAAAAACAAQAAAAEAAAAAAACAAQAAAAFAAAAAAACAAQAAAAGAAAAAAACAAQAAAAHAAAAAAACAAQAAAAIAAAAAAACAAQAAAAJAAAAAAADAAIAAAAAAAEAAAACAAMAAAABAAEAAAADAAQAAAACAAEAAAADAAQAAAADAAEAAAADAAQAAAAEAAEAAAADAAQAAAAFAAEAAAADAAQAAAAGAAEAAAADAAQAAAAHAAEAAAADAAQAAAAIAAEAAAADAAQAAAAJAAEAAAADAAMAAAA=")
-tile_set = ExtResource("4_6ui6l")
-collision_enabled = false
-script = ExtResource("5_gfef5")
-
-[node name="SolidSilhouette" type="CollisionPolygon2D" parent="Terrain/GoalBackstop" unique_id=1114544018]
-polygon = PackedVector2Array(2, 1, 1, 1, 1, 2, 0, 2, 0, 14, 1, 14, 1, 15, 2, 15, 2, 16, 78, 16, 78, 15, 79, 15, 79, 14, 80, 14, 80, 2, 79, 2, 79, 1, 78, 1, 78, 0, 2, 0)
 
 [node name="WestWall" type="StaticBody2D" parent="Terrain" unique_id=110072929]
 position = Vector2(-232, -208)
@@ -468,23 +436,23 @@ collision_enabled = false
 [node name="LiftGuide" type="TileMapLayer" parent="Decorations" unique_id=1362324308]
 z_index = -1
 texture_filter = 1
-position = Vector2(240, 80)
-tile_map_data = PackedByteArray("AAAAAAAAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAIAAAAAAAEAAAAAAAMAAAAAAAEAAAAAAAQAAAAAAAEAAAA=")
+position = Vector2(240, 64)
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAIAAAAAAAEAAAAAAAMAAAAAAAEAAAAAAAQAAAAAAAEAAAAAAAUAAAAAAAEAAAAAAAYAAAAAAAEAAAA=")
 tile_set = ExtResource("10_w22e1")
 collision_enabled = false
 
 [node name="ShuttleGuide" type="TileMapLayer" parent="Decorations" unique_id=423168715]
 z_index = -1
 texture_filter = 1
-position = Vector2(-160, -112)
-tile_map_data = PackedByteArray("AAAAAAAAAAABAAEAAAABAAAAAAABAAEAAAACAAAAAAABAAEAAAADAAAAAAABAAEAAAAEAAAAAAABAAEAAAAFAAAAAAABAAEAAAAGAAAAAAABAAEAAAAHAAAAAAABAAEAAAAIAAAAAAABAAEAAAA=")
+position = Vector2(-192, -116)
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAEAAAABAAAAAAABAAEAAAACAAAAAAABAAEAAAADAAAAAAABAAEAAAAEAAAAAAABAAEAAAAFAAAAAAABAAEAAAAGAAAAAAABAAEAAAAHAAAAAAABAAEAAAAIAAAAAAABAAEAAAAJAAAAAAABAAEAAAAKAAAAAAABAAEAAAALAAAAAAABAAEAAAAMAAAAAAABAAEAAAA=")
 tile_set = ExtResource("10_w22e1")
 collision_enabled = false
 
 [node name="LiftTopPulley" type="TileMapLayer" parent="Decorations" unique_id=657780400]
 z_index = -1
 texture_filter = 1
-position = Vector2(240, 64)
+position = Vector2(240, 56)
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
 tile_set = ExtResource("10_w22e1")
 collision_enabled = false
@@ -492,7 +460,7 @@ collision_enabled = false
 [node name="LiftBasePulley" type="TileMapLayer" parent="Decorations" unique_id=1761448348]
 z_index = -1
 texture_filter = 1
-position = Vector2(240, 144)
+position = Vector2(240, 160)
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
 tile_set = ExtResource("10_w22e1")
 collision_enabled = false
@@ -500,7 +468,7 @@ collision_enabled = false
 [node name="ShuttleWestPulley" type="TileMapLayer" parent="Decorations" unique_id=852756259]
 z_index = -1
 texture_filter = 1
-position = Vector2(-176, -116)
+position = Vector2(-200, -116)
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
 tile_set = ExtResource("10_w22e1")
 collision_enabled = false
@@ -508,7 +476,7 @@ collision_enabled = false
 [node name="ShuttleEastPulley" type="TileMapLayer" parent="Decorations" unique_id=1722168769]
 z_index = -1
 texture_filter = 1
-position = Vector2(-24, -116)
+position = Vector2(8, -116)
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
 tile_set = ExtResource("10_w22e1")
 collision_enabled = false
@@ -537,13 +505,6 @@ tile_map_data = PackedByteArray("AAAAAAAAAAADAAAAAAA=")
 tile_set = ExtResource("10_w22e1")
 collision_enabled = false
 
-[node name="WestCog" type="TileMapLayer" parent="Decorations" unique_id=47800549]
-z_index = 1
-texture_filter = 1
-position = Vector2(-160, 88)
-tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAA=")
-tile_set = ExtResource("10_w22e1")
-collision_enabled = false
 
 [node name="LaunchArrows" type="TileMapLayer" parent="Decorations" unique_id=1235898474]
 z_index = 1
