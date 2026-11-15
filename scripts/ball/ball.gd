@@ -157,6 +157,14 @@ func _physics_process(delta: float) -> void:
         step_motion(delta)
 
 func step_motion(delta: float) -> void:
+    var pulled_by_cup: bool = false
+    if ghost_state not in [GhostState.ARMED, GhostState.PASSING]:
+        for cup: GoalCup in get_tree().get_nodes_in_group(&"goal_cups"):
+            if cup.pull_contains(global_position):
+                pulled_by_cup = true
+                if is_instance_valid(attached_body):
+                    launch(Vector2.ZERO)
+                velocity = cup.attract_velocity(global_position, velocity, delta)
     if is_instance_valid(attached_body):
         global_position = attached_body.to_global(local_anchor)
         velocity = Vector2.ZERO
@@ -199,7 +207,7 @@ func step_motion(delta: float) -> void:
         contacted.emit(body, normal)
         if incoming < -tuning.bounce_threshold:
             struck.emit(body, normal, -incoming)
-        if (glue_enabled or body.surface.attaches_on_contact) and not leaving_old:
+        if (glue_enabled or body.surface.attaches_on_contact) and not leaving_old and not pulled_by_cup:
             attached_body = body
             local_anchor = body.to_local(global_position)
             velocity = Vector2.ZERO

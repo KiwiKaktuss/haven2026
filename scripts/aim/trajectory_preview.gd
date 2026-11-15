@@ -73,6 +73,9 @@ func predict(ball: GolfBall, card: CardDefinition, drag: Vector2, angular_offset
 	if max_steps >= 0:
 		steps = mini(steps, max_steps)
 	for tick: int in range(steps):
+		if not armed and passing == null:
+			for cup: GoalCup in get_tree().get_nodes_in_group(&"goal_cups"):
+				speed = cup.attract_velocity(at, speed, dt)
 		speed = BallMotion.accelerate(speed, ball.tuning.gravity * gravity_multiplier, dt)
 		var motion: Vector2 = speed * dt
 		probe.global_position = at
