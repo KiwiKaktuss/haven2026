@@ -24,7 +24,7 @@ func flight(card: CardDefinition, direction: Vector2, strength: float = 1.0) -> 
     var dt: float = 1.0 / Engine.physics_ticks_per_second
     var previous: Vector2 = Vector2.ZERO
     var error: float = 0.0
-    for step: int in ceili(6.0 / dt):
+    for step: int in ceili(12.0 / dt):
         ball.step_motion(dt)
         if step + 1 < predicted.size():
             error = maxf(error, ball.global_position.distance_to(predicted[step + 1]))
@@ -55,7 +55,8 @@ func run() -> void:
     var normal: float = flights[&"classic"].distance
     check(normal >= 300.0 and normal <= 350.0, "Normal clears a useful medium gap")
     check(flights[&"sniper"].distance >= normal * 0.9 and flights[&"sniper"].distance < normal, "Snipe trades a little reach for precision")
-    check(flights[&"slow"].distance >= 175.0 and flights[&"slow"].distance <= normal * 0.7, "Slow can rescue across a gap while remaining controlled")
+    check(flights[&"slow"].distance >= 175.0 and flights[&"slow"].distance <= normal * 0.7, "Slow retains its useful range")
+    check(flights[&"slow"].seconds >= 6.0, "Slow gives the player time to play another card mid-flight")
     check(flights[&"heavy"].distance >= normal * 0.8 and flights[&"heavy"].distance < normal, "Heavy's gravity no longer makes its range impractical")
     check(flights[&"heavy"].seconds < flights[&"classic"].seconds * 0.75, "Heavy still makes a fast, steep approach")
     for id: StringName in [&"glue", &"ghost", &"rewind", &"bounce"]:
