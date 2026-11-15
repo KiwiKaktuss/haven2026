@@ -13,6 +13,7 @@
 /screenshots/
 /build/
 /logs/
+/.capture/
 
 # Temporary editor acceptance copies
 /tests/.editor_check/

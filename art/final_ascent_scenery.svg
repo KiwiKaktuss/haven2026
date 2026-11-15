@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="48" viewBox="0 0 32 48" shape-rendering="crispEdges">
+  <!-- A six-cell summit beacon, using the existing coast/workshop palette. -->
+  <path d="M7 44h18v4H7zM10 23h12v21H10z" fill="#b99469"/>
+  <path d="M12 23h8v21h-8zM9 44h14v2H9z" fill="#ecd2a0"/>
+  <path d="M10 30h12v5H10zM10 40h12v4H10z" fill="#cb896a"/>
+  <path d="M15 25h3v4h-3zM15 36h3v4h-3z" fill="#6b7770"/>
+  <path d="M7 21h18v3H7zM8 10h16v11H8z" fill="#6b7770"/>
+  <path d="M10 12h12v8H10z" fill="#f3d6a1"/>
+  <path d="M11 13h10v5H11z" fill="#fff3cf"/>
+  <path d="M15 10h2v11h-2zM7 9h18v2H7z" fill="#b99469"/>
+  <path d="M9 7h14v2H9zM11 5h10v2H11zM13 3h6v2H13zM15 0h2v3h-2z" fill="#759aa7"/>
+  <path d="M9 7h8v1H9zM11 5h5v1h-5z" fill="#b9d4d0"/>
+</svg>
